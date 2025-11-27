@@ -1,0 +1,58 @@
+export const Typography = {
+    // Font Family
+    FONT_FAMILY_REGULAR: 'Urbanist-Regular',
+    FONT_FAMILY_MEDIUM: 'Urbanist-Medium',
+    FONT_FAMILY_SEMIBOLD: 'Urbanist-SemiBold',
+    FONT_FAMILY_BOLD: 'Urbanist-Bold',
+    FONT_FAMILY_EXTRABOLD: 'Urbanist-ExtraBold',
+    // Font Weights
+    FONT_WEIGHT_REGULAR_400: '400' as const,
+    FONT_WEIGHT_REGULAR_400_ITALIC: '400' as const,
+    FONT_WEIGHT_MEDIUM_500: '500' as const,
+    FONT_WEIGHT_SEMIBOLD_600: '600' as const,
+    FONT_WEIGHT_BOLD_700: '700' as const,
+    FONT_WEIGHT_EXTRABOLD_800: '800' as const,
+
+    // Font Sizes
+    FONT_SIZE_11: 11,
+    FONT_SIZE_12: 12,
+    FONT_SIZE_13: 13,
+    FONT_SIZE_14: 14,
+    FONT_SIZE_15: 15,
+    FONT_SIZE_16: 16,
+    FONT_SIZE_18: 18,
+    FONT_SIZE_20: 20,
+    FONT_SIZE_24: 24,
+    FONT_SIZE_28: 28,
+    FONT_SIZE_32: 32,
+    FONT_SIZE_36: 36,
+    FONT_SIZE_40: 40,
+    FONT_SIZE_44: 44,
+    FONT_SIZE_48: 48,
+    FONT_SIZE_52: 52,
+    FONT_SIZE_64: 64,
+    FONT_SIZE_96: 96,
+
+    // Line Heights
+    LINE_HEIGHT_12: 12,
+    LINE_HEIGHT_16: 16,
+    LINE_HEIGHT_20: 20,
+    LINE_HEIGHT_24: 24,
+    LINE_HEIGHT_28: 28,
+    LINE_HEIGHT_32: 32,
+    LINE_HEIGHT_36: 36,
+    LINE_HEIGHT_40: 40,
+    LINE_HEIGHT_44: 44,
+    LINE_HEIGHT_48: 48,
+    LINE_HEIGHT_52: 52,
+    LINE_HEIGHT_56: 56,
+    LINE_HEIGHT_64: 64,
+    LINE_HEIGHT_76: 76,
+    LINE_HEIGHT_116: 116,
+
+    // Line Heights
+
+    // Letter Spacing
+    LETTER_SPACING_TIGHT: -0.6,
+    LETTER_SPACING_TIGHT_0_5: -0.5,
+};
