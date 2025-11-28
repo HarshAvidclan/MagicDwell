@@ -12,7 +12,10 @@ export const Typography = {
     FONT_WEIGHT_SEMIBOLD_600: '600' as const,
     FONT_WEIGHT_BOLD_700: '700' as const,
     FONT_WEIGHT_EXTRABOLD_800: '800' as const,
-
+    FONT_WEIGHT_REGULAR: '400' as '400',
+    FONT_WEIGHT_MEDIUM: '500' as '500',
+    FONT_WEIGHT_SEMIBOLD: '600' as '600',
+    FONT_WEIGHT_BOLD: '700' as '700',
     // Font Sizes
     FONT_SIZE_11: 11,
     FONT_SIZE_12: 12,

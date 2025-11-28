@@ -1,453 +1,222 @@
-import * as React from "react";
-import {StyleSheet, View, Text, Pressable, Image} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+// src/Screens/Guest/LoginScreen.tsx
+import React, { useState } from 'react';
+import { StyleSheet, View, Image, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors, Typography, Scale, Strings, Logos } from '../../Constants';
+import { CommonText, CommonInput, CommonButton } from '../../Common';
+import { useNavigation } from '@react-navigation/native';
+import { LoginScreenNavigationProp } from '../../../Types/Navigation';
 
-export const Login = () => {
-  	
-  	return (
-    		<SafeAreaView style={styles.viewBg}>
-      			<View style={[styles.view, styles.viewBg]}>
-        				<View style={[styles.homeindicator, styles.homeindicatorPosition]}>
-          					<View style={styles.homeIndicator} />
-        				</View>
-        				<View style={[styles.statusbarIphone1313Pro, styles.homeindicatorPosition]}>
-          					<View style={[styles.notch, styles.notchPosition]}>
-            						<Image style={[styles.notchIcon, styles.notchPosition]} resizeMode="cover" />
-          					</View>
-          					<View style={styles.rightSide}>
-            						<View style={styles.battery}>
-              							<Image style={styles.outlineIcon} resizeMode="cover" />
-              							<Image style={[styles.batteryEndIcon, styles.wifiIconLayout]} resizeMode="cover" />
-              							<Image style={styles.fillIcon} resizeMode="cover" />
-            						</View>
-            						<View style={[styles.wifi, styles.wifiLayout]}>
-              							<Image style={[styles.wifiPathIcon, styles.wifiLayout]} resizeMode="cover" />
-              							<Image style={[styles.wifiPathIcon2, styles.wifiIconLayout]} resizeMode="cover" />
-              							<Image style={[styles.wifiPathIcon3, styles.wifiIconLayout]} resizeMode="cover" />
-            						</View>
-            						<Image style={styles.iconMobileSignal} resizeMode="cover" />
-          					</View>
-          					<View style={[styles.leftSide, styles.leftSideLayout]}>
-            						<View style={[styles.statusbarTime, styles.leftSideLayout]}>
-              							<Text style={[styles.text, styles.enTypo]}>9:41</Text>
-            						</View>
-          					</View>
-        				</View>
-        				<View style={styles.frameParent}>
-          					<View style={styles.frameGroup}>
-            						<View style={[styles.logomarkParent, styles.frameViewFlexBox]}>
-              							<Pressable style={[styles.logomark, styles.logomarkFlexBox]} onPress={()=>{}}>
-                								<Text style={[styles.md, styles.mdTypo]}>MD</Text>
-              							</Pressable>
-              							<View style={[styles.language, styles.languageFlexBox]}>
-                								<Text style={[styles.en, styles.enTypo]}>EN</Text>
-                								<Image style={styles.arrowDropUpIcon} resizeMode="cover" />
-              							</View>
-            						</View>
-            						<View style={styles.frameContainer}>
-              							<View style={styles.frameViewFlexBox}>
-                								<View style={styles.frameViewFlexBox}>
-                  									<View style={styles.frameContainer}>
-                    										<View style={styles.whatsYourMobileNumberParent}>
-                      											<Text style={[styles.whatsYourMobile, styles.text2Clr]}>What’s your mobile number?</Text>
-                        												<Text style={[styles.wellSendAn, styles.wellSendAnClr]}>We’ll send an OTP to verify your number.</Text>
-                        												</View>
-                        												<Pressable style={[styles.inputTextfield, styles.parentFlexBox]} onPress={()=>{}}>
-                          													<View style={styles.parentFlexBox}>
-                            														<Image style={styles.frameChild} resizeMode="cover" />
-                            														<Text style={[styles.text2, styles.text2Typo]}>+91</Text>
-                          													</View>
-                          													<Text style={[styles.enterYourMobile, styles.enterYourMobileFlexBox]}>Enter your mobile number</Text>
-                        												</Pressable>
-                        												</View>
-                        												<View style={[styles.buttonComponents, styles.logomarkFlexBox]}>
-                          													<Text style={[styles.button, styles.text2Typo]}>Next</Text>
-                        												</View>
-                        												</View>
-                        												<View style={[styles.lineParent, styles.parentFlexBox]}>
-                          													<View style={styles.frameItem} />
-                          													<View style={[styles.orWrapper, styles.languageFlexBox]}>
-                            														<Text style={styles.or}>or</Text>
-                          													</View>
-                          													<View style={styles.frameItem} />
-                        												</View>
-                        												</View>
-                        												<View style={[styles.ctaCall, styles.parentFlexBox]}>
-                          													<Image style={styles.whatsapp1Icon} resizeMode="cover" />
-                          													<Text style={[styles.en, styles.enTypo]}>Continue with Whatsapp</Text>
-                        												</View>
-                        												</View>
-                        												</View>
-                        												<Text style={[styles.byRegisteringYou, styles.enterYourMobileFlexBox]}>By registering,  you agree to receive calls or messages via SMS or WhatsApp for verification and service updates from MagicDwell and its partners.</Text>
-                        												</View>
-                        												</View>
-                        												</SafeAreaView>);
-                      											};
-                      											
-                      											const styles = StyleSheet.create({
-                        												login: {
-                          													flex: 1,
-                          													backgroundColor: "#fff"
-                        												},
-                        												viewBg: {
-                          													backgroundColor: "#fff",
-                          													flex: 1
-                        												},
-                        												homeindicatorPosition: {
-                          													width: 390,
-                          													marginLeft: -195,
-                          													left: "50%",
-                          													position: "absolute"
-                        												},
-                        												notchPosition: {
-                          													height: 32,
-                          													width: 164,
-                          													marginLeft: -82,
-                          													left: "50%",
-                          													position: "absolute"
-                        												},
-                        												wifiIconLayout: {
-                          													height: 4,
-                          													position: "absolute"
-                        												},
-                        												wifiLayout: {
-                          													width: 17,
-                          													position: "absolute"
-                        												},
-                        												leftSideLayout: {
-                          													height: 21,
-                          													width: 54,
-                          													left: "50%",
-                          													position: "absolute"
-                        												},
-                        												enTypo: {
-                          													fontWeight: "600",
-                          													textAlign: "center"
-                        												},
-                        												frameViewFlexBox: {
-                          													gap: 20,
-                          													alignSelf: "stretch"
-                        												},
-                        												logomarkFlexBox: {
-                          													height: 48,
-                          													justifyContent: "center",
-                          													alignItems: "center",
-                          													flexDirection: "row"
-                        												},
-                        												mdTypo: {
-                          													fontFamily: "Urbanist-Bold",
-                          													fontWeight: "700",
-                          													lineHeight: 32,
-                          													letterSpacing: -0.5,
-                          													fontSize: 24
-                        												},
-                        												languageFlexBox: {
-                          													paddingBottom: 4,
-                          													justifyContent: "center",
-                          													alignItems: "center"
-                        												},
-                        												text2Clr: {
-                          													color: "#13131a",
-                          													textAlign: "left"
-                        												},
-                        												wellSendAnClr: {
-                          													color: "#374151",
-                          													fontFamily: "Urbanist-Regular",
-                          													alignSelf: "stretch"
-                        												},
-                        												parentFlexBox: {
-                          													gap: 8,
-                          													alignItems: "center",
-                          													flexDirection: "row"
-                        												},
-                        												text2Typo: {
-                          													fontFamily: "Urbanist-Medium",
-                          													fontWeight: "500",
-                          													fontSize: 16,
-                          													lineHeight: 24
-                        												},
-                        												enterYourMobileFlexBox: {
-                          													display: "flex",
-                          													textAlign: "left",
-                          													alignItems: "center"
-                        												},
-                        												view: {
-                          													width: "100%",
-                          													height: 844,
-                          													overflow: "hidden"
-                        												},
-                        												homeindicator: {
-                          													bottom: 0,
-                          													height: 34
-                        												},
-                        												homeIndicator: {
-                          													marginLeft: -67,
-                          													bottom: 8,
-                          													width: 134,
-                          													height: 5,
-                          													backgroundColor: "#000",
-                          													borderRadius: 100,
-                          													left: "50%",
-                          													position: "absolute"
-                        												},
-                        												statusbarIphone1313Pro: {
-                          													height: 44,
-                          													top: 0,
-                          													overflow: "hidden"
-                        												},
-                        												notch: {
-                          													top: -2
-                        												},
-                        												notchIcon: {
-                          													top: 0
-                        												},
-                        												rightSide: {
-                          													right: 18,
-                          													width: 70,
-                          													height: 12,
-                          													top: 19,
-                          													position: "absolute"
-                        												},
-                        												battery: {
-                          													width: 25,
-                          													right: 0,
-                          													height: 12,
-                          													top: 0,
-                          													position: "absolute"
-                        												},
-                        												outlineIcon: {
-                          													right: 2,
-                          													borderRadius: 3,
-                          													width: 23,
-                          													opacity: 0.35,
-                          													height: 12,
-                          													top: 0,
-                          													position: "absolute"
-                        												},
-                        												batteryEndIcon: {
-                          													top: 4,
-                          													width: 1,
-                          													opacity: 0.4,
-                          													right: 0
-                        												},
-                        												fillIcon: {
-                          													top: 2,
-                          													right: 4,
-                          													borderRadius: 1,
-                          													height: 8,
-                          													width: 19,
-                          													position: "absolute"
-                        												},
-                        												wifi: {
-                          													right: 30,
-                          													height: 12,
-                          													top: 0,
-                          													backgroundColor: "#000"
-                        												},
-                        												wifiPathIcon: {
-                          													right: -325,
-                          													top: 19,
-                          													height: 5
-                        												},
-                        												wifiPathIcon2: {
-                          													top: 23,
-                          													right: -322,
-                          													width: 11
-                        												},
-                        												wifiPathIcon3: {
-                          													top: 27,
-                          													right: -319,
-                          													width: 5
-                        												},
-                        												iconMobileSignal: {
-                          													right: 52,
-                          													width: 18,
-                          													height: 12,
-                          													top: 0,
-                          													position: "absolute"
-                        												},
-                        												leftSide: {
-                          													marginLeft: -170,
-                          													top: 15
-                        												},
-                        												statusbarTime: {
-                          													marginLeft: -27,
-                          													borderRadius: 24,
-                          													top: 0
-                        												},
-                        												text: {
-                          													top: 1,
-                          													left: 0,
-                          													letterSpacing: -0.5,
-                          													fontFamily: "SF Pro Text",
-                          													color: "#000",
-                          													height: 20,
-                          													textAlign: "center",
-                          													lineHeight: 20,
-                          													fontSize: 15,
-                          													width: 54,
-                          													fontWeight: "600",
-                          													position: "absolute"
-                        												},
-                        												frameParent: {
-                          													top: 68,
-                          													left: 16,
-                          													gap: 294,
-                          													width: 358,
-                          													position: "absolute"
-                        												},
-                        												frameGroup: {
-                          													gap: 24,
-                          													alignSelf: "stretch"
-                        												},
-                        												logomarkParent: {
-                          													justifyContent: "space-between",
-                          													alignItems: "center",
-                          													gap: 20,
-                          													flexDirection: "row"
-                        												},
-                        												logomark: {
-                          													width: 48,
-                          													borderRadius: 4,
-                          													backgroundColor: "#003b73",
-                          													padding: 12,
-                          													justifyContent: "center"
-                        												},
-                        												md: {
-                          													color: "#fdfdff",
-                          													textAlign: "center"
-                        												},
-                        												language: {
-                          													backgroundColor: "#f3f4f6",
-                          													paddingLeft: 16,
-                          													paddingTop: 4,
-                          													paddingRight: 8,
-                          													flexDirection: "row",
-                          													paddingBottom: 4,
-                          													borderRadius: 100,
-                          													overflow: "hidden"
-                        												},
-                        												en: {
-                          													fontFamily: "Urbanist-SemiBold",
-                          													color: "#333",
-                          													lineHeight: 24,
-                          													fontSize: 14,
-                          													textAlign: "center"
-                        												},
-                        												arrowDropUpIcon: {
-                          													height: 19,
-                          													width: 19
-                        												},
-                        												frameContainer: {
-                          													gap: 12,
-                          													alignSelf: "stretch"
-                        												},
-                        												whatsYourMobileNumberParent: {
-                          													gap: 4,
-                          													alignSelf: "stretch"
-                        												},
-                        												whatsYourMobile: {
-                          													textAlign: "left",
-                          													fontFamily: "Urbanist-Bold",
-                          													fontWeight: "700",
-                          													lineHeight: 32,
-                          													letterSpacing: -0.5,
-                          													fontSize: 24,
-                          													alignSelf: "stretch"
-                        												},
-                        												wellSendAn: {
-                          													textAlign: "left",
-                          													lineHeight: 24,
-                          													fontSize: 15
-                        												},
-                        												inputTextfield: {
-                          													borderColor: "#13131a",
-                          													paddingHorizontal: 16,
-                          													paddingVertical: 12,
-                          													borderWidth: 1,
-                          													gap: 8,
-                          													borderStyle: "solid",
-                          													height: 48,
-                          													borderRadius: 100,
-                          													overflow: "hidden",
-                          													width: 358
-                        												},
-                        												frameChild: {
-                          													width: 20,
-                          													height: 20
-                        												},
-                        												text2: {
-                          													textAlign: "left",
-                          													color: "#13131a"
-                        												},
-                        												enterYourMobile: {
-                          													width: 251,
-                          													color: "#9ca3af",
-                          													fontFamily: "Urbanist-Medium",
-                          													fontWeight: "500",
-                          													fontSize: 16,
-                          													lineHeight: 24
-                        												},
-                        												buttonComponents: {
-                          													backgroundColor: "#e6ebf1",
-                          													padding: 16,
-                          													justifyContent: "center",
-                          													alignSelf: "stretch",
-                          													borderRadius: 100,
-                          													overflow: "hidden"
-                        												},
-                        												button: {
-                          													color: "#8aa5bf",
-                          													textAlign: "center"
-                        												},
-                        												lineParent: {
-                          													alignSelf: "stretch"
-                        												},
-                        												frameItem: {
-                          													height: 1,
-                          													borderColor: "#9ca3af",
-                          													borderTopWidth: 1,
-                          													borderStyle: "solid",
-                          													flex: 1
-                        												},
-                        												orWrapper: {
-                          													width: 13
-                        												},
-                        												or: {
-                          													color: "#9ca3af",
-                          													fontFamily: "Urbanist-Regular",
-                          													fontSize: 14,
-                          													alignSelf: "stretch",
-                          													textAlign: "center",
-                          													lineHeight: 20
-                        												},
-                        												ctaCall: {
-                          													backgroundColor: "#f5f5f5",
-                          													borderColor: "#bdbdbd",
-                          													paddingHorizontal: 20,
-                          													paddingVertical: 12,
-                          													borderWidth: 1,
-                          													gap: 8,
-                          													borderStyle: "solid",
-                          													height: 48,
-                          													borderRadius: 100,
-                          													overflow: "hidden",
-                          													justifyContent: "center",
-                          													alignSelf: "stretch"
-                        												},
-                        												whatsapp1Icon: {
-                          													height: 24,
-                          													width: 24
-                        												},
-                        												byRegisteringYou: {
-                          													height: 60,
-                          													color: "#374151",
-                          													fontFamily: "Urbanist-Regular",
-                          													alignSelf: "stretch",
-                          													fontSize: 14,
-                          													lineHeight: 20
-                        												}
-                      											});
-                      											
-                      											export default Login;
-                      											
+interface LoginScreenProps {}
+
+export const LoginScreen: React.FC<LoginScreenProps> = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  const handleNext = () => {
+    console.log('Next button pressed', phoneNumber);
+    // TODO: Navigate to OTP screen or handle login
+  };
+
+  const handleWhatsappContinue = () => {
+    console.log('WhatsApp continue pressed');
+  };
+
+  const handleLanguagePress = () => {
+    console.log('Language selector pressed');
+  };
+
+  const CountryCodeComponent = () => (
+    <View style={styles.countryCodeContainer}>
+      <Image
+        style={styles.flagIcon}
+        source={Logos.INDIAN_FLAG}
+        resizeMode="cover"
+      />
+      <CommonText medium color={Colors.TEXT_PRIMARY}>
+        {Strings.LOGIN.COUNTRY_CODE}
+      </CommonText>
+    </View>
+  );
+  const isPhoneValid = phoneNumber.length === 10;
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentContainer}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <Pressable style={styles.logoContainer} onPress={() => {}}>
+            <CommonText bold color={Colors.TEXT_LIGHT} variant="heading">
+              {Strings.LOGIN.LOGO_TEXT}
+            </CommonText>
+          </Pressable>
+          <Pressable
+            style={styles.languageSelector}
+            onPress={handleLanguagePress}
+          >
+            <CommonText semibold variant="caption" color={Colors.GRAY_700}>
+              {Strings.LOGIN.LANGUAGE}
+            </CommonText>
+            <Image
+              style={styles.dropdownIcon}
+              source={Logos.DROPDOWN_ICON}
+              resizeMode="cover"
+            />
+          </Pressable>
+        </View>
+
+        {/* Main Content Section */}
+        <View style={styles.mainContent}>
+          {/* Title and Subtitle */}
+          <View style={styles.titleContainer}>
+            <CommonText bold variant="heading" color={Colors.TEXT_PRIMARY}>
+              {Strings.LOGIN.HEADING}
+            </CommonText>
+            <CommonText variant="body" color={Colors.TEXT_SECONDARY}>
+              {Strings.LOGIN.SUBHEADING}
+            </CommonText>
+          </View>
+
+          {/* Phone Input Field */}
+          <CommonInput
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            placeholder={Strings.LOGIN.INPUT_PLACEHOLDER}
+            keyboardType="phone-pad"
+            leftComponent={<CountryCodeComponent />}
+            maxLength={10}
+          />
+
+          {/* Next Button */}
+          <CommonButton
+            title={Strings.LOGIN.BUTTON_NEXT}
+            variant={isPhoneValid ? 'primary' : 'secondary'}
+            onPress={handleNext}
+            textColor={isPhoneValid ? Colors.WHITE : Colors.TEXT_DISABLED}
+            backgroundColor={
+              isPhoneValid ? Colors.PRIMARY_500 : Colors.GRAY_200
+            }
+            disabled={!isPhoneValid}
+          />
+
+          {/* Divider */}
+          <View style={styles.dividerContainer}>
+            <View style={styles.dividerLine} />
+            <View style={styles.dividerTextContainer}>
+              <CommonText variant="caption" color={Colors.TEXT_PLACEHOLDER}>
+                {Strings.LOGIN.DIVIDER_TEXT}
+              </CommonText>
+            </View>
+            <View style={styles.dividerLine} />
+          </View>
+
+          {/* WhatsApp Button */}
+          <CommonButton
+            title={Strings.LOGIN.WHATSAPP_BUTTON}
+            variant="ghost"
+            onPress={handleWhatsappContinue}
+            leftIcon={Logos.WHATSAPP_ICON}
+            backgroundColor={Colors.F5F5F5}
+            borderColor={Colors.BORDER_SECONDARY}
+            textColor={Colors.BLACK}
+          />
+        </View>
+
+        {/* Disclaimer */}
+        <CommonText
+          variant="caption"
+          color={Colors.TEXT_SECONDARY}
+          style={styles.disclaimer}
+        >
+          {Strings.LOGIN.DISCLAIMER}
+        </CommonText>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.WHITE,
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: Scale.SCALE_16,
+    paddingTop: Scale.SCALE_24,
+    paddingBottom: Scale.SCALE_20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    marginBottom: Scale.SCALE_24,
+  },
+  logoContainer: {
+    width: Scale.SCALE_48,
+    height: Scale.SCALE_48,
+    borderRadius: Scale.BORDER_RADIUS_4,
+    backgroundColor: Colors.PRIMARY_500,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  languageSelector: {
+    flexDirection: 'row',
+    backgroundColor: Colors.GRAY_100,
+    paddingLeft: Scale.SCALE_16,
+    paddingRight: Scale.SCALE_8,
+    paddingTop: Scale.SCALE_4,
+    paddingBottom: Scale.SCALE_4,
+    borderRadius: Scale.BORDER_RADIUS_100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    gap: Scale.SCALE_4,
+  },
+  dropdownIcon: {
+    width: Scale.SCALE_19,
+    height: Scale.SCALE_19,
+  },
+  mainContent: {
+    gap: Scale.SCALE_12,
+    alignSelf: 'stretch',
+    flex: 1,
+  },
+  titleContainer: {
+    gap: Scale.SCALE_4,
+    alignSelf: 'stretch',
+  },
+  countryCodeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Scale.SCALE_8,
+  },
+  flagIcon: {
+    width: Scale.SCALE_20,
+    height: Scale.SCALE_20,
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Scale.SCALE_8,
+    alignSelf: 'stretch',
+  },
+  dividerLine: {
+    flex: 1,
+    height: Scale.SCALE_1,
+    borderTopWidth: Scale.SCALE_1,
+    borderColor: Colors.BORDER_DIVIDER,
+    borderStyle: 'solid',
+  },
+  dividerTextContainer: {
+    paddingBottom: Scale.SCALE_4,
+  },
+  disclaimer: {
+    marginTop: Scale.SCALE_20,
+  },
+});

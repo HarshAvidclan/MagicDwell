@@ -10,7 +10,7 @@ export const Colors = {
   PRIMARY_700: '#002A52',
   PRIMARY_800: '#00203F',
   PRIMARY_900: '#001930',
-
+  F5F5F5: '#F5F5F5',
   // Secondary Colors
   SECONDARY_50: '#ECF5FC',
   SECONDARY_100: '#C5DFF6',
@@ -115,7 +115,19 @@ export const Colors = {
   WHITE: '#FDFDFF',
   BLACK: '#13131A',
 
-    // Text Colors
+  // Text Colors
   TEXT_PRIMARY: '#2D2D2D',
   TEXT_SECONDARY: '#6B6B6B',
+
+  // Border Colors
+  BORDER_PRIMARY: '#13131A',
+  BORDER_SECONDARY: '#BDBDBD',
+  BORDER_DIVIDER: '#9CA3AF',
+
+  // Text Colors
+  TEXT_PLACEHOLDER: '#9CA3AF',
+  TEXT_DISABLED: '#8AA5BF',
+  TEXT_LIGHT: '#FDFDFF',
+
+  ERROR_500: '#EF4444'
 };

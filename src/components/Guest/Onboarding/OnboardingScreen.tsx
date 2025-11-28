@@ -6,19 +6,21 @@ import { OnboardingContent } from './OnboardingContent';
 import { OnboardingImageSection } from './OnboardingImageSection';
 import { OnboardingProgressBar } from './OnboardingProgressBar';
 import { OnboardingButtons } from './OnboardingButtons';
+import { useNavigation } from '@react-navigation/native';
+import { OnboardingScreenNavigationProp, Routes } from '../../../Types/Navigation';
 
-interface OnboardingScreenProps {
-  onLoginPress: () => void;
-}
+interface OnboardingScreenProps {}
 
-export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
-  onLoginPress,
-}) => {
-  const handleCreateAccountPress = () => {
-    console.log('Create Account pressed');
-    // Add your navigation logic here
+export const OnboardingScreen: React.FC<OnboardingScreenProps> = () => {
+  const navigation = useNavigation<OnboardingScreenNavigationProp>();
+
+  const handleLoginPress = () => {
+    navigation.navigate(Routes.LOGIN);
   };
-  // Replace these with your actual images
+
+  const handleCreateAccountPress = () => {
+    navigation.navigate(Routes.SIGNUP);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -41,7 +43,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
 
           <View style={styles.buttonSection}>
             <OnboardingButtons
-              onLoginPress={onLoginPress}
+              onLoginPress={handleLoginPress}
               onCreateAccountPress={handleCreateAccountPress}
             />
           </View>

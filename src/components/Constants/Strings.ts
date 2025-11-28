@@ -6,11 +6,17 @@ export const Strings = {
     CREATE_ACCOUNT: 'Create Account',  // Add this
   },
   LOGIN: {
-    TITLE: "What's your mobile number?",
-    SUBTITLE: "We'll send an OTP to verify your number.",
-    PLACEHOLDER: 'Enter your mobile number',
-    NEXT: 'Next',
-    WHATSAPP_CONTINUE: 'Continue with Whatsapp',
-    FOOTER_TEXT: 'By registering, you agree to receive calls or messages via SMS or WhatsApp for verification and service updates from MagicDwell and its partners.',
+    LOGO_TEXT: 'MD',
+    LANGUAGE: 'EN',
+    HEADING: "What's your mobile number?",
+    SUBHEADING: "We'll send an OTP to verify your number.",
+    COUNTRY_CODE: '+91',
+    INPUT_PLACEHOLDER: 'Enter your mobile number',
+    BUTTON_NEXT: 'Next',
+    DIVIDER_TEXT: 'or',
+    WHATSAPP_BUTTON: 'Continue with Whatsapp',
+    DISCLAIMER: 'By registering,  you agree to receive calls or messages via SMS or WhatsApp for verification and service updates from MagicDwell and its partners.',
+    ERROR_PHONE_REQUIRED: 'Phone number is required',
+    ERROR_PHONE_INVALID: 'Please enter a valid 10-digit mobile number',
   },
 };
