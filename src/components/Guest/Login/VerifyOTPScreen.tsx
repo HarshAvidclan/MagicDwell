@@ -123,7 +123,7 @@ export const VerifyOTPScreen: React.FC<VerifyOTPScreenProps> = () => {
         <View style={styles.header}>
           <Pressable style={styles.backButton} onPress={handleBack}>
             <Image
-              // source={Logos.CHEVRON_LEFT_ICON}
+              source={Logos.CHEVRON_LEFT_ICON}
               style={styles.backIcon}
               resizeMode="cover"
             />
@@ -150,7 +150,7 @@ export const VerifyOTPScreen: React.FC<VerifyOTPScreenProps> = () => {
               </CommonText>
               <Pressable onPress={handleEditPhone} style={styles.editButton}>
                 <Image
-                  // source={Logos.EDIT_ICON}
+                  source={Logos.VERIFY_OTP_EDIT}
                   style={styles.editIcon}
                   resizeMode="cover"
                 />
@@ -198,7 +198,14 @@ export const VerifyOTPScreen: React.FC<VerifyOTPScreenProps> = () => {
 
           {/* Resend Section - moved below Verify button */}
           <Pressable style={styles.resendContainer} onPress={handleResend}>
-            <CommonText variant="body" color={Colors.TEXT_DISABLED}>
+            <Pressable style={styles.messageIconButton} onPress={handleResend}>
+              <Image
+                source={Logos.MESSAGES}
+                style={styles.messagesIcon}
+                resizeMode="cover"
+              />
+            </Pressable>
+            <CommonText variant="body" color={Colors.GRAY_500}>
               {Strings.VERIFY_OTP.RESEND_PREFIX}
             </CommonText>
             <CommonText semibold variant="body" color={Colors.GRAY_700}>
@@ -241,6 +248,15 @@ const styles = StyleSheet.create({
   backIcon: {
     width: Scale.SCALE_24,
     height: Scale.SCALE_24,
+  },
+  messageIconButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: Scale.SCALE_2,
+  },
+  messagesIcon: {
+    width: Scale.SCALE_20,
+    height: Scale.SCALE_20,
   },
   placeholder: {
     width: Scale.SCALE_42,

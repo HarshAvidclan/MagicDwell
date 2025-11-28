@@ -65,12 +65,12 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
         <View style={styles.header}>
           <Pressable style={styles.backButton} onPress={handleBack}>
             <Image
-              //   source={Logos.CHEVRON_LEFT_ICON}
+              source={Logos.CHEVRON_LEFT_ICON}
               style={styles.backIcon}
               resizeMode="cover"
             />
           </Pressable>
-          <CommonText bold variant='heading' color={Colors.BLACK}>
+          <CommonText bold variant="heading" color={Colors.BLACK}>
             {Strings.ACCOUNT_DETAILS.SCREEN_TITLE}
           </CommonText>
           <View style={styles.placeholder} />
