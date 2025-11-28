@@ -19,4 +19,12 @@ export const Strings = {
     ERROR_PHONE_REQUIRED: 'Phone number is required',
     ERROR_PHONE_INVALID: 'Please enter a valid 10-digit mobile number',
   },
+  VERIFY_OTP: {
+    SCREEN_TITLE: 'Verify OTP',
+    HEADING: 'Enter verification code',
+    SENT_TO_PREFIX: 'Sent to ',
+    BUTTON_VERIFY: 'Verify',
+    RESEND_PREFIX: 'Resend in ',
+    RESEND_SUFFIX: '15s',
+  },
 };

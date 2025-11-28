@@ -62,6 +62,7 @@ export const Scale = {
     SCALE_82: 82,
     SCALE_248: 248,
     SCALE_282: 282,
+    SCALE_14: 14,
     BORDER_RADIUS_4: 4,
     BORDER_RADIUS_8: 8,
     BORDER_RADIUS_9: 9,
@@ -74,7 +75,8 @@ export const Scale = {
     SCALE_251: 251,
     SCALE_294: 294,
     SCALE_358: 358,
-
+    SCALE_42: 42,
     // Border Width
     BORDER_WIDTH_1: 1,
+    BORDER_RADIUS_12: 12,
 };

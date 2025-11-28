@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Typography, Scale, Strings, Logos } from '../../Constants';
 import { CommonText, CommonInput, CommonButton } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp } from '../../../Types/Navigation';
+import { LoginScreenNavigationProp, Routes } from '../../../Types';
 
 interface LoginScreenProps {}
 
@@ -13,13 +13,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handleBack = () => {
-    navigation.goBack();
-  };
-
   const handleNext = () => {
     console.log('Next button pressed', phoneNumber);
-    // TODO: Navigate to OTP screen or handle login
+    // Navigate to VerifyOTP screen with phone number
+    navigation.navigate(Routes.VERIFY_OTP, { phoneNumber });
   };
 
   const handleWhatsappContinue = () => {
@@ -42,6 +39,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
       </CommonText>
     </View>
   );
+  
   const isPhoneValid = phoneNumber.length === 10;
 
   return (
