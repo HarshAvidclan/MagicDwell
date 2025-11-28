@@ -38,7 +38,14 @@ export const VerifyOTPScreen: React.FC<VerifyOTPScreenProps> = () => {
   const handleVerify = () => {
     const otpValue = otp.join('');
     console.log('Verify OTP:', otpValue, 'for phone:', phoneNumber);
-    // TODO: Implement OTP verification logic
+    const isNewAccount = true; // This should come from your API response
+
+    // Navigate to AccountDetails screen
+    navigation.navigate(Routes.ACCOUNT_DETAILS, {
+      phoneNumber,
+      isNewAccount,
+    });
+
     Keyboard.dismiss();
   };
 

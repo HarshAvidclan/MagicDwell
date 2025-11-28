@@ -57,5 +57,6 @@ export const Typography = {
 
     // Letter Spacing
     LETTER_SPACING_TIGHT: -0.6,
+    LETTER_SPACING__4: -0.4,
     LETTER_SPACING_TIGHT_0_5: -0.5,
 };

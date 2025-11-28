@@ -27,4 +27,18 @@ export const Strings = {
     RESEND_PREFIX: 'Resend in ',
     RESEND_SUFFIX: '15s',
   },
+  ACCOUNT_DETAILS: {
+    SCREEN_TITLE: 'Your Account Details',
+    NAME_LABEL: 'Name',
+    NAME_PLACEHOLDER: 'Enter name',
+    EMAIL_LABEL: 'Email address (optional)',
+    EMAIL_PLACEHOLDER: 'Enter email address',
+    CITY_LABEL: 'Preferred City',
+    CITY_PLACEHOLDER: 'Select city',
+    TERMS_PREFIX: 'I agree to the ',
+    TERMS_OF_SERVICE: 'Terms of Service',
+    TERMS_AND: ' and ',
+    PRIVACY_POLICY: 'Privacy Policy',
+    BUTTON_CONTINUE: 'Continue',
+  },
 };

@@ -15,7 +15,7 @@ export interface CommonTextProps extends TextProps {
 
 export const CommonText: React.FC<CommonTextProps> = ({
   variant = 'body',
-  color = Colors.TEXT_PRIMARY,
+  color = Colors.BLACK,
   align = 'left',
   bold = false,
   semibold = false,
@@ -76,9 +76,9 @@ export const CommonText: React.FC<CommonTextProps> = ({
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: Typography.FONT_SIZE_24,
-    lineHeight: Typography.LINE_HEIGHT_32,
-    letterSpacing: Typography.LETTER_SPACING_TIGHT,
+    fontSize: Typography.FONT_SIZE_20,
+    lineHeight: Typography.LINE_HEIGHT_28,
+    letterSpacing: Typography.LETTER_SPACING__4,
   },
   subheading: {
     fontSize: Typography.FONT_SIZE_16,

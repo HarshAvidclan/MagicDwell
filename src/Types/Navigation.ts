@@ -7,6 +7,7 @@ export const Routes = {
   ONBOARDING: 'Onboarding' as const,
   LOGIN: 'Login' as const,
   VERIFY_OTP: 'VerifyOTP' as const,
+  ACCOUNT_DETAILS: 'AccountDetails' as const,
 };
 
 // Guest Stack Routes
@@ -16,10 +17,14 @@ export type GuestStackParamList = {
   VerifyOTP: {
     phoneNumber: string;
   };
+  AccountDetails: {
+    phoneNumber: string;
+    isNewAccount: boolean;
+  };
 };
 
 // Navigation prop types for each screen
 export type OnboardingScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'Onboarding'>;
-
 export type LoginScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'Login'>;
 export type VerifyOTPScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'VerifyOTP'>;
+export type AccountDetailsScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'AccountDetails'>;
