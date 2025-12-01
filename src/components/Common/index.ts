@@ -10,3 +10,5 @@ export type { CommonButtonProps } from './CommonButton/CommonButton';
 
 export { CommonCheckbox } from './CommonCheckbox/CommonCheckbox';
 export type { CommonCheckboxProps } from './CommonCheckbox/CommonCheckbox';
+
+export { CommonCitySelector } from './CommonCitySelector/CommonCitySelector';

@@ -1,4 +1,3 @@
-// src/Screens/Guest/AccountDetailsScreen.tsx
 import React, { useState } from 'react';
 import { StyleSheet, View, Pressable, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,12 +8,14 @@ import {
   CommonInput,
   CommonButton,
   CommonCheckbox,
+  CommonCitySelector,
 } from '../../Common';
 import {
   AccountDetailsScreenNavigationProp,
   GuestStackParamList,
   Routes,
 } from '../../../Types';
+import { MapplsAutosuggestResult } from '../../../Services/API/Result/resultIndex';
 
 interface AccountDetailsScreenProps {}
 
@@ -28,15 +29,23 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCityData, setSelectedCityData] =
+    useState<MapplsAutosuggestResult.SuggestedLocation | null>(null);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [isCitySelectorVisible, setIsCitySelectorVisible] = useState(false);
 
   const handleBack = () => {
     navigation.goBack();
   };
 
   const handleCityPress = () => {
-    console.log('Open city selector');
-    // TODO: Open city picker modal or navigate to city selection screen
+    setIsCitySelectorVisible(true);
+  };
+
+  const handleCitySelect = (city: MapplsAutosuggestResult.SuggestedLocation) => {
+    setSelectedCity(`${city.placeName}, ${city.placeAddress}`);
+    setSelectedCityData(city);
+    setIsCitySelectorVisible(false);
   };
 
   const handleContinue = () => {
@@ -45,6 +54,7 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
       name,
       email,
       selectedCity,
+      selectedCityData,
       agreedToTerms,
       isNewAccount,
     });
@@ -124,7 +134,7 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
                   {selectedCity || Strings.ACCOUNT_DETAILS.CITY_PLACEHOLDER}
                 </CommonText>
                 <Image
-                  //   source={Logos.CHEVRON_DOWN_ICON}
+                  source={Logos.Input_DropDown}
                   style={styles.chevronIcon}
                   resizeMode="contain"
                 />
@@ -167,6 +177,13 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
           />
         </View>
       </ScrollView>
+
+      {/* City Selector Modal */}
+      <CommonCitySelector
+        visible={isCitySelectorVisible}
+        onClose={() => setIsCitySelectorVisible(false)}
+        onSelectCity={handleCitySelect}
+      />
     </SafeAreaView>
   );
 };

@@ -5,4 +5,5 @@ export const Logos = {
   CHEVRON_LEFT_ICON: require('../../Assets/Logos/CHEVRON_LEFT_ICON.png'),
   VERIFY_OTP_EDIT: require('../../Assets/Logos/Verify_OTP_Edit.png'),
   MESSAGES: require('../../Assets/Logos/Messages.png'),
+  Input_DropDown: require('../../Assets/Logos/Input_DropDown.png'),
 };

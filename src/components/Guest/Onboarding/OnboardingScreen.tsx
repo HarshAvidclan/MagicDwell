@@ -10,6 +10,7 @@ import { OnboardingButtons } from './OnboardingButtons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { OnboardingScreenNavigationProp, Routes } from '../../../Types';
 import { ONBOARDING_SLIDES, SLIDE_INTERVAL } from './OnboardingData';
+import ToastService from '../../../Services/Toast/ToastService';
 
 interface OnboardingScreenProps {}
 
@@ -75,7 +76,8 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = () => {
   };
 
   const handleCreateAccountPress = () => {
-    stopAnimation();
+    // stopAnimation();
+    ToastService.SUCCESS("SignUp");
     // navigation.navigate(Routes.SIGNUP);
   };
 
