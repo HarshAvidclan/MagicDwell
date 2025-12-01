@@ -1,3 +1,4 @@
+// src/Screens/Guest/OnboardingProgressBar.tsx
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Colors, Scale } from '../../Constants';
@@ -5,11 +6,13 @@ import { Colors, Scale } from '../../Constants';
 interface OnboardingProgressBarProps {
   totalSteps: number;
   currentStep: number;
+  activeColor: string;
 }
 
 export const OnboardingProgressBar: React.FC<OnboardingProgressBarProps> = ({
   totalSteps,
   currentStep,
+  activeColor,
 }) => {
   return (
     <View style={styles.container}>
@@ -20,7 +23,7 @@ export const OnboardingProgressBar: React.FC<OnboardingProgressBarProps> = ({
             styles.progressItem,
             index === 0 && styles.firstItem,
             index === totalSteps - 1 && styles.lastItem,
-            index === currentStep && styles.activeItem,
+            index === currentStep && { backgroundColor: activeColor },
           ]}
         />
       ))}
@@ -46,8 +49,5 @@ const styles = StyleSheet.create({
   lastItem: {
     borderTopRightRadius: Scale.BORDER_RADIUS_4,
     borderBottomRightRadius: Scale.BORDER_RADIUS_4,
-  },
-  activeItem: {
-    backgroundColor: Colors.MAINFOUR_RESIDENTIAL_500,
   },
 });

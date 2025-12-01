@@ -1,45 +1,118 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+// src/Screens/Guest/OnboardingScreen.tsx
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Scale, Strings } from '../../Constants';
+import { Scale } from '../../Constants';
 import { OnboardingContent } from './OnboardingContent';
 import { OnboardingImageSection } from './OnboardingImageSection';
 import { OnboardingProgressBar } from './OnboardingProgressBar';
 import { OnboardingButtons } from './OnboardingButtons';
-import { useNavigation } from '@react-navigation/native';
-import { OnboardingScreenNavigationProp, Routes } from '../../../Types/Navigation';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { OnboardingScreenNavigationProp, Routes } from '../../../Types';
+import { ONBOARDING_SLIDES, SLIDE_INTERVAL } from './OnboardingData';
 
 interface OnboardingScreenProps {}
 
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = () => {
   const navigation = useNavigation<OnboardingScreenNavigationProp>();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startAnimation = () => {
+    // Clear any existing interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    // Reset fade animation
+    fadeAnim.setValue(1);
+
+    // Start new interval
+    intervalRef.current = setInterval(() => {
+      // Fade out
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        // Change slide
+        setCurrentSlide(prev => (prev + 1) % ONBOARDING_SLIDES.length);
+
+        // Fade in
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }).start();
+      });
+    }, SLIDE_INTERVAL);
+  };
+
+  const stopAnimation = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  // Use useFocusEffect to restart animation when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      // Screen is focused - start animation
+      startAnimation();
+
+      // Cleanup when screen loses focus
+      return () => {
+        stopAnimation();
+      };
+    }, []),
+  );
 
   const handleLoginPress = () => {
+    stopAnimation();
     navigation.navigate(Routes.LOGIN);
   };
 
   const handleCreateAccountPress = () => {
-    navigation.navigate(Routes.SIGNUP);
+    stopAnimation();
+    // navigation.navigate(Routes.SIGNUP);
   };
 
+  const currentSlideData = ONBOARDING_SLIDES[currentSlide];
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.safeArea,
+        { backgroundColor: currentSlideData.backgroundColor },
+      ]}
+    >
+      <View
+        style={[
+          styles.container,
+          { backgroundColor: currentSlideData.backgroundColor },
+        ]}
+      >
         <View style={styles.contentWrapper}>
           <View style={styles.progressSection}>
-            <OnboardingProgressBar totalSteps={4} currentStep={0} />
-          </View>
-
-          <View style={styles.textSection}>
-            <OnboardingContent
-              heading={Strings.ONBOARDING.HEADING}
-              description={Strings.ONBOARDING.DESCRIPTION}
+            <OnboardingProgressBar
+              totalSteps={ONBOARDING_SLIDES.length}
+              currentStep={currentSlide}
+              activeColor={currentSlideData.activeColor}
             />
           </View>
 
-          <View style={styles.imageSection}>
-            <OnboardingImageSection />
-          </View>
+          <Animated.View style={[styles.textSection, { opacity: fadeAnim }]}>
+            <OnboardingContent
+              heading={currentSlideData.heading}
+              description={currentSlideData.description}
+            />
+          </Animated.View>
+
+          <Animated.View style={[styles.imageSection, { opacity: fadeAnim }]}>
+            <OnboardingImageSection image={currentSlideData.image} />
+          </Animated.View>
 
           <View style={styles.buttonSection}>
             <OnboardingButtons
@@ -56,14 +129,13 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.MAINFOUR_RESIDENTIAL_100,
   },
   container: {
     flex: 1,
-    backgroundColor: Colors.MAINFOUR_RESIDENTIAL_100,
   },
   contentWrapper: {
-    paddingHorizontal: Scale.SCALE_15,
+    flex: 1,
+    paddingHorizontal: Scale.SCALE_16,
     paddingTop: 38,
     // width: Scale.SCALE_359,
     alignSelf: 'center',
@@ -81,11 +153,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageSection: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonSection: {
     alignSelf: 'stretch',
-    marginTop: 'auto', // Push buttons to bottom
+    marginBottom: Scale.SCALE_20,
   },
 });

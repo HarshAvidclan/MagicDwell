@@ -1,9 +1,25 @@
 export const Strings = {
   ONBOARDING: {
-    HEADING: 'Find your dream home',
-    DESCRIPTION: 'Explore a variety of residential properties to buy or rent, catering to all lifestyles.',
     LOGIN: 'Log in',  // Add this
     CREATE_ACCOUNT: 'Create Account',  // Add this
+    SLIDES: [
+      {
+        HEADING: 'Find Your Dream Home',
+        DESCRIPTION: 'Discover a wide range of residential properties tailored to your lifestyle.',
+      },
+      {
+        HEADING: 'Business spaces for you',
+        DESCRIPTION: 'Browse premium commercial spaces designed for success in your business.',
+      },
+      {
+        HEADING: 'Drive with Confidence',
+        DESCRIPTION: 'Shop certified, pre-owned cars offering reliability and great value.',
+      },
+      {
+        HEADING: 'Ride in Style',
+        DESCRIPTION: 'Find high-performance motorcycles designed for enthusiasts and thrill-seekers.',
+      },
+    ],
   },
   LOGIN: {
     LOGO_TEXT: 'MD',

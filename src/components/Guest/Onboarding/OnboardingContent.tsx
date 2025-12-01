@@ -21,8 +21,9 @@ export const OnboardingContent: React.FC<OnboardingContentProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    gap: Scale.SCALE_4,
+    // gap: Scale.SCALE_4,
     alignSelf: 'stretch',
+    paddingHorizontal:Scale.SCALE_16
   },
   heading: {
     fontSize: Typography.FONT_SIZE_28,
@@ -34,10 +35,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   description: {
-    fontSize: Typography.FONT_SIZE_18,
+    fontSize: Typography.FONT_SIZE_16,
     fontWeight: Typography.FONT_WEIGHT_MEDIUM_500,
     fontFamily: Typography.FONT_FAMILY_MEDIUM,
-    color: Colors.TEXT_SECONDARY,
+    color: Colors.GRAY_700,
     textAlign: 'center',
   },
 });

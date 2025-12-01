@@ -33,6 +33,7 @@ export const OnboardingButtons: React.FC<OnboardingButtonsProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    paddingHorizontal: Scale.SCALE_16,
     gap: Scale.SCALE_16,
   },
 });

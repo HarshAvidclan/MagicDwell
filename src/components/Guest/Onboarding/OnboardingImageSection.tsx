@@ -1,14 +1,19 @@
+// src/Screens/Guest/OnboardingImageSection.tsx
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import { Scale, Images } from '../../Constants';
+import { View, Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import { Scale } from '../../Constants';
 
-export const OnboardingImageSection: React.FC = () => {
+interface OnboardingImageSectionProps {
+  image: ImageSourcePropType;
+}
+
+export const OnboardingImageSection: React.FC<OnboardingImageSectionProps> = ({ image }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={Images.ONBOARDING_HOME}
+        source={image}
         style={styles.mainImage}
-        resizeMode="cover"
+        resizeMode="contain"
       />
     </View>
   );
@@ -16,7 +21,7 @@ export const OnboardingImageSection: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 68,
+    // paddingTop: 68,
     alignItems: 'center',
     justifyContent: 'center',
   },

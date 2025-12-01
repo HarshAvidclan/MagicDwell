@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   otpContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: Scale.SCALE_14,
+    // gap: Scale.SCALE_10,
     marginTop: Scale.SCALE_8,
     marginBottom: Scale.SCALE_8,
   },
