@@ -77,7 +77,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = () => {
 
   const handleCreateAccountPress = () => {
     // stopAnimation();
-    ToastService.SUCCESS("SignUp");
+    ToastService.ERROR("SignUp");
     // navigation.navigate(Routes.SIGNUP);
   };
 
