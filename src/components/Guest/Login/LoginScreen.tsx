@@ -1,30 +1,122 @@
-// src/Screens/Guest/LoginScreen.tsx
+// src/Screens/Guest/LoginScreen/LoginScreen.tsx
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, Pressable } from 'react-native';
+import { StyleSheet, View, Image, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Typography, Scale, Strings, Logos } from '../../Constants';
-import { CommonText, CommonInput, CommonButton } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp, Routes } from '../../../Types';
+import { LoginScreenNavigationProp, Routes } from '../../../Types/Navigation';
+import { useAuthStore } from '../../../Stores/AuthStore';
+import { API } from '../../../Services/API/Api';
+import { Auth } from '../../../Services/API/URL/URLS';
+import { AuthService } from '../../../Services/API/AuthService';
+import { LoginInput } from '../../../Services/API/Input/inputIndex';
+import { LoginResult } from '../../../Services/API/Result/ResultIndex';
+import { Colors, Logos, Scale, Strings } from '../../Constants';
+import { CommonButton, CommonInput, CommonText } from '../../Common';
 
 interface LoginScreenProps {}
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const { FetchCurrentUser } = useAuthStore();
 
-  const handleNext = () => {
-    console.log('Next button pressed', phoneNumber);
-    // Navigate to VerifyOTP screen with phone number
-    navigation.navigate(Routes.VERIFY_OTP, { phoneNumber });
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleNext = async () => {
+    if (!isPhoneValid) {
+      Alert.alert(
+        'Invalid Phone',
+        'Please enter a valid 10-digit phone number',
+      );
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      console.log('Login attempt with phone:', phoneNumber);
+
+      // Prepare login input
+      const loginInput: LoginInput = {
+        MobileNo: phoneNumber,
+      };
+
+      console.log('Login API Request:', loginInput);
+
+      // Call Login API using your existing API manager
+      const result = await API.POST_FULL<LoginResult>(Auth.LOGIN, loginInput);
+
+      console.log('Login API Response:', result);
+
+      // Check if account exists
+      if (result.Data.IsAccountExist) {
+        // Account exists - Save token and authenticate
+        console.log('Account exists - Login successful');
+        console.log('User Role:', result.Data.Role);
+        console.log('User Name:', result.Data.Name);
+
+        // Save access token to AsyncStorage
+        if (result.Data.AccessToken) {
+          await AuthService.setToken(result.Data.AccessToken);
+          console.log('Token saved successfully');
+        }
+
+        // Fetch current user details to update auth store
+        await FetchCurrentUser();
+
+        console.log(
+          'Navigation will be handled by RootNavigator based on role',
+        );
+
+        // Note: Navigation is automatic via RootNavigator when isAuthenticated becomes true
+      } else {
+        // Account doesn't exist - Navigate to signup
+        console.log('Account not found - Redirecting to signup');
+
+        setIsLoading(false);
+
+        Alert.alert(
+          'Account Not Found',
+          'This phone number is not registered. Please create an account.',
+          [
+            {
+              text: 'Sign Up',
+              onPress: () => {
+                navigation.navigate(Routes.ACCOUNT_DETAILS, {
+                  phoneNumber,
+                  isNewAccount: true,
+                });
+              },
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+        );
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+
+      setIsLoading(false);
+
+      // Show error alert to user
+      Alert.alert(
+        'Login Failed',
+        error.message || 'Unable to login. Please try again.',
+        [{ text: 'OK' }],
+      );
+    }
   };
 
   const handleWhatsappContinue = () => {
     console.log('WhatsApp continue pressed');
+    Alert.alert('Coming Soon', 'WhatsApp login will be available soon!');
   };
 
   const handleLanguagePress = () => {
     console.log('Language selector pressed');
+    Alert.alert('Language Selection', 'Language selection coming soon!');
   };
 
   const CountryCodeComponent = () => (
@@ -39,7 +131,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
       </CommonText>
     </View>
   );
-  
+
   const isPhoneValid = phoneNumber.length === 10;
 
   return (
@@ -87,18 +179,21 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             keyboardType="phone-pad"
             leftComponent={<CountryCodeComponent />}
             maxLength={10}
+            editable={!isLoading}
           />
 
           {/* Next Button */}
           <CommonButton
-            title={Strings.LOGIN.BUTTON_NEXT}
-            variant={isPhoneValid ? 'primary' : 'secondary'}
+            title={isLoading ? 'Please wait...' : Strings.LOGIN.BUTTON_NEXT}
+            variant={isPhoneValid && !isLoading ? 'primary' : 'secondary'}
             onPress={handleNext}
-            textColor={isPhoneValid ? Colors.WHITE : Colors.TEXT_DISABLED}
-            backgroundColor={
-              isPhoneValid ? Colors.PRIMARY_500 : Colors.GRAY_200
+            textColor={
+              isPhoneValid && !isLoading ? Colors.WHITE : Colors.TEXT_DISABLED
             }
-            disabled={!isPhoneValid}
+            backgroundColor={
+              isPhoneValid && !isLoading ? Colors.PRIMARY_500 : Colors.GRAY_200
+            }
+            disabled={!isPhoneValid || isLoading}
           />
 
           {/* Divider */}
@@ -121,6 +216,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             backgroundColor={Colors.F5F5F5}
             borderColor={Colors.BORDER_SECONDARY}
             textColor={Colors.BLACK}
+            disabled={isLoading}
           />
         </View>
 

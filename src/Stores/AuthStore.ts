@@ -1,7 +1,7 @@
+// src/Stores/AuthStore.ts
 import { create } from 'zustand';
 import { API } from '../Services/API/Api';
 import { AuthService } from '../Services/API/AuthService';
-import { UserRoles } from '../Services/Utility/Enums';
 import { User } from '../Services/API/URL/URLS';
 import { GetCurrentUserResult } from '../Services/API/Result/ResultIndex';
 
@@ -10,8 +10,9 @@ interface AuthState {
   Roles: string[];
   isLoading: boolean;
   error: string | null;
+  isAuthenticated: boolean;
   FetchCurrentUser: () => Promise<void>;
-  ClearCurrentUser: () => void;
+  ClearCurrentUser: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -19,28 +20,43 @@ export const useAuthStore = create<AuthState>((set) => ({
   Roles: [],
   isLoading: false,
   error: null,
+  isAuthenticated: false,
 
   FetchCurrentUser: async () => {
     const token = await AuthService.getToken();
-    if (!token) return;
+    if (!token) {
+      set({ isAuthenticated: false });
+      return;
+    }
 
     set({ isLoading: true, error: null });
     try {
       const res = await API.POST<GetCurrentUserResult>(User.GETCURRENTUSER, {});
       console.log('Fetched CurrentUser:', res);
-      set({ CurrentUser: res, Roles: res.Roles, isLoading: false });
+      set({ 
+        CurrentUser: res, 
+        Roles: res.Roles, 
+        isLoading: false,
+        isAuthenticated: true 
+      });
     } catch (err: any) {
       set({
         error: err.message || 'Failed to fetch CurrentUser',
         Roles: [],
         isLoading: false,
+        isAuthenticated: false,
       });
       await AuthService.removeToken();
     }
   },
 
   ClearCurrentUser: async () => {
-    set({ CurrentUser: null, Roles: [], error: null });
+    set({ 
+      CurrentUser: null, 
+      Roles: [], 
+      error: null,
+      isAuthenticated: false 
+    });
     await AuthService.removeToken();
   },
 }));

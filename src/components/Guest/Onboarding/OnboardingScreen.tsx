@@ -76,9 +76,11 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = () => {
   };
 
   const handleCreateAccountPress = () => {
-    // stopAnimation();
-    ToastService.ERROR("SignUp");
-    // navigation.navigate(Routes.SIGNUP);
+    stopAnimation();
+    // Navigate to AccountDetails for SignUp
+    navigation.navigate(Routes.ACCOUNT_DETAILS, {
+      isNewAccount: true,
+    });
   };
 
   const currentSlideData = ONBOARDING_SLIDES[currentSlide];

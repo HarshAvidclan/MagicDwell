@@ -1,37 +1,35 @@
 // src/Navigation/RootNavigator.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { useAuthStore } from '../Stores/AuthStore';
 import { GuestStackNavigator } from './GuestStackNavigator';
+import { BuyerStackNavigator } from './BuyerStackNavigator';
+import { ActivityIndicator, View } from 'react-native';
 
 export const RootNavigator: React.FC = () => {
-  // TODO: Add authentication logic here to switch between stacks
-  // For now, we'll use GuestStack
-  //   const isAuthenticated = false;
-  //   const userRole = 'guest'; // 'guest' | 'buyer' | 'agent' | 'admin'
+  const { FetchCurrentUser, isAuthenticated, isLoading } = useAuthStore();
+  const [checking, setChecking] = useState(true);
 
-  //   const renderNavigator = () => {
-  //     if (!isAuthenticated) {
-  //       return <GuestStackNavigator />;
-  //     }
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
-  // TODO: Add other navigators based on user role
-  // switch (userRole) {
-  //   case 'buyer':
-  //     return <BuyerStackNavigator />;
-  //   case 'agent':
-  //     return <AgentStackNavigator />;
-  //   case 'admin':
-  //     return <AdminStackNavigator />;
-  //   default:
-  //     return <GuestStackNavigator />;
-  // }
+  const checkAuth = async () => {
+    await FetchCurrentUser();
+    setChecking(false);
+  };
 
-  //     return <GuestStackNavigator />;
-  //   };
+  if (checking || isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <NavigationContainer>
-      <GuestStackNavigator />
+      {isAuthenticated ? <BuyerStackNavigator /> : <GuestStackNavigator />}
     </NavigationContainer>
   );
 };

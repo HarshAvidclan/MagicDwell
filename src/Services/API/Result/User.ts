@@ -22,6 +22,8 @@ export interface AppUser {
     LockoutEnd: string | null;
     LockoutEnabled: boolean;
     AccessFailedCount: number;
+    Prefed_City: number;
+    Prefed_City_Key: number;
 }
 
 
