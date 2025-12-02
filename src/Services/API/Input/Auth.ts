@@ -1,9 +1,11 @@
 export interface RegisterInput {
   Name: string;
-  Email: string;
-  Password: string;
+  Email?: string;
+  Password?: string;
   MobileNo: string;
-  RoleId: string;
+  RoleId?: string;
+  Prefed_City: string;
+  Prefed_City_Key?: string;
 }
 
 export interface LoginInput {

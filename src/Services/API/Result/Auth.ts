@@ -8,3 +8,14 @@ export interface LoginResult {
     PhoneNumber: string;
     Name: string;
 }
+
+
+export interface RegistrationResult {
+    UserId: string;
+    RoleName: string;
+    Email: string;
+    IsAccountExist: boolean;
+    IsAccountCreated: boolean;
+    PhoneNumber: string;
+    Name: string;
+}

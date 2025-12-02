@@ -1,9 +1,13 @@
 // src/Screens/Guest/LoginScreen/LoginScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp, Routes } from '../../../Types/Navigation';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import {
+  LoginScreenNavigationProp,
+  Routes,
+  GuestStackParamList,
+} from '../../../Types/Navigation';
 import { useAuthStore } from '../../../Stores/AuthStore';
 import { API } from '../../../Services/API/Api';
 import { Auth } from '../../../Services/API/URL/URLS';
@@ -17,10 +21,21 @@ interface LoginScreenProps {}
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
+  const route = useRoute<RouteProp<GuestStackParamList, 'Login'>>();
   const { FetchCurrentUser } = useAuthStore();
 
-  const [phoneNumber, setPhoneNumber] = useState('');
+  // Get prefilled phone number from route params
+  const prefilledPhone = route.params?.phoneNumber || '';
+
+  const [phoneNumber, setPhoneNumber] = useState(prefilledPhone);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Update phone number if route params change
+  useEffect(() => {
+    if (prefilledPhone) {
+      setPhoneNumber(prefilledPhone);
+    }
+  }, [prefilledPhone]);
 
   const handleNext = async () => {
     if (!isPhoneValid) {
@@ -36,41 +51,32 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
     try {
       console.log('Login attempt with phone:', phoneNumber);
 
-      // Prepare login input
       const loginInput: LoginInput = {
         MobileNo: phoneNumber,
       };
 
       console.log('Login API Request:', loginInput);
 
-      // Call Login API using your existing API manager
       const result = await API.POST_FULL<LoginResult>(Auth.LOGIN, loginInput);
 
       console.log('Login API Response:', result);
 
-      // Check if account exists
       if (result.Data.IsAccountExist) {
-        // Account exists - Save token and authenticate
         console.log('Account exists - Login successful');
         console.log('User Role:', result.Data.Role);
         console.log('User Name:', result.Data.Name);
 
-        // Save access token to AsyncStorage
         if (result.Data.AccessToken) {
           await AuthService.setToken(result.Data.AccessToken);
           console.log('Token saved successfully');
         }
 
-        // Fetch current user details to update auth store
         await FetchCurrentUser();
 
         console.log(
           'Navigation will be handled by RootNavigator based on role',
         );
-
-        // Note: Navigation is automatic via RootNavigator when isAuthenticated becomes true
       } else {
-        // Account doesn't exist - Navigate to signup
         console.log('Account not found - Redirecting to signup');
 
         setIsLoading(false);
@@ -97,10 +103,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
       }
     } catch (error: any) {
       console.error('Login error:', error);
-
       setIsLoading(false);
-
-      // Show error alert to user
       Alert.alert(
         'Login Failed',
         error.message || 'Unable to login. Please try again.',
@@ -137,7 +140,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
-        {/* Header Section */}
         <View style={styles.header}>
           <Pressable style={styles.logoContainer} onPress={() => {}}>
             <CommonText bold color={Colors.TEXT_LIGHT} variant="heading">
@@ -159,9 +161,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
           </Pressable>
         </View>
 
-        {/* Main Content Section */}
         <View style={styles.mainContent}>
-          {/* Title and Subtitle */}
           <View style={styles.titleContainer}>
             <CommonText bold variant="heading" color={Colors.TEXT_PRIMARY}>
               {Strings.LOGIN.HEADING}
@@ -171,7 +171,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             </CommonText>
           </View>
 
-          {/* Phone Input Field */}
           <CommonInput
             value={phoneNumber}
             onChangeText={setPhoneNumber}
@@ -182,7 +181,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             editable={!isLoading}
           />
 
-          {/* Next Button */}
           <CommonButton
             title={isLoading ? 'Please wait...' : Strings.LOGIN.BUTTON_NEXT}
             variant={isPhoneValid && !isLoading ? 'primary' : 'secondary'}
@@ -196,7 +194,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             disabled={!isPhoneValid || isLoading}
           />
 
-          {/* Divider */}
           <View style={styles.dividerContainer}>
             <View style={styles.dividerLine} />
             <View style={styles.dividerTextContainer}>
@@ -207,7 +204,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             <View style={styles.dividerLine} />
           </View>
 
-          {/* WhatsApp Button */}
           <CommonButton
             title={Strings.LOGIN.WHATSAPP_BUTTON}
             variant="ghost"
@@ -220,7 +216,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
           />
         </View>
 
-        {/* Disclaimer */}
         <CommonText
           variant="caption"
           color={Colors.TEXT_SECONDARY}

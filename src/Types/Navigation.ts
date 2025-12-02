@@ -15,14 +15,14 @@ export const Routes = {
 // Guest Stack Routes
 export type GuestStackParamList = {
   Onboarding: undefined;
-  Login: undefined;
+  Login: { phoneNumber?: string } | undefined;
   VerifyOTP: {
     phoneNumber: string;
   };
   AccountDetails: {
     phoneNumber?: string;
     isNewAccount: boolean;
-  };
+  } | undefined;
 };
 export type BuyerStackParamList = {
   BuyerHome: undefined;

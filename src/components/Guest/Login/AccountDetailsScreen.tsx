@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Pressable, Image, ScrollView } from 'react-native';
+// src/Screens/Guest/AccountDetailsScreen/AccountDetailsScreen.tsx
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Image,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { Colors, Typography, Scale, Strings, Logos } from '../../Constants';
@@ -15,7 +23,13 @@ import {
   GuestStackParamList,
   Routes,
 } from '../../../Types';
-import { MapplsAutosuggestResult } from '../../../Services/API/Result/resultIndex';
+import {
+  MapplsAutosuggestResult,
+  RegistrationResult,
+} from '../../../Services/API/Result/resultIndex';
+import { API } from '../../../Services/API/Api';
+import { Auth } from '../../../Services/API/URL/URLS';
+import { RegisterInput } from '../../../Services/API/Input/inputIndex';
 
 interface AccountDetailsScreenProps {}
 
@@ -24,15 +38,17 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
   const route =
     useRoute<RouteProp<GuestStackParamList, typeof Routes.ACCOUNT_DETAILS>>();
 
-  const { phoneNumber, isNewAccount } = route.params;
+  const { phoneNumber: routePhoneNumber, isNewAccount } = route.params || {};
 
   const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(routePhoneNumber || '');
   const [email, setEmail] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCityData, setSelectedCityData] =
     useState<MapplsAutosuggestResult.SuggestedLocation | null>(null);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isCitySelectorVisible, setIsCitySelectorVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBack = () => {
     navigation.goBack();
@@ -42,27 +58,93 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
     setIsCitySelectorVisible(true);
   };
 
-  const handleCitySelect = (city: MapplsAutosuggestResult.SuggestedLocation) => {
+  const handleCitySelect = (
+    city: MapplsAutosuggestResult.SuggestedLocation,
+  ) => {
     setSelectedCity(`${city.placeName}, ${city.placeAddress}`);
     setSelectedCityData(city);
     setIsCitySelectorVisible(false);
   };
 
-  const handleContinue = () => {
-    console.log('Account Details:', {
-      phoneNumber,
-      name,
-      email,
-      selectedCity,
-      selectedCityData,
-      agreedToTerms,
-      isNewAccount,
-    });
-    // TODO: Save account details and navigate to next screen (e.g., Home)
+  const handleContinue = async () => {
+    setIsLoading(true);
+
+    try {
+      console.log('SignUp attempt');
+
+      // Prepare registration input
+      const registerInput: RegisterInput = {
+        Name: name.trim(),
+        MobileNo: phoneNumber.trim(),
+        Email: email.trim() || undefined,
+        Prefed_City: selectedCityData?.placeName || selectedCity,
+        Prefed_City_Key: selectedCityData?.eLoc,
+      };
+
+      const result = await API.POST<RegistrationResult>(
+        Auth.REGISTER,
+        registerInput,
+      );
+      if (result != null) {
+        if (result.IsAccountCreated) {
+          setIsLoading(false);
+          navigation.navigate(Routes.LOGIN, {
+            phoneNumber: result.PhoneNumber,
+          });
+        } else if (result.IsAccountExist) {
+          setIsLoading(false);
+          Alert.alert(
+            'Account Exists',
+            'This phone number or Email is already registered. Please login to continue.',
+            [
+              {
+                text: 'Login',
+                onPress: () => {
+                  navigation.navigate(Routes.LOGIN, {
+                    phoneNumber: result.PhoneNumber,
+                  });
+                },
+              },
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+            ],
+          );
+        } else {
+          setIsLoading(false);
+          Alert.alert('Error', 'Failed to create account. Please try again.');
+        }
+      }
+    } catch (error: any) {
+      console.error('SignUp error:', error);
+      setIsLoading(false);
+      Alert.alert(
+        'SignUp Failed',
+        error.message || 'Unable to create account. Please try again.',
+        [{ text: 'OK' }],
+      );
+    }
   };
 
+  const CountryCodeComponent = () => (
+    <View style={styles.countryCodeContainer}>
+      <Image
+        style={styles.flagIcon}
+        source={Logos.INDIAN_FLAG}
+        resizeMode="cover"
+      />
+      <CommonText medium color={Colors.TEXT_PRIMARY}>
+        {Strings.LOGIN.COUNTRY_CODE}
+      </CommonText>
+    </View>
+  );
+
   const isFormValid =
-    name.trim() !== '' && selectedCity !== '' && agreedToTerms;
+    name.trim() !== '' &&
+    phoneNumber.trim().length === 10 &&
+    selectedCity !== '' &&
+    agreedToTerms;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -99,6 +181,23 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
               placeholder={Strings.ACCOUNT_DETAILS.NAME_PLACEHOLDER}
               autoCapitalize="words"
               returnKeyType="next"
+              editable={!isLoading}
+            />
+          </View>
+
+          {/* Phone Number Input */}
+          <View style={styles.inputGroup}>
+            <CommonText semibold variant="body" color={Colors.BLACK}>
+              Phone Number
+            </CommonText>
+            <CommonInput
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              placeholder="Enter phone number"
+              keyboardType="phone-pad"
+              leftComponent={<CountryCodeComponent />}
+              maxLength={10}
+              editable={!isLoading}
             />
           </View>
 
@@ -114,6 +213,7 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
               keyboardType="email-address"
               autoCapitalize="none"
               returnKeyType="next"
+              editable={!isLoading}
             />
           </View>
 
@@ -122,7 +222,7 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
             <CommonText semibold variant="body" color={Colors.BLACK}>
               {Strings.ACCOUNT_DETAILS.CITY_LABEL}
             </CommonText>
-            <Pressable onPress={handleCityPress}>
+            <Pressable onPress={handleCityPress} disabled={isLoading}>
               <View style={styles.citySelector}>
                 <CommonText
                   variant="body"
@@ -147,6 +247,7 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
             <CommonCheckbox
               checked={agreedToTerms}
               onToggle={() => setAgreedToTerms(!agreedToTerms)}
+              disabled={isLoading}
             />
             <CommonText variant="body" style={styles.termsText}>
               <CommonText variant="body" color={Colors.GRAY_500}>
@@ -166,14 +267,24 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
 
           {/* Continue Button */}
           <CommonButton
-            title={Strings.ACCOUNT_DETAILS.BUTTON_CONTINUE}
-            variant={isFormValid ? 'primary' : 'secondary'}
-            onPress={handleContinue}
-            disabled={!isFormValid}
-            backgroundColor={
-              isFormValid ? Colors.PRIMARY_500 : Colors.TEXT_DISABLED
+            title={
+              isLoading
+                ? 'Creating Account...'
+                : Strings.ACCOUNT_DETAILS.BUTTON_CONTINUE
             }
-            textColor={isFormValid ? Colors.TEXT_LIGHT : Colors.TEXT_DISABLED}
+            variant={isFormValid && !isLoading ? 'primary' : 'secondary'}
+            onPress={handleContinue}
+            disabled={!isFormValid || isLoading}
+            backgroundColor={
+              isFormValid && !isLoading
+                ? Colors.PRIMARY_500
+                : Colors.TEXT_DISABLED
+            }
+            textColor={
+              isFormValid && !isLoading
+                ? Colors.TEXT_LIGHT
+                : Colors.TEXT_DISABLED
+            }
           />
         </View>
       </ScrollView>
@@ -229,6 +340,15 @@ const styles = StyleSheet.create({
   },
   inputGroup: {
     gap: Scale.SCALE_8,
+  },
+  countryCodeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Scale.SCALE_8,
+  },
+  flagIcon: {
+    width: Scale.SCALE_20,
+    height: Scale.SCALE_20,
   },
   citySelector: {
     flexDirection: 'row',
