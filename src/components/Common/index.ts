@@ -12,3 +12,5 @@ export { CommonCheckbox } from './CommonCheckbox/CommonCheckbox';
 export type { CommonCheckboxProps } from './CommonCheckbox/CommonCheckbox';
 
 export { CommonCitySelector } from './CommonCitySelector/CommonCitySelector';
+
+export { CommonImage } from './CommonImage/CommonImage';

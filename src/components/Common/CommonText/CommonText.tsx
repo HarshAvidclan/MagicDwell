@@ -11,6 +11,7 @@ export interface CommonTextProps extends TextProps {
   semibold?: boolean;
   medium?: boolean;
   children: React.ReactNode;
+  size?: number;
 }
 
 export const CommonText: React.FC<CommonTextProps> = ({
@@ -22,6 +23,7 @@ export const CommonText: React.FC<CommonTextProps> = ({
   medium = false,
   style,
   children,
+  size = Typography.FONT_SIZE_14,
   ...rest
 }) => {
   const getVariantStyle = (): TextStyle => {

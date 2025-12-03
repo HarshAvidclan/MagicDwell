@@ -1,8 +1,8 @@
 // src/Navigation/BuyerStackNavigator.tsx
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { BuyerTabNavigator } from './BuyerTabNavigator';
 import { BuyerStackParamList, Routes } from '../Types/Navigation';
-import { HomeScreen } from '../components/Buyer/HomeScreen/HomeScreen';
 
 const Stack = createNativeStackNavigator<BuyerStackParamList>();
 
@@ -11,10 +11,9 @@ export const BuyerStackNavigator: React.FC = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'slide_from_right',
       }}
     >
-      <Stack.Screen name={Routes.BUYER_HOME} component={HomeScreen} />
+      <Stack.Screen name={Routes.BUYER_TABS} component={BuyerTabNavigator} />
     </Stack.Navigator>
   );
 };
