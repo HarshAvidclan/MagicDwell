@@ -23,13 +23,12 @@ const styles = StyleSheet.create({
   container: {
     // gap: Scale.SCALE_4,
     alignSelf: 'stretch',
-    paddingHorizontal:Scale.SCALE_16
+    paddingHorizontal: Scale.SCALE_16,
   },
   heading: {
     fontSize: Typography.FONT_SIZE_28,
     letterSpacing: Typography.LETTER_SPACING_TIGHT,
     lineHeight: Typography.LINE_HEIGHT_36,
-    fontWeight: Typography.FONT_WEIGHT_EXTRABOLD_800,
     fontFamily: Typography.FONT_FAMILY_EXTRABOLD,
     color: Colors.TEXT_PRIMARY,
     textAlign: 'center',

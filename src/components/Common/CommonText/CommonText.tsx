@@ -62,7 +62,7 @@ export const CommonText: React.FC<CommonTextProps> = ({
         getVariantStyle(),
         {
           fontFamily: getFontFamily(),
-          fontWeight: getFontWeight(),
+          // fontWeight: getFontWeight(),
           color: color,
           textAlign: align,
         },
