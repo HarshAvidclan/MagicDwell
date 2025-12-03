@@ -1,8 +1,8 @@
-// src/Components/Buyer/LocationHeader/LocationHeader.tsx
+// src/components/Buyer/LocationHeader/LocationHeader.tsx
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { CommonText, CommonImage, CommonButton } from '../../Common';
-import { Scale, Colors, Strings, Logos } from '../../Constants';
+import { Scale, Colors, Strings, Logos, Typography } from '../../Constants';
 
 interface LocationHeaderProps {
   locationText: string;
@@ -18,11 +18,16 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onLocationPress}>
-        <CommonText color={Colors.TEXT_PRIMARY}>
+        <CommonText size={Typography.FONT_SIZE_13} color={Colors.TEXT_PRIMARY}>
           {Strings.HOME.CURRENT_LOCATION}
         </CommonText>
         <View style={styles.locationRow}>
-          <CommonText>{locationText}</CommonText>
+          <CommonText
+            size={Typography.FONT_SIZE_16}
+            color={Colors.TEXT_PRIMARY}
+          >
+            {locationText}
+          </CommonText>
           <CommonImage
             source={Logos.CHEVRON_DOWN_ICON}
             width={Scale.SCALE_16}
@@ -32,21 +37,14 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
         </View>
       </TouchableOpacity>
       <CommonButton
-        title=""
+        title={Strings.HOME.POST_A_LISTING}
         variant="secondary"
         size="small"
         onPress={onPostListingPress}
-      >
-        <View style={styles.buttonContent}>
-          <CommonImage
-            source={Logos.ADD_ICON}
-            width={Scale.SCALE_19}
-            height={Scale.SCALE_19}
-            resizeMode="cover"
-          />
-          <CommonText>{Strings.HOME.POST_A_LISTING}</CommonText>
-        </View>
-      </CommonButton>
+        leftIcon={Logos.ADD_ICON}
+        fullWidth={false}
+        borderRadius={Scale.SCALE_100}
+      />
     </View>
   );
 };
@@ -64,10 +62,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Scale.SCALE_2,
     marginTop: -Scale.SCALE_2,
-  },
-  buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Scale.SCALE_4,
   },
 });

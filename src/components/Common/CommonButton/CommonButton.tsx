@@ -8,12 +8,12 @@ import {
   Image,
   ImageSourcePropType,
 } from 'react-native';
-import { Colors, Scale } from '../../Constants';
+import { Colors, Scale, Typography } from '../../Constants';
 import { CommonText } from '..';
 
 export interface CommonButtonProps extends PressableProps {
   title: string;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
   size?: 'small' | 'medium' | 'large';
   buttonStyle?: ViewStyle;
   textColor?: string;
@@ -23,6 +23,7 @@ export interface CommonButtonProps extends PressableProps {
   rightIcon?: ImageSourcePropType;
   loading?: boolean;
   fullWidth?: boolean;
+  borderRadius?: number;
 }
 
 export const CommonButton: React.FC<CommonButtonProps> = ({
@@ -37,6 +38,7 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
   rightIcon,
   loading = false,
   fullWidth = true,
+  borderRadius,
   disabled,
   ...rest
 }) => {
@@ -44,6 +46,7 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
     const baseStyle: ViewStyle = {
       ...styles.baseButton,
       ...(fullWidth && styles.fullWidth),
+      ...(borderRadius && { borderRadius }),
     };
 
     switch (size) {
@@ -69,9 +72,14 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
       case 'secondary':
         return styles.secondaryButton;
       case 'outline':
-        return { ...styles.outlineButton, borderColor: borderColor || Colors.PRIMARY_500 };
+        return {
+          ...styles.outlineButton,
+          borderColor: borderColor || Colors.PRIMARY_500,
+        };
       case 'ghost':
         return styles.ghostButton;
+      case 'custom':
+        return {}; // Allow full customization via buttonStyle
       default:
         return styles.primaryButton;
     }
@@ -85,6 +93,7 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
       case 'primary':
         return Colors.WHITE;
       case 'secondary':
+      case 'custom':
         return Colors.TEXT_PRIMARY;
       case 'outline':
         return Colors.PRIMARY_500;
@@ -92,6 +101,19 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
         return Colors.PRIMARY_500;
       default:
         return Colors.WHITE;
+    }
+  };
+
+  const getIconSize = () => {
+    switch (size) {
+      case 'small':
+        return Scale.SCALE_19;
+      case 'medium':
+        return Scale.SCALE_24;
+      case 'large':
+        return Scale.SCALE_28;
+      default:
+        return Scale.SCALE_24;
     }
   };
 
@@ -107,7 +129,13 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
         buttonStyle,
       ]}
     >
-      {leftIcon && <Image style={styles.icon} source={leftIcon} resizeMode="cover" />}
+      {leftIcon && (
+        <Image
+          style={[styles.icon, { width: getIconSize(), height: getIconSize() }]}
+          source={leftIcon}
+          resizeMode="cover"
+        />
+      )}
       <CommonText
         variant="button"
         medium
@@ -116,7 +144,13 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
       >
         {loading ? 'Loading...' : title}
       </CommonText>
-      {rightIcon && <Image style={styles.icon} source={rightIcon} resizeMode="cover" />}
+      {rightIcon && (
+        <Image
+          style={[styles.icon, { width: getIconSize(), height: getIconSize() }]}
+          source={rightIcon}
+          resizeMode="cover"
+        />
+      )}
     </Pressable>
   );
 };
@@ -126,25 +160,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: Scale.SCALE_8,
-    borderRadius: Scale.BORDER_RADIUS_100,
+    gap: Scale.SCALE_4,
+    borderRadius: Scale.SCALE_100,
     overflow: 'hidden',
   },
   fullWidth: {
     alignSelf: 'stretch',
   },
   smallButton: {
-    height: Scale.SCALE_40,
-    paddingHorizontal: Scale.SCALE_16,
-    paddingVertical: Scale.SCALE_8,
+    paddingLeft: Scale.SCALE_8,
+    paddingTop: Scale.SCALE_4,
+    paddingRight: Scale.SCALE_16,
+    paddingBottom: Scale.SCALE_4,
   },
   mediumButton: {
-    height: Scale.SCALE_48,
     paddingHorizontal: Scale.SCALE_20,
     paddingVertical: Scale.SCALE_12,
   },
   largeButton: {
-    height: Scale.SCALE_56,
     paddingHorizontal: Scale.SCALE_24,
     paddingVertical: Scale.SCALE_16,
   },
@@ -152,11 +185,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.PRIMARY_500,
   },
   secondaryButton: {
-    backgroundColor: Colors.GRAY_200,
+    backgroundColor: Colors.WHITE,
   },
   outlineButton: {
     backgroundColor: Colors.WHITE,
-    borderWidth: Scale.BORDER_WIDTH_1_5,
+    borderWidth: Scale.SCALE_1,
     borderStyle: 'solid',
   },
   ghostButton: {
@@ -172,7 +205,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   icon: {
-    width: Scale.SCALE_24,
-    height: Scale.SCALE_24,
+    // Size will be set dynamically based on button size
   },
 });
