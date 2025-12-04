@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     height: Scale.SCALE_70,
     paddingTop: Scale.SCALE_16,
     paddingBottom: Scale.SCALE_8,
-    backgroundColor: Colors.PRIMARY_100,
+    backgroundColor: Colors.WHITE,
     borderTopLeftRadius: Scale.SCALE_16,
     borderTopRightRadius: Scale.SCALE_16,
     shadowColor: Colors.BLACK,

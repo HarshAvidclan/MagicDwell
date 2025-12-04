@@ -31,7 +31,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onPress }) => {
 const styles = StyleSheet.create({
   searchParent: {
     width: '100%',
-    backgroundColor: Colors.PRIMARY_100,
+    backgroundColor: Colors.WHITE,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

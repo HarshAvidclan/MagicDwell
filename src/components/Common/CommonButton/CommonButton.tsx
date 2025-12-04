@@ -7,6 +7,8 @@ import {
   ViewStyle,
   Image,
   ImageSourcePropType,
+  ImageStyle,
+  TextStyle,
 } from 'react-native';
 import { Colors, Scale, Typography } from '../../Constants';
 import { CommonText } from '..';
@@ -16,6 +18,8 @@ export interface CommonButtonProps extends PressableProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
   size?: 'small' | 'medium' | 'large';
   buttonStyle?: ViewStyle;
+  textStyle?: TextStyle;       // NEW
+  iconStyle?: ImageStyle;      // NEW
   textColor?: string;
   backgroundColor?: string;
   borderColor?: string;
@@ -31,6 +35,8 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
   variant = 'primary',
   size = 'medium',
   buttonStyle,
+  textStyle,
+  iconStyle,
   textColor,
   backgroundColor,
   borderColor,
@@ -131,22 +137,24 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
     >
       {leftIcon && (
         <Image
-          style={[styles.icon, { width: getIconSize(), height: getIconSize() }]}
+          style={[styles.icon, { width: getIconSize(), height: getIconSize() }, iconStyle]}
           source={leftIcon}
           resizeMode="cover"
         />
       )}
+
       <CommonText
         variant="button"
         medium
         color={getTextColor()}
-        style={styles.buttonText}
+        style={[styles.buttonText, textStyle]}
       >
         {loading ? 'Loading...' : title}
       </CommonText>
+
       {rightIcon && (
         <Image
-          style={[styles.icon, { width: getIconSize(), height: getIconSize() }]}
+          style={[styles.icon, { width: getIconSize(), height: getIconSize() }, iconStyle]}
           source={rightIcon}
           resizeMode="cover"
         />

@@ -23,6 +23,7 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
         </CommonText>
         <View style={styles.locationRow}>
           <CommonText
+            semibold
             size={Typography.FONT_SIZE_16}
             color={Colors.TEXT_PRIMARY}
           >
@@ -37,6 +38,7 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
         </View>
       </TouchableOpacity>
       <CommonButton
+        buttonStyle={styles.postListingBtn}
         title={Strings.HOME.POST_A_LISTING}
         variant="secondary"
         size="small"
@@ -62,5 +64,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Scale.SCALE_2,
     marginTop: -Scale.SCALE_2,
+  },
+  postListingBtn: {
+    fontFamily: Typography.FONT_FAMILY_SEMIBOLD,
   },
 });

@@ -1,5 +1,5 @@
 // src/Screens/Buyer/BuyerHome/BuyerHome.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -14,13 +14,25 @@ import { PropertyCard } from '../PropertyCard/PropertyCard';
 import { ToolCard } from '../ToolCard/ToolCard';
 import { SearchBar } from '../SearchBar/SearchBar';
 import ToastService from '../../../Services/Toast/ToastService';
+import { CATEGORY_CONFIGS, CategoryType } from '../../Constants/Categories';
 
 export const BuyerHome: React.FC = () => {
   const navigation = useNavigation<BuyerHomeScreenNavigationProp>();
+  const [activeCategory, setActiveCategory] =
+    useState<CategoryType>('residential');
+
   const handleSearchPress = () => {
-    // Navigate to search screen or open search modal
     ToastService.SUCCESS('Search pressed');
   };
+
+  const handleCategoryChange = (category: CategoryType) => {
+    setActiveCategory(category);
+  };
+
+  const getCurrentCategoryConfig = () => {
+    return CATEGORY_CONFIGS[activeCategory];
+  };
+
   const categories = [
     { image: Images.CATEGORY_APARTMENTS, label: Strings.CATEGORIES.APARTMENTS },
     {
@@ -87,107 +99,136 @@ export const BuyerHome: React.FC = () => {
     },
   ];
 
+  const currentConfig = getCurrentCategoryConfig();
+
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.safeArea} edges={['top']}>
-        <View style={styles.headerBackground} />
-
-        <LocationHeader
-          locationText="Ahmedabad"
-          onLocationPress={() => {}}
-          onPostListingPress={() => navigation.navigate('BuyerAddListing')}
+      {/* Sticky Header Section with Dynamic Height */}
+      <SafeAreaView style={styles.headerWrapper} edges={['top']}>
+        {/* Dynamic Background that covers the entire header */}
+        <View
+          style={[
+            styles.headerBackground,
+            { backgroundColor: currentConfig.backgroundColor },
+          ]}
         />
 
-        <ScrollView
-          style={styles.categoryTabs}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryTabsContent}
-        >
-          <CategoryTab
-            icon={Logos.RESIDENTIAL_ICON}
-            label={Strings.CATEGORIES.RESIDENTIAL}
-            isActive
+        {/* Header Content */}
+        <View style={styles.headerContent}>
+          <LocationHeader
+            locationText="Ahmedabad"
+            onLocationPress={() => {}}
+            onPostListingPress={() => navigation.navigate('BuyerAddListing')}
           />
-          <CategoryTab
-            icon={Logos.COMMERCIAL_ICON}
-            label={Strings.CATEGORIES.COMMERCIAL}
-          />
-          <CategoryTab icon={Logos.CARS_ICON} label={Strings.CATEGORIES.CARS} />
-          <CategoryTab
-            icon={Logos.TWO_WHEELER_ICON}
-            label={Strings.CATEGORIES.TWO_WHEELER}
-          />
-        </ScrollView>
-        <View style={styles.searchBarContainer}>
-          <SearchBar onPress={handleSearchPress} />
+
+          <ScrollView
+            style={styles.categoryTabs}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryTabsContent}
+          >
+            <CategoryTab
+              icon={Logos.RESIDENTIAL_ICON}
+              label={Strings.CATEGORIES.RESIDENTIAL}
+              isActive={activeCategory === 'residential'}
+              activeColor={CATEGORY_CONFIGS.residential.primaryColor}
+              onPress={() => handleCategoryChange('residential')}
+            />
+            <CategoryTab
+              icon={Logos.COMMERCIAL_ICON}
+              label={Strings.CATEGORIES.COMMERCIAL}
+              isActive={activeCategory === 'commercial'}
+              activeColor={CATEGORY_CONFIGS.commercial.primaryColor}
+              onPress={() => handleCategoryChange('commercial')}
+            />
+            <CategoryTab
+              icon={Logos.CARS_ICON}
+              label={Strings.CATEGORIES.CARS}
+              isActive={activeCategory === 'cars'}
+              activeColor={CATEGORY_CONFIGS.cars.primaryColor}
+              onPress={() => handleCategoryChange('cars')}
+            />
+            <CategoryTab
+              icon={Logos.TWO_WHEELER_ICON}
+              label={Strings.CATEGORIES.TWO_WHEELER}
+              isActive={activeCategory === 'two_wheeler'}
+              activeColor={CATEGORY_CONFIGS.two_wheeler.primaryColor}
+              onPress={() => handleCategoryChange('two_wheeler')}
+            />
+          </ScrollView>
+
+          <View style={styles.searchBarContainer}>
+            <SearchBar onPress={handleSearchPress} />
+          </View>
         </View>
-        <ScrollView
-          style={styles.content}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.section}>
-            <CommonText size={Scale.SCALE_18}>
-              {Strings.HOME.CATEGORIES}
-            </CommonText>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.horizontalList}
-            >
-              {categories.map((category, index) => (
-                <CategoryItem
-                  key={index}
-                  image={category.image}
-                  label={category.label}
-                />
-              ))}
-            </ScrollView>
-          </View>
-
-          <View style={styles.section}>
-            <CommonText size={Scale.SCALE_18}>
-              {Strings.HOME.NEWLY_ADDED_PROPERTIES}
-            </CommonText>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.horizontalList}
-            >
-              {properties.map(property => (
-                <PropertyCard
-                  key={property.id}
-                  image={property.image}
-                  title={property.title}
-                  location={property.location}
-                  bhk={property.bhk}
-                  area={property.area}
-                  price={property.price}
-                  onPress={() => {}}
-                  onFavouritePress={() => {}}
-                />
-              ))}
-            </ScrollView>
-          </View>
-
-          <View style={styles.toolsSection}>
-            <CommonText size={Scale.SCALE_18}>
-              {Strings.HOME.TOOLS_INSIGHTS}
-            </CommonText>
-            <View style={styles.toolsGrid}>
-              {tools.map((tool, index) => (
-                <ToolCard
-                  key={index}
-                  icon={tool.icon}
-                  label={tool.label}
-                  onPress={() => {}}
-                />
-              ))}
-            </View>
-          </View>
-        </ScrollView>
       </SafeAreaView>
+
+      {/* Scrollable Content Section - Categories and Below */}
+      <ScrollView
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <View style={styles.section}>
+          <CommonText bold size={Scale.SCALE_18}>
+            {Strings.HOME.CATEGORIES}
+          </CommonText>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.horizontalList}
+          >
+            {categories.map((category, index) => (
+              <CategoryItem
+                key={index}
+                image={category.image}
+                label={category.label}
+              />
+            ))}
+          </ScrollView>
+        </View>
+
+        <View style={styles.section}>
+          <CommonText bold size={Scale.SCALE_18}>
+            {Strings.HOME.NEWLY_ADDED_PROPERTIES}
+          </CommonText>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.horizontalList}
+          >
+            {properties.map(property => (
+              <PropertyCard
+                key={property.id}
+                image={property.image}
+                title={property.title}
+                location={property.location}
+                bhk={property.bhk}
+                area={property.area}
+                price={property.price}
+                onPress={() => {}}
+                onFavouritePress={() => {}}
+              />
+            ))}
+          </ScrollView>
+        </View>
+
+        <View style={styles.toolsSection}>
+          <CommonText bold size={Scale.SCALE_18}>
+            {Strings.HOME.TOOLS_INSIGHTS}
+          </CommonText>
+          <View style={styles.toolsGrid}>
+            {tools.map((tool, index) => (
+              <ToolCard
+                key={index}
+                icon={tool.icon}
+                label={tool.label}
+                onPress={() => {}}
+              />
+            ))}
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -197,38 +238,45 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.WHITE,
   },
-  searchBarContainer: {
-    marginTop: Scale.SCALE_16,
-    paddingHorizontal: Scale.SCALE_16,
-  },
-  safeArea: {
-    flex: 1,
+  headerWrapper: {
+    position: 'relative',
+    zIndex: 1,
   },
   headerBackground: {
     position: 'absolute',
     top: Scale.SCALE_0,
     left: Scale.SCALE_0,
     right: Scale.SCALE_0,
-    height: Scale.SCALE_246,
-    backgroundColor: Colors.SECONDARY_100,
+    bottom: Scale.SCALE_0,
     borderBottomLeftRadius: Scale.SCALE_16,
     borderBottomRightRadius: Scale.SCALE_16,
+  },
+  headerContent: {
+    position: 'relative',
+    zIndex: 2,
+    paddingTop: Scale.SCALE_16,
+    paddingBottom: Scale.SCALE_20,
   },
   categoryTabs: {
     marginTop: Scale.SCALE_20,
     maxHeight: Scale.SCALE_40,
     paddingHorizontal: Scale.SCALE_16,
+    // marginRight:Scale.SCALE_16
   },
   categoryTabsContent: {
     gap: Scale.SCALE_8,
   },
+  searchBarContainer: {
+    marginTop: Scale.SCALE_16,
+    paddingHorizontal: Scale.SCALE_16,
+  },
   content: {
     flex: 1,
-    marginTop: Scale.SCALE_16,
   },
   contentContainer: {
     paddingHorizontal: Scale.SCALE_16,
-    paddingBottom: Scale.SCALE_20,
+    paddingTop: Scale.SCALE_16,
+    paddingBottom: Scale.SCALE_100,
     gap: Scale.SCALE_20,
   },
   section: {

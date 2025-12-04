@@ -6,12 +6,14 @@ interface CommonImageProps extends ImageProps {
   width?: number;
   height?: number;
   borderRadius?: number;
+  tintColor?: string;
 }
 
 export const CommonImage: React.FC<CommonImageProps> = ({
   width,
   height,
   borderRadius,
+  tintColor,
   style,
   ...props
 }) => {
@@ -22,6 +24,7 @@ export const CommonImage: React.FC<CommonImageProps> = ({
         width && { width },
         height && { height },
         borderRadius && { borderRadius },
+        tintColor && { tintColor },
         style,
       ]}
       {...props}

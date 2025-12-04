@@ -34,6 +34,7 @@ export const CommonText: React.FC<CommonTextProps> = ({
         return styles.subheading;
       case 'body':
         return styles.body;
+
       case 'caption':
         return styles.caption;
       case 'button':
