@@ -2,7 +2,7 @@
 // Don't use localhost - use your computer's IP address or deployed API URL
 
 // Option 1: Development (use your computer's IP)
-export const LOCALHOST = 'http://192.168.1.52'; // Replace with your IP
+export const LOCALHOST = 'http://192.168.1.15'; // Replace with your IP
 
 // Option 2: Production
 // export const LOCALHOST = 'https://api.yourdomain.com';
