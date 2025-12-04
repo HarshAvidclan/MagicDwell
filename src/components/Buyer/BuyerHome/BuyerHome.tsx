@@ -260,8 +260,7 @@ const styles = StyleSheet.create({
   categoryTabs: {
     marginTop: Scale.SCALE_20,
     maxHeight: Scale.SCALE_40,
-    paddingHorizontal: Scale.SCALE_16,
-    // marginRight:Scale.SCALE_16
+    marginHorizontal:Scale.SCALE_16
   },
   categoryTabsContent: {
     gap: Scale.SCALE_8,
