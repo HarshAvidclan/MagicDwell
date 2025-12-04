@@ -1,2 +1,6 @@
 export * from './Mappls'
 export * from './Auth'
+export * from './Property'
+export * from './Vehicle'
+export * from './Image'
+export * from './Common'
