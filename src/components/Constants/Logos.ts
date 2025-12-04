@@ -16,7 +16,7 @@ export const Logos = {
   // CHEVRON_DOWN_ICON: require('../../Assets/Logos/ChevronDownIcon.png'),
   ADD_ICON: require('../../Assets/Logos/AddIcon.png'),
   // LOCATION_ICON: require('../../Assets/Logos/LocationIcon.png'),
-  // FAVOURITE_ICON: require('../../Assets/Logos/FavouriteIcon.png'),
+  FAVOURITE_ICON: require('../../Assets/Logos/FavouriteIcon.png'),
   // DOT_DIVIDER: require('../../Assets/Logos/DotDivider.png'),
   // HOME_ICON_ACTIVE: require('../../Assets/Logos/HomeIconActive.png'),
   // HOME_ICON_INACTIVE: require('../../Assets/Logos/HomeIconInactive.png'),
@@ -39,7 +39,7 @@ export const Logos = {
   CHEVRON_DOWN_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   // ADD_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   LOCATION_ICON: require('../../Assets/Logos/Input_DropDown.png'),
-  FAVOURITE_ICON: require('../../Assets/Logos/Input_DropDown.png'),
+  // FAVOURITE_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   DOT_DIVIDER: require('../../Assets/Logos/Input_DropDown.png'),
 
   HOME_ICON_ACTIVE: require('../../Assets/Logos/Input_DropDown.png'),

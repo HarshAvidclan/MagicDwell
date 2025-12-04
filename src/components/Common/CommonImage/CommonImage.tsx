@@ -1,12 +1,15 @@
 // src/Common/CommonImage/CommonImage.tsx
 import React from 'react';
 import { Image, ImageProps, StyleSheet } from 'react-native';
+import { getImageUrl } from '../../../Services/Utility/Functions';
 
 interface CommonImageProps extends ImageProps {
   width?: number;
   height?: number;
   borderRadius?: number;
   tintColor?: string;
+  IsFormAPI?: boolean;
+  ImageName?: string;
 }
 
 export const CommonImage: React.FC<CommonImageProps> = ({
@@ -14,9 +17,16 @@ export const CommonImage: React.FC<CommonImageProps> = ({
   height,
   borderRadius,
   tintColor,
+  IsFormAPI = false,
+  ImageName,
   style,
+  source,
   ...props
 }) => {
+  const imageSource = IsFormAPI && ImageName
+    ? { uri: getImageUrl(ImageName) }
+    : source;
+
   return (
     <Image
       style={[
@@ -27,6 +37,7 @@ export const CommonImage: React.FC<CommonImageProps> = ({
         tintColor && { tintColor },
         style,
       ]}
+      source={imageSource}
       {...props}
     />
   );

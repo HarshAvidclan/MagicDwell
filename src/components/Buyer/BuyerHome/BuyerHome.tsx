@@ -1,5 +1,5 @@
 // src/Screens/Buyer/BuyerHome/BuyerHome.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -15,11 +15,27 @@ import { ToolCard } from '../ToolCard/ToolCard';
 import { SearchBar } from '../SearchBar/SearchBar';
 import ToastService from '../../../Services/Toast/ToastService';
 import { CATEGORY_CONFIGS, CategoryType } from '../../Constants/Categories';
+import { API } from '../../../Services/API/Api';
+import { PropertyMaster, VehicleMaster } from '../../../Services/API/URL/URLS';
+import { PropertyMasterDataInput } from '../../../Services/API/Input/Property';
+import { PropertyMasterDataResult } from '../../../Services/API/Result/Property';
+import { VehicleMasterDataInput } from '../../../Services/API/Input/Vehicle';
+import { VehicleMasterDataResult } from '../../../Services/API/Result/Vehicle';
+import { PostListingInput } from '../../../Services/API/Input/Post';
+import { PostListingResult } from '../../../Services/API/Result/Post';
+import { Post } from '../../../Services/API/URL/URLS';
+import { getImageUrl } from '../../../Services/Utility/Functions';
 
 export const BuyerHome: React.FC = () => {
   const navigation = useNavigation<BuyerHomeScreenNavigationProp>();
   const [activeCategory, setActiveCategory] =
     useState<CategoryType>('residential');
+  const [categories, setCategories] = useState<
+    Array<{ image: string; label: string }>
+  >([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(false);
+  const [posts, setPosts] = useState<PostListingResult[]>([]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(false);
 
   const handleSearchPress = () => {
     ToastService.SUCCESS('Search pressed');
@@ -33,55 +49,92 @@ export const BuyerHome: React.FC = () => {
     return CATEGORY_CONFIGS[activeCategory];
   };
 
-  const categories = [
-    { image: Images.CATEGORY_APARTMENTS, label: Strings.CATEGORIES.APARTMENTS },
-    {
-      image: Images.CATEGORY_BUILDER_FLOORS,
-      label: Strings.CATEGORIES.BUILDER_FLOORS,
-    },
-    { image: Images.CATEGORY_PLOTS, label: Strings.CATEGORIES.PLOTS_LAND },
-    { image: Images.CATEGORY_VILLAS, label: Strings.CATEGORIES.VILLAS },
-    { image: Images.CATEGORY_COLIVING, label: Strings.CATEGORIES.CO_LIVING },
-  ];
+  const fetchCategoriesForType = async (categoryType: CategoryType) => {
+    setIsLoadingCategories(true);
+    try {
+      const config = CATEGORY_CONFIGS[categoryType];
 
-  const properties = [
-    {
-      id: '1',
-      image: Images.PROPERTY_IMAGE_1,
-      title: 'Aresta',
-      location: 'S G Highway, Ahmedabad',
-      bhk: '3 BHK',
-      area: '1,760 sqft.',
-      price: '₹85.50 L',
-    },
-    {
-      id: '2',
-      image: Images.PROPERTY_IMAGE_2,
-      title: 'Palm Heights Apartments',
-      location: 'Shilaj, Ahmedabad',
-      bhk: '2-3 BHK',
-      area: '900-1300 sqft.',
-      price: '₹60 L - ₹1.2 Cr',
-    },
-    {
-      id: '3',
-      image: Images.PROPERTY_IMAGE_3,
-      title: 'Aristo Anandam',
-      location: 'S G Highway, Ahmedabad',
-      bhk: '3 BHK',
-      area: '1,200 sqft.',
-      price: '₹1.43 Cr',
-    },
-    {
-      id: '4',
-      image: Images.PROPERTY_IMAGE_4,
-      title: 'Green Valley Villas',
-      location: 'Shantigram, Ahmedabad',
-      bhk: '4 BHK',
-      area: '1,650 sqft.',
-      price: '₹1.27 Cr onwards',
-    },
-  ];
+      if (config.apiType === 'property') {
+        // Call PropertyMaster API for Residential & Commercial
+        const input: PropertyMasterDataInput = {
+          PropertyTypeId: config.propertyTypeId!,
+        };
+        const res = await API.POST<PropertyMasterDataResult>(
+          PropertyMaster.GET,
+          input,
+        );
+
+        // Map ChildPropertyTypes to categories
+        const loadedCategories = res.ChildPropertyTypes.map(child => ({
+          image: child.Property_Category_Images?.[0]?.ImagePath ?? '',
+          label: child.PropertyTypeName,
+        }));
+
+        setCategories(loadedCategories);
+      } else {
+        // Call VehicleMaster API for Cars & Two Wheeler
+        const input: VehicleMasterDataInput = {
+          VehicleTypeId: config.vehicleTypeId!,
+        };
+        const res = await API.POST<VehicleMasterDataResult>(
+          VehicleMaster.GET,
+          input,
+        );
+
+        // Map lstChildVehicleType to categories
+        const loadedCategories = res.lstChildVehicleType.map(child => ({
+          image: child.Vehicle_Category_Images?.[0]?.ImagePath ?? '',
+          label: child.VehicleTypeName,
+        }));
+
+        setCategories(loadedCategories);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      ToastService.ERROR('Failed to load categories');
+      setCategories([]);
+    } finally {
+      setIsLoadingCategories(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoriesForType(activeCategory);
+    fetchPostListings(activeCategory);
+  }, [activeCategory]);
+
+  const fetchPostListings = async (categoryType: CategoryType) => {
+    setIsLoadingPosts(true);
+    try {
+      const config = CATEGORY_CONFIGS[categoryType];
+      const input: PostListingInput = {
+        IsPublish: true,
+        PageNumber: 1,
+        PageSize: 10,
+      };
+
+      // Add category-specific filters
+      if (config.apiType === 'property') {
+        input.Comm_PropertyTypeId = config.propertyTypeId!.toString();
+      } else {
+        input.Comma_VehicleTypeId = config.vehicleTypeId!.toString();
+      }
+
+      const response = await API.POST<PostListingResult[]>(
+        Post.GETFORLISTING,
+        input,
+      );
+      setPosts(response ?? []);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      ToastService.ERROR('Failed to load properties');
+      setPosts([]);
+    } finally {
+      setIsLoadingPosts(false);
+    }
+  };
+
+
 
   const tools = [
     {
@@ -117,7 +170,7 @@ export const BuyerHome: React.FC = () => {
         <View style={styles.headerContent}>
           <LocationHeader
             locationText="Ahmedabad"
-            onLocationPress={() => {}}
+            onLocationPress={() => { }}
             onPostListingPress={() => navigation.navigate('BuyerAddListing')}
           />
 
@@ -178,13 +231,20 @@ export const BuyerHome: React.FC = () => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.horizontalList}
           >
-            {categories.map((category, index) => (
-              <CategoryItem
-                key={index}
-                image={category.image}
-                label={category.label}
-              />
-            ))}
+            {isLoadingCategories ? (
+              <CommonText>Loading categories...</CommonText>
+            ) : categories.length > 0 ? (
+              categories.map((category, index) => (
+                <CategoryItem
+                  key={index}
+                  IsFormAPI={true}
+                  ImageName={category.image}
+                  label={category.label}
+                />
+              ))
+            ) : (
+              <CommonText>No categories available</CommonText>
+            )}
           </ScrollView>
         </View>
 
@@ -197,19 +257,30 @@ export const BuyerHome: React.FC = () => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.horizontalList}
           >
-            {properties.map(property => (
-              <PropertyCard
-                key={property.id}
-                image={property.image}
-                title={property.title}
-                location={property.location}
-                bhk={property.bhk}
-                area={property.area}
-                price={property.price}
-                onPress={() => {}}
-                onFavouritePress={() => {}}
-              />
-            ))}
+            {isLoadingPosts ? (
+              <CommonText>Loading properties...</CommonText>
+            ) : posts.length > 0 ? (
+              posts.map(post => {
+                const formattedPrice = `₹${(post.Price / 100000).toFixed(2)} L`;
+
+                return (
+                  <PropertyCard
+                    key={post.PostId}
+                    IsFormAPI={true}
+                    ImageName={post.PostImages?.[0]?.ImagePath ?? ''}
+                    title={post.PostName}
+                    location={post.Locality}
+                    bhk={post.PostRightDetail?.split('|')[0]?.trim() ?? ''}
+                    area={post.PostRightDetail?.split('|')[1]?.trim() ?? ''}
+                    price={formattedPrice}
+                    onPress={() => { }}
+                    onFavouritePress={() => { }}
+                  />
+                );
+              })
+            ) : (
+              <CommonText>No properties available</CommonText>
+            )}
           </ScrollView>
         </View>
 
@@ -223,7 +294,7 @@ export const BuyerHome: React.FC = () => {
                 key={index}
                 icon={tool.icon}
                 label={tool.label}
-                onPress={() => {}}
+                onPress={() => { }}
               />
             ))}
           </View>
@@ -260,7 +331,7 @@ const styles = StyleSheet.create({
   categoryTabs: {
     marginTop: Scale.SCALE_20,
     maxHeight: Scale.SCALE_40,
-    marginHorizontal:Scale.SCALE_16
+    marginHorizontal: Scale.SCALE_16
   },
   categoryTabsContent: {
     gap: Scale.SCALE_8,
