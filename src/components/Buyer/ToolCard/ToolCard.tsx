@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { CommonImage, CommonText } from '../../Common';
-import { Scale, Colors } from '../../Constants';
+import { Scale, Colors, Typography } from '../../Constants';
 
 interface ToolCardProps {
   icon: any;
@@ -13,14 +13,15 @@ interface ToolCardProps {
 export const ToolCard: React.FC<ToolCardProps> = ({ icon, label, onPress }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <CommonImage
-        source={icon}
-        width={Scale.SCALE_40}
-        height={Scale.SCALE_40}
-        borderRadius={Scale.SCALE_100}
-        resizeMode="cover"
-      />
-      <CommonText color={Colors.TEXT_SECONDARY} style={styles.label}>
+      <View style={styles.iconContainer}>
+        <CommonImage
+          source={icon}
+          width={Scale.SCALE_32}
+          height={Scale.SCALE_32}
+          resizeMode="contain"
+        />
+      </View>
+      <CommonText style={styles.label} numberOfLines={2}>
         {label}
       </CommonText>
     </TouchableOpacity>
@@ -29,11 +30,24 @@ export const ToolCard: React.FC<ToolCardProps> = ({ icon, label, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: Scale.SCALE_54,
+    flex: 1,
+    alignItems: 'center',
     gap: Scale.SCALE_8,
+  },
+  iconContainer: {
+    width: Scale.SCALE_56,
+    height: Scale.SCALE_56,
+    borderRadius: Scale.SCALE_28,
+    backgroundColor: Colors.GRAY_100,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   label: {
+    fontFamily: Typography.FONT_FAMILY_MEDIUM,
+    fontWeight: Typography.FONT_WEIGHT_MEDIUM_500,
+    fontSize: Typography.FONT_SIZE_12,
+    lineHeight: Typography.LINE_HEIGHT_16,
+    color: Colors.GRAY_700,
     textAlign: 'center',
   },
 });

@@ -8,9 +8,11 @@ import { BuyerHomeScreenNavigationProp } from '../../../Types/Navigation';
 import { CommonText } from '../../Common';
 import { Images, Strings, Logos, Scale, Colors } from '../../Constants';
 import { CategoryItem } from '../CategoryItem/CategoryItem';
+import { CategoryItemSkeleton } from '../CategoryItem/CategoryItemSkeleton';
 import { CategoryTab } from '../CategoryTab/CategoryTab';
 import { LocationHeader } from '../LocationHeader/LocationHeader';
 import { PropertyCard } from '../PropertyCard/PropertyCard';
+import { PropertyCardSkeleton } from '../PropertyCard/PropertyCardSkeleton';
 import { ToolCard } from '../ToolCard/ToolCard';
 import { SearchBar } from '../SearchBar/SearchBar';
 import ToastService from '../../../Services/Toast/ToastService';
@@ -232,7 +234,13 @@ export const BuyerHome: React.FC = () => {
             contentContainerStyle={styles.horizontalList}
           >
             {isLoadingCategories ? (
-              <CommonText>Loading categories...</CommonText>
+              <>
+                <CategoryItemSkeleton />
+                <CategoryItemSkeleton />
+                <CategoryItemSkeleton />
+                <CategoryItemSkeleton />
+                <CategoryItemSkeleton />
+              </>
             ) : categories.length > 0 ? (
               categories.map((category, index) => (
                 <CategoryItem
@@ -258,7 +266,12 @@ export const BuyerHome: React.FC = () => {
             contentContainerStyle={styles.horizontalList}
           >
             {isLoadingPosts ? (
-              <CommonText>Loading properties...</CommonText>
+              <>
+                <PropertyCardSkeleton />
+                <PropertyCardSkeleton />
+                <PropertyCardSkeleton />
+                <PropertyCardSkeleton />
+              </>
             ) : posts.length > 0 ? (
               posts.map(post => {
                 const formattedPrice = `₹${(post.Price / 100000).toFixed(2)} L`;
@@ -346,7 +359,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: Scale.SCALE_16,
     paddingTop: Scale.SCALE_16,
-    paddingBottom: Scale.SCALE_100,
+    paddingBottom: Scale.SCALE_16,
     gap: Scale.SCALE_20,
   },
   section: {
@@ -356,7 +369,7 @@ const styles = StyleSheet.create({
     gap: Scale.SCALE_16,
   },
   toolsSection: {
-    backgroundColor: Colors.PRIMARY_100,
+    backgroundColor: Colors.WHITE,
     borderRadius: Scale.SCALE_12,
     padding: Scale.SCALE_16,
     gap: Scale.SCALE_20,

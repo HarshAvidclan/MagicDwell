@@ -27,10 +27,10 @@ export const Logos = {
   // SAVED_ICON_INACTIVE: require('../../Assets/Logos/SavedIconInactive.png'),
   // PROFILE_ICON_ACTIVE: require('../../Assets/Logos/ProfileIconActive.png'),
   // PROFILE_ICON_INACTIVE: require('../../Assets/Logos/ProfileIconInactive.png'),
-  // PRICING_INSIGHTS_ICON: require('../../Assets/Logos/PricingInsightsIcon.png'),
-  // EMI_CALCULATOR_ICON: require('../../Assets/Logos/EMICalculatorIcon.png'),
-  // RESEARCH_SNAPSHOT_ICON: require('../../Assets/Logos/ResearchSnapshotIcon.png'),
-  // LOCALITY_INSIGHTS_ICON: require('../../Assets/Logos/LocalityInsightsIcon.png'),
+  PRICING_INSIGHTS_ICON: require('../../Assets/Logos/PricingInsightsIcon.png'),
+  EMI_CALCULATOR_ICON: require('../../Assets/Logos/EMICalculatorIcon.png'),
+  RESEARCH_SNAPSHOT_ICON: require('../../Assets/Logos/ResearchSnapshotIcon.png'),
+  LOCALITY_INSIGHTS_ICON: require('../../Assets/Logos/LocalityInsightsIcon.png'),
   // RESIDENTIAL_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   // COMMERCIAL_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   // CARS_ICON: require('../../Assets/Logos/Input_DropDown.png'),
@@ -56,9 +56,9 @@ export const Logos = {
   PROFILE_ICON_ACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
   PROFILE_ICON_INACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
 
-  PRICING_INSIGHTS_ICON: require('../../Assets/Logos/Input_DropDown.png'),
-  EMI_CALCULATOR_ICON: require('../../Assets/Logos/Input_DropDown.png'),
-  RESEARCH_SNAPSHOT_ICON: require('../../Assets/Logos/Input_DropDown.png'),
-  LOCALITY_INSIGHTS_ICON: require('../../Assets/Logos/Input_DropDown.png'),
+  // PRICING_INSIGHTS_ICON: require('../../Assets/Logos/Input_DropDown.png'),
+  // EMI_CALCULATOR_ICON: require('../../Assets/Logos/Input_DropDown.png'),
+  // RESEARCH_SNAPSHOT_ICON: require('../../Assets/Logos/Input_DropDown.png'),
+  // LOCALITY_INSIGHTS_ICON: require('../../Assets/Logos/Input_DropDown.png'),
 
 };

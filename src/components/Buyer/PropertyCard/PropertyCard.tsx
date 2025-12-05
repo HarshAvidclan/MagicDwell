@@ -15,6 +15,7 @@ interface PropertyCardProps {
   onFavouritePress?: () => void;
   IsFormAPI?: boolean;
   ImageName?: string;
+  isFavourite?: boolean; // 👈 NEW: Track favourite state
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -28,9 +29,11 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   onFavouritePress,
   IsFormAPI = false,
   ImageName,
+  isFavourite = false, // 👈 NEW: Default to false
 }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
+      {/* Property Image */}
       <CommonImage
         source={image}
         IsFormAPI={IsFormAPI}
@@ -38,29 +41,18 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         style={styles.image}
         resizeMode="cover"
       />
+
+      {/* Property Details */}
       <View style={styles.mainBriefOfCard}>
         <View style={styles.nameWithLocation}>
-          <CommonText
-            style={styles.title}
-            numberOfLines={1}
-          >
+          <CommonText style={styles.title} numberOfLines={1}>
             {title}
           </CommonText>
           <View style={styles.locationRow}>
             <CommonText style={styles.locationText}>{location}</CommonText>
-            <CommonImage
-              source={Logos.DOT_DIVIDER}
-              width={Scale.SCALE_2}
-              height={Scale.SCALE_10}
-              resizeMode="cover"
-            />
+            <View style={styles.divider} />
             <CommonText style={styles.locationText}>{bhk}</CommonText>
-            <CommonImage
-              source={Logos.DOT_DIVIDER}
-              width={Scale.SCALE_2}
-              height={Scale.SCALE_10}
-              resizeMode="cover"
-            />
+            <View style={styles.divider} />
             <CommonText style={styles.locationText}>{area}</CommonText>
           </View>
         </View>
@@ -68,9 +60,11 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           <CommonText style={styles.price}>{price}</CommonText>
         </View>
       </View>
+
       <TouchableOpacity
         style={styles.favouriteButton}
         onPress={onFavouritePress}
+        activeOpacity={0.7}
       >
         <CommonImage
           source={Logos.FAVOURITE_ICON}
@@ -144,14 +138,24 @@ const styles = StyleSheet.create({
     color: Colors.GRAY_800,
     flex: 1,
   },
+
   favouriteButton: {
     position: 'absolute',
     top: Scale.SCALE_12,
     right: Scale.SCALE_12,
+    width: Scale.SCALE_36,
+    height: Scale.SCALE_36,
     shadowColor: Colors.BLACK,
     shadowOffset: { width: Scale.SCALE_1, height: Scale.SCALE_2 },
     shadowOpacity: 0.04,
     shadowRadius: Scale.SCALE_16,
-    borderRadius: Scale.SCALE_24,
+    elevation: 3,
+  },
+  divider: {
+    height: Scale.SCALE_10,
+    maxWidth: Scale.SCALE_1,
+    backgroundColor: Colors.GRAY_300,
+    width: '100%',
+    // marginVertical: Scale.SCALE_12,
   },
 });
