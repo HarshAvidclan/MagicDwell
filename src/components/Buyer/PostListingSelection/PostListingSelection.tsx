@@ -100,12 +100,12 @@ const styles = StyleSheet.create({
         gap: Scale.SCALE_12,
     },
     optionCard: {
+        flex: 1, // ✅ Takes equal space - responsive width
         gap: Scale.SCALE_4,
         paddingVertical: Scale.SCALE_20,
         paddingHorizontal: Scale.SCALE_8,
         borderStyle: 'solid',
         borderRadius: Scale.SCALE_8,
-        width: Scale.SCALE_173,
         alignItems: 'center',
         borderWidth: 1,
         borderColor: Colors.GRAY_200, // Default border color
