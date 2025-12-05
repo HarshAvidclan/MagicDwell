@@ -29,6 +29,7 @@ export const Scale = {
     SCALE_68: 68,
     SCALE_70: 70,
     SCALE_72: 72,
+    SCALE_74: 74,
     SCALE_76: 76,
     SCALE_80: 80,
     SCALE_84: 84,

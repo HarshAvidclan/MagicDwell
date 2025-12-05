@@ -1,8 +1,8 @@
 // src/components/Buyer/CategoryTab/CategoryTab.tsx
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { CommonImage, CommonText } from '../../Common';
-import { Scale, Colors, Typography } from '../../Constants';
+import { CommonImage, CommonText } from '../../../Common';
+import { Scale, Colors, Typography } from '../../../Constants';
 
 interface CategoryTabProps {
   icon: any;

@@ -1,8 +1,8 @@
 // src/Components/Buyer/ToolCard/ToolCard.tsx
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { CommonImage, CommonText } from '../../Common';
-import { Scale, Colors, Typography } from '../../Constants';
+import { CommonImage, CommonText } from '../../../Common';
+import { Scale, Colors, Typography } from '../../../Constants';
 
 interface ToolCardProps {
   icon: any;
@@ -16,8 +16,8 @@ export const ToolCard: React.FC<ToolCardProps> = ({ icon, label, onPress }) => {
       <View style={styles.iconContainer}>
         <CommonImage
           source={icon}
-          width={Scale.SCALE_32}
-          height={Scale.SCALE_32}
+          width={Scale.SCALE_24}
+          height={Scale.SCALE_24}
           resizeMode="contain"
         />
       </View>
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     gap: Scale.SCALE_8,
   },
   iconContainer: {
-    width: Scale.SCALE_56,
-    height: Scale.SCALE_56,
+    width: Scale.SCALE_40,
+    height: Scale.SCALE_40,
     borderRadius: Scale.SCALE_28,
     backgroundColor: Colors.GRAY_100,
     justifyContent: 'center',

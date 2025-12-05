@@ -1,8 +1,8 @@
 // src/components/Buyer/LocationHeader/LocationHeader.tsx
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { CommonText, CommonImage, CommonButton } from '../../Common';
-import { Scale, Colors, Strings, Logos, Typography } from '../../Constants';
+import { CommonText, CommonImage, CommonButton } from '../../../Common';
+import { Scale, Colors, Strings, Logos, Typography } from '../../../Constants';
 
 interface LocationHeaderProps {
   locationText: string;

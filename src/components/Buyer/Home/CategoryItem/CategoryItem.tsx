@@ -1,8 +1,8 @@
 // src/Components/Buyer/CategoryItem/CategoryItem.tsx
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { CommonImage, CommonText } from '../../Common';
-import { Scale } from '../../Constants';
+import { CommonImage, CommonText } from '../../../Common';
+import { Scale } from '../../../Constants';
 
 interface CategoryItemProps {
   image?: any;

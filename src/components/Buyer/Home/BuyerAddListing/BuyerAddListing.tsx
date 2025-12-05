@@ -2,8 +2,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CommonText } from '../../Common';
-import { Scale, Colors } from '../../Constants';
+import { CommonText } from '../../../Common';
+import { Scale, Colors } from '../../../Constants';
 
 export const BuyerAddListing: React.FC = () => {
   return (

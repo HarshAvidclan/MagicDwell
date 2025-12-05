@@ -1,8 +1,8 @@
 // src/components/Buyer/SearchBar/SearchBar.tsx
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { CommonText, CommonImage } from '../../Common';
-import { Colors, Scale, Logos, Strings } from '../../Constants';
+import { CommonText, CommonImage } from '../../../Common';
+import { Colors, Scale, Logos, Strings } from '../../../Constants';
 
 interface SearchBarProps {
   onPress?: () => void;

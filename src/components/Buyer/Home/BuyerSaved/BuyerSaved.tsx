@@ -1,15 +1,15 @@
-// src/Screens/Buyer/BuyerMessages/BuyerMessages.tsx
+// src/components/Buyer/BuyerSaved/BuyerSaved.tsx
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CommonText } from '../../Common/CommonText/CommonText';
-import { Colors, Scale } from '../../Constants';
+import { CommonText } from '../../../Common';
+import { Colors, Scale } from '../../../Constants';
 
-export const BuyerMessages: React.FC = () => {
+export const BuyerSaved: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <CommonText size={Scale.SCALE_24}>Messages</CommonText>
+        <CommonText size={Scale.SCALE_24}>Saved Properties</CommonText>
       </View>
     </SafeAreaView>
   );

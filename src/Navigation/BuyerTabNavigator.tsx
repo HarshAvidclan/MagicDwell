@@ -3,13 +3,13 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, StyleSheet } from 'react-native';
 import { BuyerTabParamList, Routes } from '../Types/Navigation';
-import { BuyerAddListing } from '../components/Buyer/BuyerAddListing/BuyerAddListing';
-import { BuyerHome } from '../components/Buyer/BuyerHome/BuyerHome';
-import { BuyerMessages } from '../components/Buyer/BuyerMessages/BuyerMessages';
-import { BuyerSaved } from '../components/Buyer/BuyerSaved/BuyerSaved';
-import { BuyerProfile } from '../components/Buyer/BuyerProfile/BuyerProfile';
+import { BuyerAddListing } from '../components/Buyer/Home/BuyerAddListing/BuyerAddListing';
+import { BuyerMessages } from '../components/Buyer/Home/BuyerMessages/BuyerMessages';
+import { BuyerSaved } from '../components/Buyer/Home/BuyerSaved/BuyerSaved';
+import { BuyerProfile } from '../components/Buyer/Home/BuyerProfile/BuyerProfile';
 import { CommonImage, CommonTabIcon } from '../components/Common';
 import { Logos, Scale, Colors, Strings } from '../components/Constants';
+import { BuyerHome } from '../components/Buyer/Home/BuyerHome/BuyerHome';
 
 const Tab = createBottomTabNavigator<BuyerTabParamList>();
 

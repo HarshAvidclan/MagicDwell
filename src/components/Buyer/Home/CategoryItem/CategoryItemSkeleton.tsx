@@ -1,7 +1,7 @@
 // src/Components/Buyer/CategoryItem/CategoryItemSkeleton.tsx
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Scale, Colors } from '../../Constants';
+import { Scale, Colors } from '../../../Constants';
 
 export const CategoryItemSkeleton: React.FC = () => {
     return (

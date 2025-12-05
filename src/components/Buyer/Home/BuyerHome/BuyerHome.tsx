@@ -4,29 +4,28 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
-import { BuyerHomeScreenNavigationProp } from '../../../Types/Navigation';
-import { CommonText } from '../../Common';
-import { Images, Strings, Logos, Scale, Colors } from '../../Constants';
+
 import { CategoryItem } from '../CategoryItem/CategoryItem';
 import { CategoryItemSkeleton } from '../CategoryItem/CategoryItemSkeleton';
 import { CategoryTab } from '../CategoryTab/CategoryTab';
 import { LocationHeader } from '../LocationHeader/LocationHeader';
-import { PropertyCard } from '../PropertyCard/PropertyCard';
-import { PropertyCardSkeleton } from '../PropertyCard/PropertyCardSkeleton';
+import { API } from '../../../../Services/API/Api';
+import { PostListingInput } from '../../../../Services/API/Input/Post';
+import { PropertyMasterDataInput } from '../../../../Services/API/Input/Property';
+import { VehicleMasterDataInput } from '../../../../Services/API/Input/Vehicle';
+import { PostListingResult } from '../../../../Services/API/Result/Post';
+import { PropertyMasterDataResult } from '../../../../Services/API/Result/Property';
+import { VehicleMasterDataResult } from '../../../../Services/API/Result/Vehicle';
+import { PropertyMaster, VehicleMaster, Post } from '../../../../Services/API/URL/URLS';
+import ToastService from '../../../../Services/Toast/ToastService';
+import { CategoryType, CATEGORY_CONFIGS } from '../../../Constants/Categories';
+import { PropertyCardSkeleton, PropertyCard } from '../../PropertyCard';
 import { ToolCard } from '../ToolCard/ToolCard';
+import { BuyerHomeScreenNavigationProp } from '../../../../Types';
+import { CommonText } from '../../../Common';
+import { Logos, Strings, Scale, Colors } from '../../../Constants';
 import { SearchBar } from '../SearchBar/SearchBar';
-import ToastService from '../../../Services/Toast/ToastService';
-import { CATEGORY_CONFIGS, CategoryType } from '../../Constants/Categories';
-import { API } from '../../../Services/API/Api';
-import { PropertyMaster, VehicleMaster } from '../../../Services/API/URL/URLS';
-import { PropertyMasterDataInput } from '../../../Services/API/Input/Property';
-import { PropertyMasterDataResult } from '../../../Services/API/Result/Property';
-import { VehicleMasterDataInput } from '../../../Services/API/Input/Vehicle';
-import { VehicleMasterDataResult } from '../../../Services/API/Result/Vehicle';
-import { PostListingInput } from '../../../Services/API/Input/Post';
-import { PostListingResult } from '../../../Services/API/Result/Post';
-import { Post } from '../../../Services/API/URL/URLS';
-import { getImageUrl } from '../../../Services/Utility/Functions';
+
 
 export const BuyerHome: React.FC = () => {
   const navigation = useNavigation<BuyerHomeScreenNavigationProp>();
