@@ -10,7 +10,7 @@ export const Routes = {
   LOGIN: 'Login' as const,
   VERIFY_OTP: 'VerifyOTP' as const,
   ACCOUNT_DETAILS: 'AccountDetails' as const,
-  
+
   // Buyer Routes
   BUYER_TABS: 'BuyerTabs' as const,
   BUYER_HOME: 'BuyerHome' as const,
@@ -18,10 +18,14 @@ export const Routes = {
   BUYER_ADD_LISTING: 'BuyerAddListing' as const,
   BUYER_SAVED: 'BuyerSaved' as const,
   BUYER_PROFILE: 'BuyerProfile' as const,
-  
+
   // Buyer Stack Screens (outside tabs)
   PROPERTY_DETAILS: 'PropertyDetails' as const,
   SEARCH_RESULTS: 'SearchResults' as const,
+
+  // Buyer Routes - Post Listing Flow
+  BUYER_POST_LISTING_PROPERTY: 'BuyerPostListingProperty' as const,
+  BUYER_POST_LISTING_VEHICLE: 'BuyerPostListingVehicle' as const,
 };
 
 // Guest Stack Routes
@@ -44,6 +48,7 @@ export type BuyerTabParamList = {
   BuyerAddListing: undefined;
   BuyerSaved: undefined;
   BuyerProfile: undefined;
+
 };
 
 // Buyer Stack Routes (includes tabs and other screens)
@@ -51,40 +56,50 @@ export type BuyerStackParamList = {
   BuyerTabs: undefined;
   PropertyDetails: { propertyId: string };
   SearchResults: { query: string };
+
+
+  BuyerPostListingProperty: undefined;
+  BuyerPostListingVehicle: undefined;
 };
 
 // Navigation prop types for Guest screens
-export type OnboardingScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'Onboarding'>;
-export type LoginScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'Login'>;
-export type VerifyOTPScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'VerifyOTP'>;
-export type AccountDetailsScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, 'AccountDetails'>;
+export type OnboardingScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, typeof Routes.ONBOARDING>;
+export type LoginScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, typeof Routes.LOGIN>;
+export type VerifyOTPScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, typeof Routes.VERIFY_OTP>;
+export type AccountDetailsScreenNavigationProp = NativeStackNavigationProp<GuestStackParamList, typeof Routes.ACCOUNT_DETAILS>;
+export type BuyerStackNavigationProp = NativeStackNavigationProp<BuyerStackParamList>;
 
 // Navigation prop types for Buyer Tab screens
 export type BuyerHomeScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<BuyerTabParamList, 'BuyerHome'>,
+  BottomTabNavigationProp<BuyerTabParamList, typeof Routes.BUYER_HOME>,
   NativeStackNavigationProp<BuyerStackParamList>
 >;
 
 export type BuyerMessagesScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<BuyerTabParamList, 'BuyerMessages'>,
+  BottomTabNavigationProp<BuyerTabParamList, typeof Routes.BUYER_MESSAGES>,
   NativeStackNavigationProp<BuyerStackParamList>
 >;
 
 export type BuyerAddListingScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<BuyerTabParamList, 'BuyerAddListing'>,
+  BottomTabNavigationProp<BuyerTabParamList, typeof Routes.BUYER_ADD_LISTING>,
   NativeStackNavigationProp<BuyerStackParamList>
 >;
 
 export type BuyerSavedScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<BuyerTabParamList, 'BuyerSaved'>,
+  BottomTabNavigationProp<BuyerTabParamList, typeof Routes.BUYER_SAVED>,
   NativeStackNavigationProp<BuyerStackParamList>
 >;
 
 export type BuyerProfileScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<BuyerTabParamList, 'BuyerProfile'>,
+  BottomTabNavigationProp<BuyerTabParamList, typeof Routes.BUYER_PROFILE>,
   NativeStackNavigationProp<BuyerStackParamList>
 >;
 
 // Navigation prop types for Buyer Stack screens
-export type PropertyDetailsScreenNavigationProp = NativeStackNavigationProp<BuyerStackParamList, 'PropertyDetails'>;
-export type SearchResultsScreenNavigationProp = NativeStackNavigationProp<BuyerStackParamList, 'SearchResults'>;
+export type PropertyDetailsScreenNavigationProp = NativeStackNavigationProp<BuyerStackParamList, typeof Routes.PROPERTY_DETAILS>;
+export type SearchResultsScreenNavigationProp = NativeStackNavigationProp<BuyerStackParamList, typeof Routes.SEARCH_RESULTS>;
+
+// Add navigation prop types
+export type BuyerPostListingPropertyNavigationProp = NativeStackNavigationProp<BuyerStackParamList, typeof Routes.BUYER_POST_LISTING_PROPERTY>;
+
+export type BuyerPostListingVehicleNavigationProp = NativeStackNavigationProp<BuyerStackParamList, typeof Routes.BUYER_POST_LISTING_VEHICLE>;

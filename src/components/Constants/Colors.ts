@@ -132,5 +132,8 @@ export const Colors = {
   ERROR_500: '#EF4444',
 
   // Tab colors
-  TAB_ACTIVE: '#000000'
+  TAB_ACTIVE: '#000000',
+
+
+  BACKGROUND_SELECTED: '#E8F3FF',
 };

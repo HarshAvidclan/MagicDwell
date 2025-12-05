@@ -3,18 +3,19 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { CommonText, CommonImage, CommonButton } from '../../../Common';
 import { Scale, Colors, Strings, Logos, Typography } from '../../../Constants';
+import { usePostListingModal } from '../../../../contexts/PostListingModalContext';
 
-interface LocationHeaderProps {
+export interface LocationHeaderProps {
   locationText: string;
   onLocationPress?: () => void;
-  onPostListingPress?: () => void;
 }
 
 export const LocationHeader: React.FC<LocationHeaderProps> = ({
   locationText,
   onLocationPress,
-  onPostListingPress,
 }) => {
+  const { openModal } = usePostListingModal();
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onLocationPress}>
@@ -42,7 +43,7 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
         title={Strings.HOME.POST_A_LISTING}
         variant="secondary"
         size="small"
-        onPress={onPostListingPress}
+        onPress={openModal}
         leftIcon={Logos.ADD_ICON}
         fullWidth={false}
         borderRadius={Scale.SCALE_100}
@@ -66,6 +67,6 @@ const styles = StyleSheet.create({
     marginTop: -Scale.SCALE_2,
   },
   postListingBtn: {
-    // fontFamily: Typography.FONT_FAMILY_SEMIBOLD,
+    // Additional custom styles if needed
   },
 });

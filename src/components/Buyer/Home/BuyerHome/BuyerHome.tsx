@@ -172,7 +172,6 @@ export const BuyerHome: React.FC = () => {
           <LocationHeader
             locationText="Ahmedabad"
             onLocationPress={() => { }}
-            onPostListingPress={() => navigation.navigate('BuyerAddListing')}
           />
 
           <ScrollView

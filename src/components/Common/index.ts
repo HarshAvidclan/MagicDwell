@@ -18,3 +18,6 @@ export { CommonImage } from './CommonImage/CommonImage';
 export { CommonTabIcon } from './CommonTabIcon/CommonTabIcon';
 export type { CommonTabIconProps } from './CommonTabIcon/CommonTabIcon';
 
+export { CommonModal } from './CommonModal/CommonModal';
+export type { CommonModalProps } from './CommonModal/CommonModal';
+

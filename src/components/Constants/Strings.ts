@@ -88,4 +88,10 @@ export const Strings = {
     SAVED: 'Saved',
     PROFILE: 'Profile',
   },
+  POST_LISTING: {
+    TITLE: 'Post a listing for',
+    PROPERTY: 'Property',
+    VEHICLE: 'Vehicle',
+    CONTINUE: 'Continue',
+  },
 };
