@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
     marginTop: -Scale.SCALE_2,
   },
   postListingBtn: {
-    fontFamily: Typography.FONT_FAMILY_SEMIBOLD,
+    // fontFamily: Typography.FONT_FAMILY_SEMIBOLD,
   },
 });

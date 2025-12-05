@@ -1,6 +1,7 @@
 // src/Common/CommonImage/CommonImage.tsx
 import React from 'react';
 import { Image, ImageProps, StyleSheet } from 'react-native';
+import { Colors } from '../../Constants';
 import { getImageUrl } from '../../../Services/Utility/Functions';
 
 interface CommonImageProps extends ImageProps {
@@ -10,6 +11,10 @@ interface CommonImageProps extends ImageProps {
   tintColor?: string;
   IsFormAPI?: boolean;
   ImageName?: string;
+  // New toggle props
+  isActive?: boolean;
+  activeColor?: string;
+  inactiveColor?: string;
 }
 
 export const CommonImage: React.FC<CommonImageProps> = ({
@@ -21,11 +26,19 @@ export const CommonImage: React.FC<CommonImageProps> = ({
   ImageName,
   style,
   source,
+  isActive,
+  activeColor = Colors.TAB_ACTIVE || '#000000',
+  inactiveColor = Colors.GRAY_500 || '#8E8E93',
   ...props
 }) => {
   const imageSource = IsFormAPI && ImageName
     ? { uri: getImageUrl(ImageName) }
     : source;
+
+  // Determine the final tint color
+  const finalTintColor = isActive !== undefined
+    ? (isActive ? activeColor : inactiveColor)
+    : tintColor;
 
   return (
     <Image
@@ -34,7 +47,7 @@ export const CommonImage: React.FC<CommonImageProps> = ({
         width && { width },
         height && { height },
         borderRadius && { borderRadius },
-        tintColor && { tintColor },
+        finalTintColor && { tintColor: finalTintColor },
         style,
       ]}
       source={imageSource}

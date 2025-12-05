@@ -129,5 +129,8 @@ export const Colors = {
   TEXT_DISABLED: '#8AA5BF',
   TEXT_LIGHT: '#FDFDFF',
 
-  ERROR_500: '#EF4444'
+  ERROR_500: '#EF4444',
+
+  // Tab colors
+  TAB_ACTIVE: '#000000'
 };

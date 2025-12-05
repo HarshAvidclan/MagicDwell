@@ -14,3 +14,7 @@ export type { CommonCheckboxProps } from './CommonCheckbox/CommonCheckbox';
 export { CommonCitySelector } from './CommonCitySelector/CommonCitySelector';
 
 export { CommonImage } from './CommonImage/CommonImage';
+
+export { CommonTabIcon } from './CommonTabIcon/CommonTabIcon';
+export type { CommonTabIconProps } from './CommonTabIcon/CommonTabIcon';
+

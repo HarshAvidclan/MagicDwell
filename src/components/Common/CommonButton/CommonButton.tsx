@@ -140,6 +140,7 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
           style={[styles.icon, { width: getIconSize(), height: getIconSize() }, iconStyle]}
           source={leftIcon}
           resizeMode="cover"
+          tintColor={Colors.BLACK}
         />
       )}
 

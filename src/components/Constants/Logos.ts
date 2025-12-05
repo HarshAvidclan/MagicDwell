@@ -42,19 +42,22 @@ export const Logos = {
   // FAVOURITE_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   DOT_DIVIDER: require('../../Assets/Logos/Input_DropDown.png'),
 
-  HOME_ICON_ACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
-  HOME_ICON_INACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
+  // Home Icons
+  HOME_ICON_ACTIVE: require('../../Assets/Logos/HomeIconActive.png'),
+  HOME_ICON_INACTIVE: require('../../Assets/Logos/HomeIconInactive.png'),
 
-  MESSAGE_ICON_ACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
-  MESSAGE_ICON_INACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
+  // Message Icons
+  MESSAGE_ICON_ACTIVE: require('../../Assets/Logos/MessageIconActive.png'),
+  MESSAGE_ICON_INACTIVE: require('../../Assets/Logos/MessageIconInactive.png'),
 
-  ADD_LISTING_ICON: require('../../Assets/Logos/Input_DropDown.png'),
+  // Saved Icons
+  SAVED_ICON_ACTIVE: require('../../Assets/Logos/SavedIconActive.png'),
+  SAVED_ICON_INACTIVE: require('../../Assets/Logos/SavedIconInactive.png'),
 
-  SAVED_ICON_ACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
-  SAVED_ICON_INACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
+  // Profile Icons
+  PROFILE_ICON_ACTIVE: require('../../Assets/Logos/ProfileIconActive.png'),
+  PROFILE_ICON_INACTIVE: require('../../Assets/Logos/ProfileIconInactive.png'),
 
-  PROFILE_ICON_ACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
-  PROFILE_ICON_INACTIVE: require('../../Assets/Logos/Input_DropDown.png'),
 
   // PRICING_INSIGHTS_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   // EMI_CALCULATOR_ICON: require('../../Assets/Logos/Input_DropDown.png'),
