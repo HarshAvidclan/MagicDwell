@@ -7,12 +7,12 @@ import {
     CommonCheckbox,
 } from '../../../Common';
 import { Colors, Scale, Typography, Logos, Strings } from '../../../Constants';
-import { Amenity } from '../PropertyStep3/PropertyStep3';
+import { tbl_mstAmenities } from '../../../../Services/API/Input/inputIndex';
 
 interface AmenitiesModalProps {
     visible: boolean;
     onClose: () => void;
-    amenities: Amenity[];
+    amenities: tbl_mstAmenities[];
     selectedAmenities: number[];
     onToggleAmenity: (amenityId: number) => void;
 }
@@ -30,7 +30,7 @@ export const AmenitiesModal: React.FC<AmenitiesModalProps> = ({
     const filteredAmenities = useMemo(() => {
         if (!searchQuery) return amenities;
         return amenities.filter((amenity) =>
-            amenity.name.toLowerCase().includes(searchQuery.toLowerCase()),
+            amenity.AmenityName.toLowerCase().includes(searchQuery.toLowerCase()),
         );
     }, [amenities, searchQuery]);
 
@@ -57,19 +57,20 @@ export const AmenitiesModal: React.FC<AmenitiesModalProps> = ({
                     showsVerticalScrollIndicator={false}
                 >
                     {filteredAmenities.map((amenity, index) => {
-                        const isSelected = selectedAmenities.includes(amenity.id);
+                        const isSelected = selectedAmenities.includes(amenity.AmenityId);
 
                         return (
-                            <View key={amenity.id}>
+                            <View key={amenity.AmenityId}>
                                 <Pressable
                                     style={[
                                         styles.amenityItem,
                                         isSelected && styles.selectedAmenityItem,
                                     ]}
-                                    onPress={() => onToggleAmenity(amenity.id)}
+                                    onPress={() => onToggleAmenity(amenity.AmenityId)}
                                 >
                                     <Image
-                                        source={amenity.icon || Logos.RESIDENTIAL_ICON}
+                                        // source={amenity.IconName ? { uri: amenity.IconName } : Logos.RESIDENTIAL_ICON}
+                                        source={Logos.RESIDENTIAL_ICON}
                                         style={styles.amenityIcon}
                                         resizeMode="contain"
                                     />
@@ -79,11 +80,11 @@ export const AmenitiesModal: React.FC<AmenitiesModalProps> = ({
                                         color={Colors.TEXT_PRIMARY}
                                         style={styles.amenityName}
                                     >
-                                        {amenity.name}
+                                        {amenity.AmenityName}
                                     </CommonText>
                                     <CommonCheckbox
                                         checked={isSelected}
-                                        onToggle={() => onToggleAmenity(amenity.id)}
+                                        onToggle={() => onToggleAmenity(amenity.AmenityId)}
                                     />
                                 </Pressable>
                                 {index < filteredAmenities.length - 1 && (
@@ -147,6 +148,7 @@ const styles = StyleSheet.create({
     amenityIcon: {
         width: Scale.SCALE_24,
         height: Scale.SCALE_24,
+        tintColor: Colors.BLACK
     },
     amenityName: {
         flex: 1,

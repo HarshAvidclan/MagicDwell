@@ -4,17 +4,11 @@ import { CommonText } from '../../../Common';
 import { Colors, Scale, Typography, Logos, Strings } from '../../../Constants';
 import { ImageUpload } from '../ImageUpload/ImageUpload';
 import { AmenitiesModal } from '../AmenitiesModal/AmenitiesModal';
-import { tbl_CommonImage } from '../../../../Services/API/Input/inputIndex';
-
-export interface Amenity {
-    id: number;
-    name: string;
-    icon?: any;
-}
+import { tbl_CommonImage, tbl_mstAmenities } from '../../../../Services/API/Input/inputIndex';
 
 interface PropertyStep3Props {
     selectedAmenities: number[];
-    availableAmenities: Amenity[];
+    availableAmenities: tbl_mstAmenities[];
     onAmenitiesChange: (amenityIds: number[]) => void;
     images?: tbl_CommonImage[];
     onAddImages?: () => void;
@@ -40,19 +34,20 @@ export const PropertyStep3: React.FC<PropertyStep3Props> = ({
     };
 
     // Render amenity card
-    const renderAmenityCard = (amenity: Amenity) => {
-        const isSelected = selectedAmenities.includes(amenity.id);
+    const renderAmenityCard = (amenity: tbl_mstAmenities) => {
+        const isSelected = selectedAmenities.includes(amenity.AmenityId);
         return (
             <Pressable
-                key={amenity.id}
+                key={amenity.AmenityId}
                 style={[
                     styles.amenityCard,
                     isSelected && styles.amenityCardSelected
                 ]}
-                onPress={() => handleAmenityToggle(amenity.id)}
+                onPress={() => handleAmenityToggle(amenity.AmenityId)}
             >
                 <Image
-                    source={amenity.icon || Logos.RESIDENTIAL_ICON}
+                    // source={amenity.IconName ? { uri: amenity.IconName } : Logos.RESIDENTIAL_ICON} // Using IconName from interface
+                    source={Logos.RESIDENTIAL_ICON}
                     style={[
                         styles.amenityIcon,
                         isSelected && { tintColor: Colors.PRIMARY_400 }
@@ -67,7 +62,7 @@ export const PropertyStep3: React.FC<PropertyStep3Props> = ({
                     style={styles.amenityLabel}
                     numberOfLines={2}
                 >
-                    {amenity.name}
+                    {amenity.AmenityName}
                 </CommonText>
             </Pressable>
         );

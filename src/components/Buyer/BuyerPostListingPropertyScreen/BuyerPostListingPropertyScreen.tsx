@@ -179,12 +179,7 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
 
     // Available amenities from master data
     const availableAmenities = useMemo(
-        () =>
-            (masterData?.AmenitiesList || []).map((amenity) => ({
-                id: amenity.AmenityId,
-                name: amenity.AmenityName,
-                icon: undefined, // Add icon mapping if needed
-            })),
+        () => masterData?.AmenitiesList || [],
         [masterData],
     );
 
