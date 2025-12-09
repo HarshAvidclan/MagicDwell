@@ -185,6 +185,9 @@ const styles = StyleSheet.create({
         borderColor: Colors.GRAY_200,
         backgroundColor: Colors.WHITE,
         justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        gap: Scale.SCALE_4, // Spacing between text and icon
     },
     viewAllText: {
         textDecorationLine: 'underline',
@@ -192,6 +195,8 @@ const styles = StyleSheet.create({
     chevronIcon: {
         width: Scale.SCALE_16,
         height: Scale.SCALE_16,
-        alignSelf: 'flex-end',
+        transform: 'rotate(-90deg)',
+        tintColor: Colors.TERTIARY_700,
+        // alignSelf removed
     },
 });
