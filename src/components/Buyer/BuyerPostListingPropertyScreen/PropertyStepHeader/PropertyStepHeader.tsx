@@ -41,9 +41,9 @@ export const PropertyStepHeader: React.FC<PropertyStepHeaderProps> = ({
                     onPress={onReset}
                     disabled={!onReset}
                 >
-                    <CommonText style={styles.resetText}>
+                    {/* <CommonText style={styles.resetText}>
                         Reset
-                    </CommonText>
+                    </CommonText> */}
                 </Pressable>
             </View>
 
@@ -65,8 +65,8 @@ export const PropertyStepHeader: React.FC<PropertyStepHeaderProps> = ({
                     <CircularProgress
                         current={currentStep}
                         total={totalSteps}
-                        size={Scale.SCALE_40}
-                        strokeWidth={Scale.SCALE_4}
+                        size={Scale.SCALE_68}
+                        strokeWidth={Scale.SCALE_6}
                         activeColor={Colors.PRIMARY_500}
                         inactiveColor={Colors.GRAY_200}
                     />
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         height: Scale.SCALE_42,
         borderRadius: Scale.BORDER_RADIUS_12,
         borderWidth: Scale.SCALE_1,
-        borderColor: Colors.BORDER_SECONDARY,
+        borderColor: Colors.GRAY_300,
         borderStyle: 'solid',
         justifyContent: 'center',
         alignItems: 'center',

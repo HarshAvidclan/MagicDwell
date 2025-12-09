@@ -14,6 +14,7 @@ export const Scale = {
     SCALE_16: 16,
     SCALE_18: 18,
     SCALE_20: 20,
+    SCALE_23: 23, // Added
     SCALE_24: 24,
     SCALE_28: 28,
     SCALE_32: 32,
