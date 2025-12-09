@@ -62,12 +62,145 @@ export const PropertyStepHeader: React.FC<PropertyStepHeaderProps> = ({
 
                 {/* Progress Indicator */}
                 <View style={styles.progressContainer}>
-                    {/* Placeholder for circular progress - using text for now */}
-                    <CommonText style={styles.progressText}>
-                        {currentStep} of {totalSteps}
-                    </CommonText>
+                    <CircularProgress
+                        current={currentStep}
+                        total={totalSteps}
+                        size={Scale.SCALE_40}
+                        strokeWidth={Scale.SCALE_4}
+                        activeColor={Colors.PRIMARY_500}
+                        inactiveColor={Colors.GRAY_200}
+                    />
                 </View>
             </View>
+        </View>
+    );
+};
+
+// Continuous Circular Progress using pure View (Two-Half-Circle Method)
+const CircularProgress: React.FC<{
+    current: number;
+    total: number;
+    size: number;
+    strokeWidth: number;
+    activeColor: string;
+    inactiveColor: string;
+}> = ({ current, total, size, strokeWidth, activeColor, inactiveColor }) => {
+    const percentage = Math.min(Math.max((current / total) * 100, 0), 100);
+
+    // Right Half (0-50%): Rotates from 180 -> 360 (or -180 -> 0)
+    // Left Half (50-100%): Rotates from 180 -> 360
+
+    const rightRotation = Math.min(percentage, 50) * 3.6; // 0 to 180
+    const leftRotation = Math.max(percentage - 50, 0) * 3.6; // 0 to 180
+
+    // To hide the Right Semicircle initially: Rotate it 180deg so it is on Left.
+    // As we progress 0->180, it enters the Right zone.
+
+    return (
+        <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
+            {/* Background Track */}
+            <View
+                style={{
+                    width: size,
+                    height: size,
+                    borderRadius: size / 2,
+                    borderWidth: strokeWidth,
+                    borderColor: inactiveColor,
+                    position: 'absolute',
+                }}
+            />
+
+            {/* Right Half Segment (Handles 0-50%) */}
+            <View
+                style={{
+                    width: size / 2,
+                    height: size,
+                    overflow: 'hidden',
+                    position: 'absolute',
+                    left: size / 2, // Clip to Right Half of World
+                }}
+            >
+                <View
+                    style={{
+                        width: size,
+                        height: size,
+                        position: 'absolute',
+                        left: -size / 2, // Center the Rotator in the Half Container
+                        transform: [{ rotate: `${-180 + rightRotation}deg` }], // Start at -180 (Left), rotate to 0 (Right)
+                    }}
+                >
+                    {/* The Semicircle Object (Right Half Colored) */}
+                    <View
+                        style={{
+                            width: size / 2,
+                            height: size,
+                            overflow: 'hidden',
+                            position: 'absolute',
+                            left: size / 2, // Right Side
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: size,
+                                height: size,
+                                borderRadius: size / 2,
+                                borderWidth: strokeWidth,
+                                borderColor: activeColor,
+                                position: 'absolute',
+                                left: -size / 2,
+                            }}
+                        />
+                    </View>
+                </View>
+            </View>
+
+            {/* Left Half Segment (Handles 50-100%) */}
+            <View
+                style={{
+                    width: size / 2,
+                    height: size,
+                    overflow: 'hidden',
+                    position: 'absolute',
+                    left: 0, // Clip to Left Half of World
+                }}
+            >
+                <View
+                    style={{
+                        width: size,
+                        height: size,
+                        position: 'absolute',
+                        left: 0, // Center the Rotator
+                        transform: [{ rotate: `${-180 + leftRotation}deg` }], // Start at -180 (Right), rotate to 0 (Left)
+                    }}
+                >
+                    {/* The Semicircle Object (Left Half Colored) */}
+                    <View
+                        style={{
+                            width: size / 2,
+                            height: size,
+                            overflow: 'hidden',
+                            position: 'absolute',
+                            left: 0, // Left Side
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: size,
+                                height: size,
+                                borderRadius: size / 2,
+                                borderWidth: strokeWidth,
+                                borderColor: activeColor,
+                                position: 'absolute',
+                                left: 0,
+                            }}
+                        />
+                    </View>
+                </View>
+            </View>
+
+            <CommonText bold size={Scale.SCALE_12} color={Colors.TEXT_PRIMARY}>
+                {current} of {total}
+            </CommonText>
         </View>
     );
 };
@@ -141,12 +274,6 @@ const styles = StyleSheet.create({
     progressContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        // Add specific progress circle styling here if needed
     },
-    progressText: {
-        fontFamily: Typography.FONT_FAMILY_BOLD,
-        fontSize: Typography.FONT_SIZE_14,
-        lineHeight: Typography.LINE_HEIGHT_24,
-        color: Colors.TEXT_PRIMARY,
-    },
+    // progressText style removed as it's now internal to CircularProgress
 });

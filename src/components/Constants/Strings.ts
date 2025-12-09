@@ -117,5 +117,7 @@ export const Strings = {
     AGE_OF_PROPERTY: 'Age of property (in years)',
     ATTACH_DOCUMENT: 'Attach document',
     SELECT_AMENITIES: 'Select amenities',
+    BACK: 'Back',
+    CONTINUE: 'Continue',
   },
 };

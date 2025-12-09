@@ -40,28 +40,38 @@ export const PropertyStep3: React.FC<PropertyStep3Props> = ({
     };
 
     // Render amenity card
-    const renderAmenityCard = (amenity: Amenity) => (
-        <Pressable
-            key={amenity.id}
-            style={styles.amenityCard}
-            onPress={() => handleAmenityToggle(amenity.id)}
-        >
-            <Image
-                source={amenity.icon || Logos.RESIDENTIAL_ICON}
-                style={styles.amenityIcon}
-                resizeMode="contain"
-            />
-            <CommonText
-                semibold
-                variant="caption"
-                color={Colors.PRIMARY_400}
-                style={styles.amenityLabel}
-                numberOfLines={2}
+    const renderAmenityCard = (amenity: Amenity) => {
+        const isSelected = selectedAmenities.includes(amenity.id);
+        return (
+            <Pressable
+                key={amenity.id}
+                style={[
+                    styles.amenityCard,
+                    isSelected && styles.amenityCardSelected
+                ]}
+                onPress={() => handleAmenityToggle(amenity.id)}
             >
-                {amenity.name}
-            </CommonText>
-        </Pressable>
-    );
+                <Image
+                    source={amenity.icon || Logos.RESIDENTIAL_ICON}
+                    style={[
+                        styles.amenityIcon,
+                        isSelected && { tintColor: Colors.PRIMARY_400 }
+                    ]}
+                    resizeMode="contain"
+                />
+                <CommonText
+                    semibold={isSelected}
+                    medium={!isSelected}
+                    variant="caption"
+                    color={isSelected ? Colors.PRIMARY_400 : Colors.TEXT_PRIMARY}
+                    style={styles.amenityLabel}
+                    numberOfLines={2}
+                >
+                    {amenity.name}
+                </CommonText>
+            </Pressable>
+        );
+    };
 
     // Show first 5 amenities from availableAmenities by default
     const defaultAmenities = availableAmenities.slice(0, 5);
@@ -147,26 +157,31 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     amenityCard: {
-        width: 111,
+        flex: 1, // Responsive width
         height: Scale.SCALE_80,
         padding: Scale.SCALE_8,
         borderRadius: Scale.BORDER_RADIUS_8,
         borderWidth: Scale.SCALE_1,
         borderStyle: 'solid',
+        borderColor: Colors.GRAY_200,
+        backgroundColor: Colors.WHITE,
+        gap: Scale.SCALE_4,
+    },
+    amenityCardSelected: {
         borderColor: Colors.PRIMARY_300,
         backgroundColor: Colors.BACKGROUND_SELECTED,
-        gap: Scale.SCALE_4,
     },
     amenityIcon: {
         width: Scale.SCALE_20,
         height: Scale.SCALE_20,
+        tintColor: Colors.GRAY_500,
     },
     amenityLabel: {
         lineHeight: Typography.LINE_HEIGHT_16,
         flex: 1,
     },
     viewAllCard: {
-        width: 111,
+        flex: 1, // Responsive width matching amenity cards
         height: Scale.SCALE_80,
         padding: Scale.SCALE_8,
         borderRadius: Scale.BORDER_RADIUS_8,

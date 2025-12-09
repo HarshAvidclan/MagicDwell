@@ -23,6 +23,7 @@ export const Scale = {
     SCALE_40: 40,
     SCALE_44: 44,
     SCALE_48: 48,
+    SCALE_49: 49,
     SCALE_52: 52,
     SCALE_56: 56,
     SCALE_60: 60,

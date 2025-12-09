@@ -297,7 +297,7 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     };
 
     return (
-        <SafeAreaView style={styles.container} edges={['top']}>
+        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
             <View style={styles.headerContainer}>
                 <View style={styles.headerContent}>
                     <PropertyStepHeader
