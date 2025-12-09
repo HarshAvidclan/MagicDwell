@@ -74,14 +74,13 @@ export const Scale = {
     SCALE_14: 14,
     SCALE_54: 54,
     SCALE_173: 173,
+    BORDER_RADIUS_3: 3,
     BORDER_RADIUS_4: 4,
     BORDER_RADIUS_8: 8,
     BORDER_RADIUS_9: 9,
-    BORDER_RADIUS_3: 3,
     BORDER_RADIUS_152: 152,
     BORDER_WIDTH_1_5: 1.5,
-    BORDER_RADIUS_100: 100,  // Add this
-    // ... existing scales
+    BORDER_RADIUS_100: 100,
     SCALE_13: 13,
     SCALE_19: 19,
     SCALE_251: 251,
@@ -90,5 +89,7 @@ export const Scale = {
     SCALE_42: 42,
     // Border Width
     BORDER_WIDTH_1: 1,
+    BORDER_RADIUS_1: 1, // Added
     BORDER_RADIUS_12: 12,
+    BORDER_RADIUS_16: 16, // Added
 };

@@ -1,7 +1,7 @@
 export const Strings = {
   ONBOARDING: {
-    LOGIN: 'Log in',  // Add this
-    CREATE_ACCOUNT: 'Create Account',  // Add this
+    LOGIN: 'Log in',
+    CREATE_ACCOUNT: 'Create Account',
     SLIDES: [
       {
         HEADING: 'Find Your Dream Home',
@@ -77,10 +77,10 @@ export const Strings = {
     CO_LIVING: 'Co-living',
   },
   TOOLS: {
-    PRICING_INSIGHTS: 'Pricing &\nInsights',
-    EMI_CALCULATOR: 'EMI\nCalculator',
-    RESEARCH_SNAPSHOT: 'Research\nSnapshot',
-    LOCALITY_INSIGHTS: 'Locality\nInsights',
+    PRICING_INSIGHTS: 'Pricing &\\nInsights',
+    EMI_CALCULATOR: 'EMI\\nCalculator',
+    RESEARCH_SNAPSHOT: 'Research\\nSnapshot',
+    LOCALITY_INSIGHTS: 'Locality\\nInsights',
   },
   TABS: {
     HOME: 'Home',
@@ -93,5 +93,29 @@ export const Strings = {
     PROPERTY: 'Property',
     VEHICLE: 'Vehicle',
     CONTINUE: 'Continue',
+  },
+  PROPERTY_LISTING: {
+    SCREEN_TITLE: 'Post property',
+    PROPERTY_TYPE: 'Property type',
+    LOOKING_TO: 'Looking to',
+    ADD_LOCATION: 'Add location',
+    SEARCH_LOCATION: 'Search location',
+    LOCATE_MY_LOCATION: 'Locate my location',
+    CATEGORY: 'Category',
+    BUILDING_NAME: 'Building/Project/Society name',
+    LOCALITY: 'Locality',
+    TOTAL_FLOORS: 'Total floors',
+    YOUR_FLOOR: 'Your floor',
+    BHK_TYPE: 'BHK type',
+    BUILT_UP_AREA: 'Built up area',
+    FURNISH_TYPE: 'Furnish type',
+    CONSTRUCTION_STATUS: 'Construction status',
+    PROPERTY_AMENITIES: 'Property amenities',
+    VIEW_ALL: 'View all',
+    ADD_PHOTOS: 'Add photos',
+    COST: 'Cost',
+    AGE_OF_PROPERTY: 'Age of property (in years)',
+    ATTACH_DOCUMENT: 'Attach document',
+    SELECT_AMENITIES: 'Select amenities',
   },
 };

@@ -31,7 +31,7 @@ import { API } from '../../../Services/API/Api';
 import { Auth } from '../../../Services/API/URL/URLS';
 import { RegisterInput } from '../../../Services/API/Input/inputIndex';
 
-interface AccountDetailsScreenProps {}
+interface AccountDetailsScreenProps { }
 
 export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
   const navigation = useNavigation<AccountDetailsScreenNavigationProp>();

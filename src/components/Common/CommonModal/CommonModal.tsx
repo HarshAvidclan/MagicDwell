@@ -94,15 +94,18 @@ const styles = StyleSheet.create({
         gap: Scale.SCALE_12,
     },
     homeIndicatorContainer: {
-        height: Scale.SCALE_34,
-        alignSelf: 'stretch',
+        width: '100%',
+        height: 34,
+        flex: 1,
     },
     homeIndicator: {
-        width: Scale.SCALE_44,
-        height: Scale.SCALE_5,
-        borderRadius: Scale.SCALE_100,
-        backgroundColor: Colors.GRAY_100,
-        alignSelf: 'center',
-        marginTop: Scale.SCALE_8,
+        position: 'absolute',
+        marginLeft: -22,
+        bottom: 13,
+        left: '50%',
+        borderRadius: 100,
+        backgroundColor: Colors.GRAY_300, // Matches #d1d5db
+        width: 44,
+        height: 5,
     },
 });

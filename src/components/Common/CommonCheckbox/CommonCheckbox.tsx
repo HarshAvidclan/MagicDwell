@@ -7,28 +7,65 @@ export interface CommonCheckboxProps extends Omit<PressableProps, 'style'> {
   checked: boolean;
   onToggle: () => void;
   style?: object;
+  size?: number; // Width and height
+  checkedColor?: string; // Color when checked
+  uncheckedBorderColor?: string; // Border color when unchecked
 }
 
 export const CommonCheckbox: React.FC<CommonCheckboxProps> = ({
   checked,
   onToggle,
   style,
+  size = Scale.SCALE_12, // Default size 12
+  checkedColor = Colors.PRIMARY_400,
+  uncheckedBorderColor = Colors.GRAY_500,
   ...rest
 }) => {
+  // Calculate tick mark dimensions based on checkbox size
+  const checkmarkSize = size * 0.80; // Checkmark is 80% of checkbox size
+  const line1Height = checkmarkSize * 0.2; // Short line
+  const line2Height = checkmarkSize * 0.7; // Long line
+  const lineWidth = size * 0.08; // Thin line thickness for elegant look
+
   return (
     <Pressable
       style={[
         styles.container,
-        checked && styles.checked,
+        {
+          width: size,
+          height: size,
+          borderColor: checked ? checkedColor : uncheckedBorderColor,
+          backgroundColor: checked ? checkedColor : Colors.WHITE,
+        },
         style,
       ]}
       onPress={onToggle}
       {...rest}
     >
       {checked && (
-        <View style={styles.checkmark}>
-          <View style={styles.checkmarkStem} />
-          <View style={styles.checkmarkKick} />
+        <View style={[styles.checkmark, { width: checkmarkSize, height: checkmarkSize }]}>
+          <View
+            style={[
+              styles.checkmarkLine1,
+              {
+                width: lineWidth,
+                height: line1Height,
+                left: checkmarkSize * 0.1,
+                top: checkmarkSize * 0.5,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.checkmarkLine2,
+              {
+                width: lineWidth,
+                height: line2Height,
+                left: checkmarkSize * 0.35,
+                top: checkmarkSize * 0.15,
+              },
+            ]}
+          />
         </View>
       )}
     </Pressable>
@@ -37,42 +74,24 @@ export const CommonCheckbox: React.FC<CommonCheckboxProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: Scale.SCALE_24,
-    height: Scale.SCALE_24,
-    borderRadius: Scale.BORDER_RADIUS_3,
-    borderWidth: Scale.SCALE_2,
-    borderColor: Colors.BORDER_SECONDARY,
-    backgroundColor: Colors.WHITE,
+    borderWidth: Scale.SCALE_1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  checked: {
-    backgroundColor: Colors.TERTIARY_700,
-    borderColor: Colors.TERTIARY_700,
+    borderRadius: Scale.BORDER_RADIUS_1,
   },
   checkmark: {
-    width: Scale.SCALE_16,
-    height: Scale.SCALE_16,
     position: 'relative',
   },
-  checkmarkStem: {
+  // Short line (left side of checkmark)
+  checkmarkLine1: {
     position: 'absolute',
-    width: Scale.SCALE_2 + 0.5,
-    height: Scale.SCALE_10,
     backgroundColor: Colors.WHITE,
-    left: Scale.SCALE_10,
-    top: Scale.SCALE_2,
-    transform: [{ rotate: '45deg' }],
-    borderRadius: Scale.SCALE_1,
-  },
-  checkmarkKick: {
-    position: 'absolute',
-    width: Scale.SCALE_2 + 0.5,
-    height: Scale.SCALE_4 + Scale.SCALE_1,
-    backgroundColor: Colors.WHITE,
-    left: Scale.SCALE_4,
-    top: Scale.SCALE_8,
     transform: [{ rotate: '-45deg' }],
-    borderRadius: Scale.SCALE_1,
+  },
+  // Long line (right side of checkmark)
+  checkmarkLine2: {
+    position: 'absolute',
+    backgroundColor: Colors.WHITE,
+    transform: [{ rotate: '45deg' }],
   },
 });
