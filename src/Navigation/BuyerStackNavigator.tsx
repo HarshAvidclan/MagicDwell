@@ -7,6 +7,7 @@ import { BuyerPostListingPropertyScreen } from '../components/Buyer/BuyerPostLis
 import { BuyerPostListingVehicleScreen } from '../components/Buyer/BuyerPostListingVehicleScreen/BuyerPostListingVehicleScreen';
 import { PostListingModalProvider } from '../contexts/PostListingModalContext';
 import { PostListingModalWrapper } from '../components/Buyer/PostListingModalWrapper/PostListingModalWrapper';
+import { ListingPreviewScreen } from '../components/Buyer/ListingPreviewScreen/ListingPreviewScreen';
 
 const Stack = createNativeStackNavigator<BuyerStackParamList>();
 
@@ -27,6 +28,10 @@ export const BuyerStackNavigator: React.FC = () => {
         <Stack.Screen
           name={Routes.BUYER_POST_LISTING_VEHICLE}
           component={BuyerPostListingVehicleScreen}
+        />
+        <Stack.Screen
+          name={Routes.BUYER_LISTING_PREVIEW}
+          component={ListingPreviewScreen}
         />
       </Stack.Navigator>
       {/* Modal Wrapper placed here to be available globally in this stack */}

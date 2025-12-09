@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
     SelectionOption,
 } from '../../Common';
+import { useNavigation } from '@react-navigation/native';
+import { BuyerPostListingPropertyNavigationProp, Routes } from '../../../Types/Navigation';
 import { Colors, Scale } from '../../Constants';
 import { PropertyStep1 } from './PropertyStep1/PropertyStep1';
 import { PropertyStep2 } from './PropertyStep2/PropertyStep2';
@@ -71,6 +73,7 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     postId,
     initialData,
 }) => {
+    const navigation = useNavigation<BuyerPostListingPropertyNavigationProp>();
     const [currentStep, setCurrentStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [masterData, setMasterData] = useState<PropertyMasterDataResult | null>(null);
@@ -228,10 +231,19 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
                 setCurrentStep(currentStep + 1);
                 setErrors({});
             } else {
-                // Submit form
-                handleSubmit();
+                // Navigate to Preview Screen instead of direct submit
+                // navigation.navigate(Routes.BUYER_LISTING_PREVIEW); // Needs navigation prop
+                // Assuming navigation might be available via hook or prop
+                // User didn't explicitly inject it in component props but it's a screen in stack.
+                // I will use useNavigation hook.
+                onPreviewAndPublish();
             }
         }
+    };
+
+    const onPreviewAndPublish = () => {
+        // @ts-ignore - Navigation type safety handled loosely here or needs hook
+        navigation.navigate(Routes.BUYER_LISTING_PREVIEW);
     };
 
     // Basic validation

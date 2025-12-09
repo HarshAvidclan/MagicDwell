@@ -26,6 +26,7 @@ export const Routes = {
   // Buyer Routes - Post Listing Flow
   BUYER_POST_LISTING_PROPERTY: 'BuyerPostListingProperty' as const,
   BUYER_POST_LISTING_VEHICLE: 'BuyerPostListingVehicle' as const,
+  BUYER_LISTING_PREVIEW: 'BuyerListingPreview' as const,
 };
 
 // Guest Stack Routes
@@ -48,7 +49,6 @@ export type BuyerTabParamList = {
   BuyerAddListing: undefined;
   BuyerSaved: undefined;
   BuyerProfile: undefined;
-
 };
 
 // Buyer Stack Routes (includes tabs and other screens)
@@ -60,6 +60,7 @@ export type BuyerStackParamList = {
 
   BuyerPostListingProperty: undefined;
   BuyerPostListingVehicle: undefined;
+  BuyerListingPreview: undefined;
 };
 
 // Navigation prop types for Guest screens
@@ -103,3 +104,5 @@ export type SearchResultsScreenNavigationProp = NativeStackNavigationProp<BuyerS
 export type BuyerPostListingPropertyNavigationProp = NativeStackNavigationProp<BuyerStackParamList, typeof Routes.BUYER_POST_LISTING_PROPERTY>;
 
 export type BuyerPostListingVehicleNavigationProp = NativeStackNavigationProp<BuyerStackParamList, typeof Routes.BUYER_POST_LISTING_VEHICLE>;
+
+export type BuyerListingPreviewNavigationProp = NativeStackNavigationProp<BuyerStackParamList, typeof Routes.BUYER_LISTING_PREVIEW>;
