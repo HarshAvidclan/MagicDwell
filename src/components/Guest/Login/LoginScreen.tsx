@@ -17,7 +17,7 @@ import { LoginResult } from '../../../Services/API/Result/ResultIndex';
 import { Colors, Logos, Scale, Strings } from '../../Constants';
 import { CommonButton, CommonInput, CommonText } from '../../Common';
 
-interface LoginScreenProps {}
+interface LoginScreenProps { }
 
 export const LoginScreen: React.FC<LoginScreenProps> = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
@@ -141,7 +141,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.header}>
-          <Pressable style={styles.logoContainer} onPress={() => {}}>
+          <Pressable style={styles.logoContainer} onPress={() => { }}>
             <CommonText bold color={Colors.TEXT_LIGHT} variant="heading">
               {Strings.LOGIN.LOGO_TEXT}
             </CommonText>

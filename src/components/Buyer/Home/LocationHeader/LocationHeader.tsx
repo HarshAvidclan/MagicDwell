@@ -47,6 +47,7 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
         leftIcon={Logos.ADD_ICON}
         fullWidth={false}
         borderRadius={Scale.SCALE_100}
+        iconStyle={{ tintColor: Colors.BLACK }}
       />
     </View>
   );
