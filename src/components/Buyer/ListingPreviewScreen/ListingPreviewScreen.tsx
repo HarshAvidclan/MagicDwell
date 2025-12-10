@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text, ScrollView, Pressable, Image } from "react-native";
+import { StyleSheet, View, ScrollView, Pressable, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Scale, Typography, Logos, Strings } from "../../Constants";
-import { CommonButton } from "../../Common";
+import { CommonButton, CommonText } from "../../Common";
 
 export const ListingPreviewScreen = ({ navigation }: any) => {
 
@@ -23,7 +23,7 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                     <Pressable style={styles.backButtonWrapper} onPress={handleBack}>
                         <Image source={Logos.CHEVRON_LEFT_ICON} style={styles.icon} resizeMode="contain" />
                     </Pressable>
-                    <Text style={[styles.listingPreview2, styles.lTypo]}>{Strings.PROPERTY_LISTING.LISTING_PREVIEW}</Text>
+                    <CommonText variant="heading" bold align="center" style={styles.listingPreviewTitle}>{Strings.PROPERTY_LISTING.LISTING_PREVIEW}</CommonText>
                     <View style={styles.placeholderRight} />
                 </View>
 
@@ -42,18 +42,18 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                             <View style={styles.frameParent3}>
                                 <View style={[styles.nameWithLocationWrapper, styles.parentFrameFlexBox]}>
                                     <View style={styles.nameWithLocation}>
-                                        <Text style={[styles.aresta, styles.lTypo]}>Aresta</Text>
+                                        <CommonText bold variant="heading" style={styles.aresta}>Aresta</CommonText>
                                         <View style={[styles.location, styles.parentFrameFlexBox]}>
-                                            <Text style={styles.sGHighway}>{`S G Highway, Ahmedabad `}</Text>
+                                            <CommonText medium variant="caption" color={Colors.GRAY_500} style={styles.sGHighway}>{`S G Highway, Ahmedabad `}</CommonText>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={[styles.lParent, styles.parentFrameFlexBox]}>
-                                    <Text style={[styles.l, styles.lTypo]}>₹85.50 L</Text>
+                                    <CommonText bold style={styles.priceText}>₹85.50 L</CommonText>
                                     <View style={[styles.ksqftParent, styles.containerFlexBox]}>
-                                        <Text style={[styles.ksqft, styles.ksqftTypo]}>₹4.33 K/sq.ft</Text>
-                                        <Image style={styles.frameInner} resizeMode="cover" />
-                                        <Text style={[styles.emiStartsAt, styles.ksqftTypo]}>EMI starts at ₹37.88 K</Text>
+                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_500} style={styles.ksqft}>₹4.33 K/sq.ft</CommonText>
+                                        <View style={styles.frameInner} />
+                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_600} style={styles.emiStartsAt}>EMI starts at ₹37.88 K</CommonText>
                                     </View>
                                 </View>
                             </View>
@@ -61,18 +61,18 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                             {/* Key Features */}
                             <View style={styles.carpetAreaParent}>
                                 <View style={[styles.carpetArea, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.carpetArea2, styles.carpetArea2Typo]}>Carpet Area</Text>
-                                    <Text style={[styles.sqft, styles.sqftTypo]}>1760 sq.ft</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500} align="center">Carpet Area</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">1760 sq.ft</CommonText>
                                 </View>
                                 <View style={styles.verticalDivider} />
                                 <View style={[styles.carpetArea, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.carpetArea2, styles.carpetArea2Typo]}>Possession</Text>
-                                    <Text style={[styles.sqft, styles.sqftTypo]}>Aug, 2028</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500} align="center">Possession</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">Aug, 2028</CommonText>
                                 </View>
                                 <View style={styles.verticalDivider} />
                                 <View style={[styles.carpetArea, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.carpetArea2, styles.carpetArea2Typo]}>Furnishing</Text>
-                                    <Text style={[styles.sqft, styles.sqftTypo]}>Unfurnished</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500} align="center">Furnishing</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">Unfurnished</CommonText>
                                 </View>
                             </View>
                         </View>
@@ -82,62 +82,62 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                     <View style={styles.frameParent4}>
                         <View style={styles.frameParent5}>
                             <View style={styles.frameParent3}>
-                                <Text style={[styles.projectOverview, styles.projectOverviewTypo]}>{Strings.PROPERTY_LISTING.PROJECT_OVERVIEW}</Text>
+                                <CommonText bold variant="subheading" style={styles.projectOverview}>{Strings.PROPERTY_LISTING.PROJECT_OVERVIEW}</CommonText>
                                 <View style={styles.horizontalDivider} />
                             </View>
                             <View style={[styles.carpetAreaGroup, styles.carpetFlexBox]}>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.propertyType, styles.carpetArea2Typo]}>{Strings.PROPERTY_LISTING.PROPERTY_TYPE}</Text>
-                                    <Text style={[styles.apartment, styles.sqftTypo]}>Apartment</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>{Strings.PROPERTY_LISTING.PROPERTY_TYPE}</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>Apartment</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.propertyType, styles.carpetArea2Typo]}>Project area</Text>
-                                    <Text style={[styles.apartment, styles.sqftTypo]}>1.08 Acres</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>Project area</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>1.08 Acres</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.propertyType, styles.carpetArea2Typo]}>{`Tower & Unit`}</Text>
-                                    <Text style={[styles.apartment, styles.sqftTypo]}>{`4 Towers & 141 Units`}</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>{`Tower & Unit`}</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{`4 Towers & 141 Units`}</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.propertyType, styles.carpetArea2Typo]}>Launch date</Text>
-                                    <Text style={[styles.apartment, styles.sqftTypo]}>Sept, 2024</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>Launch date</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>Sept, 2024</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.propertyType, styles.carpetArea2Typo]}>Facing</Text>
-                                    <Text style={[styles.apartment, styles.sqftTypo]}>East</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>Facing</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>East</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <Text style={[styles.propertyType, styles.carpetArea2Typo]}>{`Bedrooms & Bathrooms`}</Text>
-                                    <Text style={[styles.apartment, styles.sqftTypo]}>{`3 BHK & 3 Baths`}</Text>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>{`Bedrooms & Bathrooms`}</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{`3 BHK & 3 Baths`}</CommonText>
                                 </View>
                             </View>
                         </View>
                         <Pressable style={[styles.buttonComponents, styles.buttonFlexBox]} onPress={() => { }}>
-                            <Text style={[styles.button, styles.viewDetailsText]}>{Strings.PROPERTY_LISTING.VIEW_ALL_DETAILS}</Text>
+                            <CommonText medium variant="subheading" color={Colors.BLACK}>{Strings.PROPERTY_LISTING.VIEW_ALL_DETAILS}</CommonText>
                         </Pressable>
                     </View>
 
                     {/* Amenities */}
                     <View style={styles.frameView}>
-                        <Text style={[styles.projectOverview, styles.projectOverviewTypo]}>{Strings.PROPERTY_LISTING.PROPERTY_AMENITIES}</Text>
+                        <CommonText bold variant="subheading" style={styles.projectOverview}>{Strings.PROPERTY_LISTING.PROPERTY_AMENITIES}</CommonText>
                         <View style={[styles.carpetAreaContainer, styles.carpetFlexBox]}>
                             {/* Static Amenities for Preview */}
                             <View style={[styles.carpetArea11, styles.carpetBorder]}>
                                 <Image style={styles.carRIcon} resizeMode="cover" source={Logos.RESIDENTIAL_ICON} />
-                                <Text style={[styles.carParking, styles.sqftTypo]}>Car parking</Text>
+                                <CommonText variant="caption" color={Colors.BLACK} style={styles.carParking}>Car parking</CommonText>
                             </View>
                             <View style={[styles.carpetArea11, styles.carpetBorder]}>
                                 <Image style={styles.carRIcon} resizeMode="cover" source={Logos.RESIDENTIAL_ICON} />
-                                <Text style={[styles.carParking, styles.sqftTypo]}>Internet/Wifi</Text>
+                                <CommonText variant="caption" color={Colors.BLACK} style={styles.carParking}>Internet/Wifi</CommonText>
                             </View>
                             {/* ... Add more or map dynamically later */}
 
                             <Pressable style={[styles.carpetArea11, styles.carpetBorder]} onPress={() => { }}>
                                 <View style={[styles.container, styles.containerFlexBox]}>
-                                    <Text style={[styles.text2, styles.sqftTypo]}>+08</Text>
+                                    <CommonText semibold size={Scale.SCALE_13} color={Colors.GRAY_900}>+08</CommonText>
                                 </View>
                                 <View style={[styles.viewAllAmenitiesParent, styles.parentFrameFlexBox]}>
-                                    <Text style={[styles.viewAllAmenities, styles.carParkingTypo]}>{Strings.PROPERTY_LISTING.VIEW_ALL_AMENITIES}</Text>
+                                    <CommonText bold variant="caption" color={Colors.PRIMARY_600} style={styles.viewAllAmenities}>{Strings.PROPERTY_LISTING.VIEW_ALL_AMENITIES}</CommonText>
                                     <Image style={styles.chevronLeftIcon} resizeMode="cover" source={Logos.CHEVRON_LEFT_ICON} />
                                 </View>
                             </Pressable>
@@ -211,15 +211,8 @@ const styles = StyleSheet.create({
         gap: Scale.SCALE_20,
         paddingBottom: 100, // Space for bottom buttons
     },
-    listingPreview2: {
-        fontSize: Scale.SCALE_20,
-        lineHeight: Scale.SCALE_28,
-        color: Colors.BLACK,
-        textAlign: "center"
-    },
-    lTypo: {
-        fontFamily: Typography.FONT_FAMILY_BOLD,
-        fontWeight: "700"
+    listingPreviewTitle: {
+        flex: 1
     },
     icon: {
         width: Scale.SCALE_24,
@@ -265,22 +258,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
     aresta: {
-        textAlign: "left",
         lineHeight: Scale.SCALE_28,
-        fontSize: Scale.SCALE_20,
-        color: Colors.BLACK,
         alignSelf: "stretch"
     },
     location: {
         alignItems: "center"
     },
     sGHighway: {
-        color: Colors.GRAY_500,
-        fontFamily: Typography.FONT_FAMILY_MEDIUM,
-        fontWeight: "500",
-        fontSize: Scale.SCALE_14,
-        textAlign: "left",
-        lineHeight: Scale.SCALE_20,
         flex: 1
     },
     lParent: {
@@ -288,7 +272,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         alignSelf: "stretch"
     },
-    l: {
+    priceText: {
         fontSize: 26,
         lineHeight: 36,
         color: Colors.PRIMARY_600, // Assuming #067b62 match
@@ -308,14 +292,7 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     ksqft: {
-        color: Colors.PRIMARY_500, // #306ba1 match
-        fontFamily: Typography.FONT_FAMILY_MEDIUM,
-        fontWeight: "500"
-    },
-    ksqftTypo: {
-        fontSize: Scale.SCALE_13,
-        textAlign: "left",
-        lineHeight: Scale.SCALE_20
+        // color: Colors.PRIMARY_500, // #306ba1 match
     },
     frameInner: {
         height: 10,
@@ -323,9 +300,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.GRAY_300 // Placeholder
     },
     emiStartsAt: {
-        color: Colors.PRIMARY_600,
-        fontFamily: Typography.FONT_FAMILY_MEDIUM,
-        fontWeight: "500"
+        // color: Colors.PRIMARY_600,
     },
     carpetAreaParent: {
         backgroundColor: Colors.GRAY_50, // #f9fafb
@@ -350,27 +325,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // height: 44
     },
-    carpetArea2: {
-        textAlign: "center"
-    },
-    carpetArea2Typo: {
-        fontFamily: Typography.FONT_FAMILY_REGULAR,
-        color: Colors.GRAY_500,
-        fontSize: 14,
-        alignSelf: "stretch",
-        lineHeight: 20
-    },
-    sqft: {
-        lineHeight: 24,
-        fontSize: 16,
-        alignSelf: "stretch",
-        textAlign: "center",
-        color: Colors.BLACK
-    },
-    sqftTypo: {
-        fontFamily: Typography.FONT_FAMILY_SEMIBOLD,
-        fontWeight: "600"
-    },
     verticalDivider: {
         width: 1,
         height: 20,
@@ -389,17 +343,9 @@ const styles = StyleSheet.create({
         gap: Scale.SCALE_12,
     },
     projectOverview: {
-        lineHeight: 24,
-        height: 24,
+        // lineHeight: 24,
+        // height: 24,
         alignItems: "center"
-    },
-    projectOverviewTypo: {
-        fontSize: Scale.SCALE_18,
-        textAlign: "left",
-        fontFamily: Typography.FONT_FAMILY_BOLD,
-        fontWeight: "700",
-        alignSelf: "stretch",
-        color: Colors.BLACK
     },
     horizontalDivider: {
         width: '100%',
@@ -419,16 +365,6 @@ const styles = StyleSheet.create({
     carpetArea5: {
         width: '45%' // approximate
     },
-    propertyType: {
-        textAlign: "left"
-    },
-    apartment: {
-        lineHeight: 24,
-        fontSize: 16,
-        textAlign: "left",
-        alignSelf: "stretch",
-        color: Colors.BLACK
-    },
     buttonComponents: {
         width: '100%',
         borderColor: Colors.BLACK,
@@ -444,16 +380,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         overflow: "hidden"
-    },
-    button: {
-        lineHeight: 24,
-        fontFamily: Typography.FONT_FAMILY_MEDIUM,
-        fontWeight: "500",
-        textAlign: "center",
-        color: Colors.BLACK
-    },
-    viewDetailsText: {
-        fontSize: Scale.SCALE_16,
     },
     carpetAreaContainer: {
         gap: Scale.SCALE_12
@@ -476,21 +402,13 @@ const styles = StyleSheet.create({
         tintColor: Colors.GRAY_500
     },
     carParking: {
-        fontSize: 14,
-        textAlign: "left",
-        lineHeight: 20,
+        // textAlign: "left",
+        // lineHeight: 20,
         alignSelf: "stretch",
-        color: Colors.BLACK
     },
     container: {
         paddingVertical: 0,
         paddingHorizontal: Scale.SCALE_8
-    },
-    text2: {
-        color: Colors.GRAY_900,
-        fontSize: 13,
-        textAlign: "left",
-        lineHeight: 20
     },
     viewAllAmenitiesParent: {
         gap: Scale.SCALE_4,
@@ -499,15 +417,7 @@ const styles = StyleSheet.create({
     },
     viewAllAmenities: {
         textDecorationLine: "underline",
-        color: Colors.PRIMARY_600,
-        fontFamily: Typography.FONT_FAMILY_BOLD,
-        fontWeight: "700",
         flex: 1
-    },
-    carParkingTypo: {
-        fontSize: 14,
-        textAlign: "left",
-        lineHeight: 20
     },
     chevronLeftIcon: {
         height: 16,
