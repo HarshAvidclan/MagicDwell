@@ -20,9 +20,9 @@ import {
     tbl_PropertyAmenities,
     tbl_PropertyFurnishItems,
 } from '../../../Services/API/Input/inputIndex';
-import { PropertyMasterDataResult } from '../../../Services/API/Result/resultIndex';
+import { PropertyMasterDataResult, PropertyByPostIdResult } from '../../../Services/API/Result/resultIndex';
 import { API } from '../../../Services/API/Api';
-import { PropertyMaster } from '../../../Services/API/URL/URLS';
+import { PropertyMaster, Property } from '../../../Services/API/URL/URLS';
 
 // Props supporting both Add and Edit modes
 interface BuyerPostListingPropertyScreenProps {
@@ -77,6 +77,7 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     const [currentStep, setCurrentStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [masterData, setMasterData] = useState<PropertyMasterDataResult | null>(null);
+    const [listing, setListing] = useState<PropertyByPostIdResult | null>(null);
 
     // Form payload state - matches React web pattern
     const [payload, setPayload] = useState<PropertyAddEditInput>(
@@ -84,6 +85,58 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     );
 
     const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
+
+    useEffect(() => {
+        const fetchProperty = async () => {
+            if (!postId || Number(postId) <= 0) return;
+            // If we already have a listing prop from parent, skip fetching. (Assuming initialData acts as prop here maybe? keeping it simple like user snippet)
+            try {
+                const input = { PostId: Number(postId) };
+                const res = await API.POST<PropertyByPostIdResult>(
+                    Property.GETBYPOSTID,
+                    input,
+                );
+                console.log("Fetched property details:", res);
+                setListing(res);
+            } catch (err) {
+                console.error("Failed to fetch property by PostId", err);
+            }
+        };
+
+        fetchProperty();
+    }, [postId]);
+
+    // Map incoming listing (either fetched or passed from parent) into payload
+    useEffect(() => {
+        if (listing) {
+            console.log("Mapping listing -> payload", listing);
+            const property = listing.Property || {};
+            const post = listing.Post || {};
+            const amenities = listing.Amenities || [];
+            const furnish = listing.FurnishItems || [];
+
+            // Note: The original code sets currentPropertyTypeId state here. 
+            // In RN code, we depend on payload.Property.PropertyTypeId to fetch MasterData.
+            // So updating payload property type here effectively triggers MasterData fetch.
+
+            setPayload({
+                Post: { ...defaultPostDetail(), ...post },
+                Property: { ...defaultPropertyDetail(), ...property },
+                PropertyAmenities: amenities.map((a: any, idx: number) => ({
+                    PropertyId: a.PropertyId ?? 0,
+                    AmenityId: a.AmenityId ?? 0,
+                    SeqNo: a.SeqNo ?? idx + 1,
+                })),
+                PropertyFurnishItems: furnish.map((f: any, idx: number) => ({
+                    PropertyId: f.PropertyId ?? 0,
+                    FurnishItemId: f.FurnishItemId ?? 0,
+                    SeqNo: f.SeqNo ?? idx + 1,
+                })),
+                PropertyImages: listing.PropertyImages || [],
+                PropertyDocuments: listing.PropertyDocuments || []
+            });
+        }
+    }, [listing]);
 
     // Fetch master data on mount and when PropertyTypeId changes
     useEffect(() => {
