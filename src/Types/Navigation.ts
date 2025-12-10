@@ -1,7 +1,7 @@
 // src/Types/Navigation.ts
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import { CompositeNavigationProp, NavigatorScreenParams } from '@react-navigation/native';
 
 // Define all route names as constants
 export const Routes = {
@@ -10,6 +10,8 @@ export const Routes = {
   LOGIN: 'Login' as const,
   VERIFY_OTP: 'VerifyOTP' as const,
   ACCOUNT_DETAILS: 'AccountDetails' as const,
+  SIGN_UP: 'SignUp' as const,
+  BUYER_STACK: 'BuyerStack' as const,
 
   // Buyer Routes
   BUYER_TABS: 'BuyerTabs' as const,
@@ -40,6 +42,8 @@ export type GuestStackParamList = {
     phoneNumber?: string;
     isNewAccount: boolean;
   } | undefined;
+  SignUp: undefined;
+  BuyerStack: NavigatorScreenParams<BuyerStackParamList>;
 };
 
 // Buyer Tab Routes

@@ -94,4 +94,7 @@ export const Scale = {
     BORDER_RADIUS_1: 1, // Added
     BORDER_RADIUS_12: 12,
     BORDER_RADIUS_16: 16, // Added
+
+    BORDER_RADIUS_24: 24,
+    SCALE_150: 150,
 };

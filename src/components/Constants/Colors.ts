@@ -1,5 +1,6 @@
 export const Colors = {
   // Primary Colors
+  BACKDROP: 'rgba(0, 0, 0, 0.5)',
   PRIMARY_50: '#E6EBF1',
   PRIMARY_100: '#B0C2D4',
   PRIMARY_200: '#8AA5BF',

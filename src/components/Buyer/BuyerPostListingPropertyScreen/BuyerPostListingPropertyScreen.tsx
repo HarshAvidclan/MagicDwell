@@ -364,7 +364,9 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
                             }))
                         }
                         images={payload.PropertyImages}
-                        onAddImages={() => console.log('Add images')}
+                        onImagesChange={(images) =>
+                            setPayload((p) => ({ ...p, PropertyImages: images }))
+                        }
                         errors={errors}
                     />
                 )}
@@ -373,7 +375,10 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
                     <PropertyStep4
                         data={payload.Property}
                         onChange={setPropertyField}
-                        onAttachDocument={() => console.log('Attach document')}
+                        documents={payload.PropertyDocuments}
+                        onDocumentsChange={(docs) =>
+                            setPayload((p) => ({ ...p, PropertyDocuments: docs }))
+                        }
                         errors={errors}
                     />
                 )}

@@ -63,5 +63,10 @@ export const Logos = {
   // EMI_CALCULATOR_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   // RESEARCH_SNAPSHOT_ICON: require('../../Assets/Logos/Input_DropDown.png'),
   // LOCALITY_INSIGHTS_ICON: require('../../Assets/Logos/Input_DropDown.png'),
-
+  // Upload related logos
+  CAMERA_ICON: require('../../Assets/Logos/Camera.png'),
+  GALLERY_ICON: require('../../Assets/Logos/Gallery.png'),
+  FILE_ICON: require('../../Assets/Logos/File.png'),
+  DOCUMENT_ICON: require('../../Assets/Logos/Document.png'),
+  DELETE_ICON: require('../../Assets/Logos/Delete.png'),
 };

@@ -23,3 +23,7 @@ export type { CommonModalProps } from './CommonModal/CommonModal';
 
 export { CommonSelection } from './CommonSelection/CommonSelection';
 export type { CommonSelectionProps, SelectionOption } from './CommonSelection/CommonSelection';
+
+
+export { CommonUpload } from './CommonImageUpload/CommonUpload';
+export type { CommonUploadRef } from './CommonImageUpload/CommonUpload';

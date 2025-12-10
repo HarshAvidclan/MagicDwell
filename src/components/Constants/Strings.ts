@@ -128,4 +128,10 @@ export const Strings = {
     PROJECT_OVERVIEW: 'Project overview',
     NEARBY_PROPERTIES: 'Nearby properties',
   },
+  COMMON: {
+    CAMERA: 'Camera',
+    PHOTOS: 'Photos',
+    FILES: 'Files',
+    ATTACH_DOCUMENT: 'Attach document',
+  },
 };

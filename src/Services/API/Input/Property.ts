@@ -85,6 +85,7 @@ export interface PropertyAddEditInput {
   PropertyAmenities: tbl_PropertyAmenities[];
   PropertyFurnishItems: tbl_PropertyFurnishItems[];
   PropertyImages?: tbl_CommonImage[];
+  PropertyDocuments?: tbl_CommonImage[];
 }
 
 export interface tbl_Property {

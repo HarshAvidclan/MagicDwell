@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Pressable, Image } from 'react-native';
 import { CommonText } from '../../../Common';
 import { Colors, Scale, Typography, Logos, Strings } from '../../../Constants';
-import { ImageUpload } from '../ImageUpload/ImageUpload';
+import { ImageUpload } from '../../ImageUpload/ImageUpload';
 import { AmenitiesModal } from '../AmenitiesModal/AmenitiesModal';
 import { tbl_CommonImage, tbl_mstAmenities } from '../../../../Services/API/Input/inputIndex';
 
@@ -11,7 +11,7 @@ interface PropertyStep3Props {
     availableAmenities: tbl_mstAmenities[];
     onAmenitiesChange: (amenityIds: number[]) => void;
     images?: tbl_CommonImage[];
-    onAddImages?: () => void;
+    onImagesChange?: (images: tbl_CommonImage[]) => void;
     errors?: any;
 }
 
@@ -20,7 +20,7 @@ export const PropertyStep3: React.FC<PropertyStep3Props> = ({
     availableAmenities,
     onAmenitiesChange,
     images,
-    onAddImages,
+    onImagesChange,
     errors,
 }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -120,7 +120,7 @@ export const PropertyStep3: React.FC<PropertyStep3Props> = ({
             </View>
 
             {/* Add Photos */}
-            <ImageUpload images={images || []} onAddImages={onAddImages} />
+            <ImageUpload images={images || []} onChange={onImagesChange} />
             {errors?.images && (
                 <CommonText variant="caption" color={Colors.ERROR_500}>
                     {errors.images}

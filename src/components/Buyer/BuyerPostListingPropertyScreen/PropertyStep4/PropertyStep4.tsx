@@ -1,20 +1,23 @@
 import React from 'react';
 import { View, StyleSheet, Pressable, Image } from 'react-native';
+import { DocumentUpload } from '../../DocumentUpload/DocumentUpload';
 import { CommonText, CommonInput } from '../../../Common';
 import { Colors, Scale, Typography, Logos, Strings } from '../../../Constants';
-import { tbl_Property } from '../../../../Services/API/Input/inputIndex';
+import { tbl_Property, tbl_CommonImage } from '../../../../Services/API/Input/inputIndex';
 
 interface PropertyStep4Props {
     data: tbl_Property;
     onChange: <K extends keyof tbl_Property>(field: K, value: tbl_Property[K]) => void;
-    onAttachDocument?: () => void;
+    documents?: tbl_CommonImage[];
+    onDocumentsChange?: (documents: tbl_CommonImage[]) => void;
     errors?: Partial<Record<string, string>>;
 }
 
 export const PropertyStep4: React.FC<PropertyStep4Props> = ({
     data,
     onChange,
-    onAttachDocument,
+    documents,
+    onDocumentsChange,
     errors,
 }) => {
     return (
@@ -65,30 +68,16 @@ export const PropertyStep4: React.FC<PropertyStep4Props> = ({
             </View>
 
             {/* Attach Document */}
-            <View style={styles.fieldContainer}>
-                <CommonText semibold variant="body" color={Colors.BLACK}>
-                    {Strings.PROPERTY_LISTING.ATTACH_DOCUMENT}{' '}
-                    <CommonText medium variant="caption" color={Colors.GRAY_500}>
-                        (Aadhar, PAN, Passport, others)
-                    </CommonText>
+            <DocumentUpload
+                documents={documents}
+                onChange={onDocumentsChange}
+                maxDocuments={5}
+            />
+            {errors?.DocumentPath && (
+                <CommonText variant="caption" color={Colors.ERROR_500}>
+                    {errors.DocumentPath}
                 </CommonText>
-                <Pressable style={styles.attachButton} onPress={onAttachDocument}>
-                    <CommonText
-                        medium
-                        variant="body"
-                        color={Colors.GRAY_600}
-                        style={styles.attachText}
-                    >
-                        Attach document (JPG, PNG, PDF)
-                    </CommonText>
-                    <Image source={Logos.ADD_ICON} style={styles.paperclipIcon} />
-                </Pressable>
-                {errors?.DocumentPath && (
-                    <CommonText variant="caption" color={Colors.ERROR_500}>
-                        {errors.DocumentPath}
-                    </CommonText>
-                )}
-            </View>
+            )}
         </View>
     );
 };
@@ -130,27 +119,5 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         padding: 0,
         height: 'auto',
-    },
-    attachButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: Scale.SCALE_12,
-        paddingHorizontal: Scale.SCALE_20,
-        borderRadius: Scale.BORDER_RADIUS_100,
-        borderWidth: Scale.SCALE_1,
-        borderColor: Colors.GRAY_200,
-        borderStyle: 'solid',
-        backgroundColor: Colors.WHITE,
-        gap: Scale.SCALE_8,
-        height: Scale.SCALE_48,
-    },
-    attachText: {
-        flex: 1,
-        lineHeight: Typography.LINE_HEIGHT_20,
-    },
-    paperclipIcon: {
-        width: Scale.SCALE_20,
-        height: Scale.SCALE_20,
     },
 });
