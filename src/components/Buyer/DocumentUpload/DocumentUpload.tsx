@@ -4,6 +4,8 @@ import { tbl_CommonImage } from '../../../Services/API/Input/Image';
 import { CommonUploadRef, CommonText, CommonUpload } from '../../Common';
 import { Colors, Strings, Logos, Scale, Typography } from '../../Constants';
 
+import { FolderNames, TableNames } from '../../../Services/API/FileUpload';
+
 interface DocumentUploadProps {
     documents?: tbl_CommonImage[];
     onChange?: (documents: tbl_CommonImage[]) => void;
@@ -44,9 +46,9 @@ export const DocumentUpload: React.FC<DocumentUploadProps> = ({
             {/* CommonUpload handles the preview and modal */}
             <CommonUpload
                 ref={uploadRef}
-                folder="PropertyDocuments"
-                tableName="tbl_Property"
-                moduleName="PropertyDocuments"
+                folder={FolderNames.PropertyDocument}
+                tableName={TableNames.Property}
+                moduleName={FolderNames.PropertyDocument}
                 files={documents}
                 isMulti
                 acceptImages

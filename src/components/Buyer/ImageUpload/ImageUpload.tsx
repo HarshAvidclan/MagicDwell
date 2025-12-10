@@ -3,6 +3,9 @@ import { View, StyleSheet, Pressable, Image } from 'react-native';
 import { tbl_CommonImage } from '../../../Services/API/Input/Image';
 import { CommonUploadRef, CommonText, CommonUpload } from '../../Common';
 import { Colors, Strings, Logos, Scale } from '../../Constants';
+import { FolderNames, TableNames } from '../../../Services/API/FileUpload';
+
+
 
 interface ImageUploadProps {
     images?: tbl_CommonImage[];
@@ -55,9 +58,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             {/* CommonUpload handles the preview and modal */}
             <CommonUpload
                 ref={uploadRef}
-                folder="PropertyImages"
-                tableName="tbl_Property"
-                moduleName="Property"
+                folder={FolderNames.Property}
+                tableName={TableNames.Property}
+                moduleName={FolderNames.Property}
                 files={images}
                 isMulti
                 acceptImages

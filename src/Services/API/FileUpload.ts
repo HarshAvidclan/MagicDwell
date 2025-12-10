@@ -28,3 +28,13 @@ export async function FileUpload(input: ImageUploadInput) {
         return null;
     }
 }
+
+export const FolderNames = {
+    Property: "Property",
+    PropertyDocument: "PropertyDocument",
+    Vehicle: "Vehicle"
+}
+export const TableNames = {
+    Property: "tbl_Property",
+    Vehicle: "tbl_Vehicle"
+};
