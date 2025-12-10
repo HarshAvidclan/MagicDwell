@@ -8,6 +8,7 @@ import { API } from "../../../Services/API/Api";
 import { Property } from "../../../Services/API/URL/URLS";
 import { PropertyAddEditResult } from "../../../Services/API/Result/resultIndex";
 import { Alert } from "react-native";
+import { calculateEMIText, formatPrice, formatPricePerSqft } from "../../../Services/Utility/Functions";
 
 export const ListingPreviewScreen = ({ navigation, route }: any) => {
     const { data, masterData } = route.params || {};
@@ -159,15 +160,15 @@ export const ListingPreviewScreen = ({ navigation, route }: any) => {
                                 </View>
                                 <View style={[styles.lParent, styles.parentFrameFlexBox]}>
                                     <CommonText bold style={styles.priceText}>
-                                        ₹{property.Price?.toLocaleString()}
+                                        {formatPrice(property.Price)}
                                     </CommonText>
                                     <View style={[styles.ksqftParent, styles.containerFlexBox]}>
-                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_500} style={styles.ksqft}>
-                                            ₹{(property.Price / (property.BuildArea || 1)).toFixed(2)}/sq.ft
+                                        <CommonText medium size={Scale.SCALE_13} color={Colors.SECONDARY_700} style={styles.ksqft}>
+                                            {formatPricePerSqft(property.Price, property.BuildArea || 1, property.BuildAreaId || 1)}
                                         </CommonText>
                                         <View style={styles.frameInner} />
-                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_600} style={styles.emiStartsAt}>
-                                            EMI starts at ₹10k
+                                        <CommonText medium size={Scale.SCALE_13} color={Colors.TERTIARY_700} style={styles.emiStartsAt}>
+                                            {calculateEMIText(property.Price)}
                                         </CommonText>
                                     </View>
                                 </View>
@@ -343,7 +344,7 @@ export const ListingPreviewScreen = ({ navigation, route }: any) => {
                             <DetailRow label="Size" value={`${property.BuildArea} sq. ft.`} />
                             <DetailRow label="Possession date" value="August, 2028" />
                             <DetailRow label="Configuration" value={`${bhkName} Apartment`} />
-                            <DetailRow label="Price / Sq. Ft." value={`₹${(property.Price / (property.BuildArea || 1)).toFixed(2)} / sq.ft.`} />
+                            <DetailRow label="Price / Sq. Ft." value={formatPricePerSqft(property.Price, property.BuildArea || 1, property.BuildAreaId || 1)} />
                             <DetailRow label="Bedrooms" value="3" />
                             <DetailRow label="Bathrooms" value="3" />
                             <DetailRow label="Transaction type" value="New property" />
@@ -499,7 +500,7 @@ const styles = StyleSheet.create({
     priceText: {
         fontSize: 26,
         lineHeight: 36,
-        color: Colors.PRIMARY_600,
+        color: Colors.TERTIARY_700,
         textAlign: "left"
     },
     ksqftParent: {
