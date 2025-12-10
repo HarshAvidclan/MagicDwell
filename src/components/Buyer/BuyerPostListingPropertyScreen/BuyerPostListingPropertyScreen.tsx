@@ -243,7 +243,10 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
 
     const onPreviewAndPublish = () => {
         // @ts-ignore - Navigation type safety handled loosely here or needs hook
-        navigation.navigate(Routes.BUYER_LISTING_PREVIEW);
+        navigation.navigate(Routes.BUYER_LISTING_PREVIEW, {
+            data: payload,
+            masterData: masterData
+        });
     };
 
     // Basic validation
@@ -252,32 +255,32 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         const prop = payload.Property;
 
         // Validation commented out for now - uncomment when needed
-        // switch (step) {
-        //     case 1:
-        //         if (!prop.PropertyTypeId) newErrors.PropertyTypeId = 'Property type is required';
-        //         if (!prop.LookingToId) newErrors.LookingToId = 'Looking to is required';
-        //         if (!prop.Locality) newErrors.Locality = 'Location is required';
-        //         break;
-        //     case 2:
-        //         if (!prop.ChildPropertyTypeId)
-        //             newErrors.ChildPropertyTypeId = 'Category is required';
-        //         if (!prop.BuildingName) newErrors.BuildingName = 'Building name is required';
-        //         if (!prop.TotalFloor) newErrors.TotalFloor = 'Total floors is required';
-        //         if (prop.PropertyTypeId === 1 && !prop.BHKId) newErrors.BHKId = 'BHK is required';
-        //         if (!prop.BuildArea) newErrors.BuildArea = 'Build area is required';
-        //         if (!prop.FurnishTypeId) newErrors.FurnishTypeId = 'Furnish type is required';
-        //         if (!prop.ConstructionStatusId)
-        //             newErrors.ConstructionStatusId = 'Construction status is required';
-        //         break;
-        //     case 3:
-        //         if (payload.PropertyAmenities.length === 0)
-        //             newErrors.amenities = 'Select at least one amenity';
-        //         break;
-        //     case 4:
-        //         if (!prop.Price) newErrors.Price = 'Price is required';
-        //         if (!prop.AgeOfProperty) newErrors.AgeOfProperty = 'Age of property is required';
-        //         break;
-        // }
+        switch (step) {
+            case 1:
+                if (!prop.PropertyTypeId) newErrors.PropertyTypeId = 'Property type is required';
+                if (!prop.LookingToId) newErrors.LookingToId = 'Looking to is required';
+                if (!prop.Locality) newErrors.Locality = 'Location is required';
+                break;
+            case 2:
+                if (!prop.ChildPropertyTypeId)
+                    newErrors.ChildPropertyTypeId = 'Category is required';
+                if (!prop.BuildingName) newErrors.BuildingName = 'Building name is required';
+                if (!prop.TotalFloor) newErrors.TotalFloor = 'Total floors is required';
+                if (prop.PropertyTypeId === 1 && !prop.BHKId) newErrors.BHKId = 'BHK is required';
+                if (!prop.BuildArea) newErrors.BuildArea = 'Build area is required';
+                if (!prop.FurnishTypeId) newErrors.FurnishTypeId = 'Furnish type is required';
+                if (!prop.ConstructionStatusId)
+                    newErrors.ConstructionStatusId = 'Construction status is required';
+                break;
+            case 3:
+                if (payload.PropertyAmenities.length === 0)
+                    newErrors.amenities = 'Select at least one amenity';
+                break;
+            case 4:
+                if (!prop.Price) newErrors.Price = 'Price is required';
+                if (!prop.AgeOfProperty) newErrors.AgeOfProperty = 'Age of property is required';
+                break;
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;

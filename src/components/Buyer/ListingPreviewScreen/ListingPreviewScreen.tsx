@@ -2,9 +2,28 @@ import React from "react";
 import { StyleSheet, View, ScrollView, Pressable, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Scale, Typography, Logos, Strings } from "../../Constants";
-import { CommonButton, CommonText } from "../../Common";
+import { CommonButton, CommonImage, CommonText } from "../../Common";
+import { LOCALHOSTWITHPORT } from "../../../Services/API/URL/BaseURL";
 
-export const ListingPreviewScreen = ({ navigation }: any) => {
+export const ListingPreviewScreen = ({ navigation, route }: any) => {
+    const { data, masterData } = route.params || {};
+    const property = data?.Property || {};
+    const images = data?.PropertyImages || [];
+    const amenities = data?.PropertyAmenities || [];
+
+    // Helper to get name from master data
+    const getMasterName = (list: any[], id: number, key: string, labelKey: string) => {
+        const item = list?.find((x: any) => x[key] === id);
+        return item?.[labelKey] || 'N/A';
+    };
+
+    const propertyTypeName = getMasterName(masterData?.PropertyTypes, property.PropertyTypeId, 'PropertyTypeId', 'PropertyTypeName');
+    const childPropertyTypeName = getMasterName(masterData?.ChildPropertyTypes, property.ChildPropertyTypeId, 'PropertyTypeId', 'PropertyTypeName');
+    const lookingToName = getMasterName(masterData?.LookingToList, property.LookingToId, 'LookingToId', 'LookingToName');
+    const bhkName = getMasterName(masterData?.BHKList, property.BHKId, 'BHKId', 'BHKName');
+    const furnishName = getMasterName(masterData?.FurnishTypeList, property.FurnishTypeId, 'FurnishTypeId', 'FurnishTypeName');
+    const constructionStatusName = getMasterName(masterData?.ConstructionStatusList, property.ConstructionStatusId, 'ConstructionStatusId', 'ConstructionStatusName');
+    const buildAreaName = getMasterName(masterData?.BuildAreaList, property.BuildAreaId, 'BuildAreaId', 'BuildAreaName'); // Note: Assuming ID match or separate unit logic
 
     const handleBack = () => {
         navigation.goBack();
@@ -12,13 +31,13 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
 
     const handlePublish = () => {
         // Implement publish logic here
-        console.log("Publishing listing...");
+        console.log("Publishing listing...", data);
     };
 
     return (
         <SafeAreaView style={styles.viewBg} edges={['top', 'bottom']}>
             <View style={[styles.view, styles.viewLayout]}>
-                {/* Header with Back Button (Custom or just consistent with design) */}
+                {/* Header */}
                 <View style={styles.headerContainer}>
                     <Pressable style={styles.backButtonWrapper} onPress={handleBack}>
                         <Image source={Logos.CHEVRON_LEFT_ICON} style={styles.icon} resizeMode="contain" />
@@ -32,9 +51,20 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                     {/* Images Section */}
                     <View style={styles.frameView}>
                         <ScrollView style={[styles.imageParent]} horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.frameContainer5Content}>
-                            <Image style={styles.imageIcon} resizeMode="cover" source={{ uri: "https://via.placeholder.com/300" }} />
-                            <Image style={styles.imageIcon} resizeMode="cover" source={{ uri: "https://via.placeholder.com/300" }} />
-                            <Image style={styles.imageIcon} resizeMode="cover" source={{ uri: "https://via.placeholder.com/300" }} />
+                            {images.length > 0 ? (
+                                images.map((img: any, index: number) => (
+                                    <CommonImage
+                                        key={index}
+                                        style={styles.imageIcon}
+                                        resizeMode="cover"
+                                        source={{ uri: `${LOCALHOSTWITHPORT}${img.ImagePath}` }}
+                                    />
+                                ))
+                            ) : (
+                                <View style={[styles.imageIcon, { justifyContent: 'center', alignItems: 'center' }]}>
+                                    <CommonText>No Images Uploaded</CommonText>
+                                </View>
+                            )}
                         </ScrollView>
 
                         {/* Property Details */}
@@ -42,18 +72,18 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                             <View style={styles.frameParent3}>
                                 <View style={[styles.nameWithLocationWrapper, styles.parentFrameFlexBox]}>
                                     <View style={styles.nameWithLocation}>
-                                        <CommonText bold variant="heading" style={styles.aresta}>Aresta</CommonText>
+                                        <CommonText bold variant="heading" style={styles.aresta}>{property.BuildingName || 'Building Name'}</CommonText>
                                         <View style={[styles.location, styles.parentFrameFlexBox]}>
-                                            <CommonText medium variant="caption" color={Colors.GRAY_500} style={styles.sGHighway}>{`S G Highway, Ahmedabad `}</CommonText>
+                                            <CommonText medium variant="caption" color={Colors.GRAY_500} style={styles.sGHighway}>{property.Locality || 'Location'}</CommonText>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={[styles.lParent, styles.parentFrameFlexBox]}>
-                                    <CommonText bold style={styles.priceText}>₹85.50 L</CommonText>
+                                    <CommonText bold style={styles.priceText}>₹{property.Price?.toLocaleString()}</CommonText>
                                     <View style={[styles.ksqftParent, styles.containerFlexBox]}>
-                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_500} style={styles.ksqft}>₹4.33 K/sq.ft</CommonText>
+                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_500} style={styles.ksqft}>₹{(property.Price / (property.BuildArea || 1)).toFixed(2)}/sq.ft</CommonText>
                                         <View style={styles.frameInner} />
-                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_600} style={styles.emiStartsAt}>EMI starts at ₹37.88 K</CommonText>
+                                        <CommonText medium size={Scale.SCALE_13} color={Colors.PRIMARY_600} style={styles.emiStartsAt}>EMI starts at ₹10k</CommonText>
                                     </View>
                                 </View>
                             </View>
@@ -61,18 +91,18 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                             {/* Key Features */}
                             <View style={styles.carpetAreaParent}>
                                 <View style={[styles.carpetArea, styles.carpetFlexBox1]}>
-                                    <CommonText variant="caption" color={Colors.GRAY_500} align="center">Carpet Area</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">1760 sq.ft</CommonText>
+                                    <CommonText variant="caption" color={Colors.GRAY_500} align="center">Build Area</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">{property.BuildArea} sq.ft</CommonText>
                                 </View>
                                 <View style={styles.verticalDivider} />
                                 <View style={[styles.carpetArea, styles.carpetFlexBox1]}>
-                                    <CommonText variant="caption" color={Colors.GRAY_500} align="center">Possession</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">Aug, 2028</CommonText>
+                                    <CommonText variant="caption" color={Colors.GRAY_500} align="center">Status</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">{constructionStatusName}</CommonText>
                                 </View>
                                 <View style={styles.verticalDivider} />
                                 <View style={[styles.carpetArea, styles.carpetFlexBox1]}>
                                     <CommonText variant="caption" color={Colors.GRAY_500} align="center">Furnishing</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">Unfurnished</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK} align="center">{furnishName}</CommonText>
                                 </View>
                             </View>
                         </View>
@@ -88,64 +118,44 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                             <View style={[styles.carpetAreaGroup, styles.carpetFlexBox]}>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
                                     <CommonText variant="caption" color={Colors.GRAY_500}>{Strings.PROPERTY_LISTING.PROPERTY_TYPE}</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>Apartment</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{childPropertyTypeName || propertyTypeName}</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <CommonText variant="caption" color={Colors.GRAY_500}>Project area</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>1.08 Acres</CommonText>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>Age of Property</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{property.AgeOfProperty} Years</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <CommonText variant="caption" color={Colors.GRAY_500}>{`Tower & Unit`}</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{`4 Towers & 141 Units`}</CommonText>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>Configuration</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{bhkName}</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <CommonText variant="caption" color={Colors.GRAY_500}>Launch date</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>Sept, 2024</CommonText>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>Floor</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{property.FloorNo} of {property.TotalFloor}</CommonText>
                                 </View>
                                 <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <CommonText variant="caption" color={Colors.GRAY_500}>Facing</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>East</CommonText>
-                                </View>
-                                <View style={[styles.carpetArea5, styles.carpetFlexBox1]}>
-                                    <CommonText variant="caption" color={Colors.GRAY_500}>{`Bedrooms & Bathrooms`}</CommonText>
-                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{`3 BHK & 3 Baths`}</CommonText>
+                                    <CommonText variant="caption" color={Colors.GRAY_500}>Looking To</CommonText>
+                                    <CommonText semibold variant="subheading" color={Colors.BLACK}>{lookingToName}</CommonText>
                                 </View>
                             </View>
                         </View>
-                        <Pressable style={[styles.buttonComponents, styles.buttonFlexBox]} onPress={() => { }}>
-                            <CommonText medium variant="subheading" color={Colors.BLACK}>{Strings.PROPERTY_LISTING.VIEW_ALL_DETAILS}</CommonText>
-                        </Pressable>
                     </View>
 
                     {/* Amenities */}
                     <View style={styles.frameView}>
                         <CommonText bold variant="subheading" style={styles.projectOverview}>{Strings.PROPERTY_LISTING.PROPERTY_AMENITIES}</CommonText>
                         <View style={[styles.carpetAreaContainer, styles.carpetFlexBox]}>
-                            {/* Static Amenities for Preview */}
-                            <View style={[styles.carpetArea11, styles.carpetBorder]}>
-                                <Image style={styles.carRIcon} resizeMode="cover" source={Logos.RESIDENTIAL_ICON} />
-                                <CommonText variant="caption" color={Colors.BLACK} style={styles.carParking}>Car parking</CommonText>
-                            </View>
-                            <View style={[styles.carpetArea11, styles.carpetBorder]}>
-                                <Image style={styles.carRIcon} resizeMode="cover" source={Logos.RESIDENTIAL_ICON} />
-                                <CommonText variant="caption" color={Colors.BLACK} style={styles.carParking}>Internet/Wifi</CommonText>
-                            </View>
-                            {/* ... Add more or map dynamically later */}
-
-                            <Pressable style={[styles.carpetArea11, styles.carpetBorder]} onPress={() => { }}>
-                                <View style={[styles.container, styles.containerFlexBox]}>
-                                    <CommonText semibold size={Scale.SCALE_13} color={Colors.GRAY_900}>+08</CommonText>
-                                </View>
-                                <View style={[styles.viewAllAmenitiesParent, styles.parentFrameFlexBox]}>
-                                    <CommonText bold variant="caption" color={Colors.PRIMARY_600} style={styles.viewAllAmenities}>{Strings.PROPERTY_LISTING.VIEW_ALL_AMENITIES}</CommonText>
-                                    <Image style={styles.chevronLeftIcon} resizeMode="cover" source={Logos.CHEVRON_LEFT_ICON} />
-                                </View>
-                            </Pressable>
+                            {amenities.map((item: any, index: number) => {
+                                const amenityName = getMasterName(masterData?.AmenitiesList, item.AmenityId, 'AmenityId', 'AmenityName');
+                                return (
+                                    <View key={index} style={[styles.carpetArea11, styles.carpetBorder]}>
+                                        <Image style={styles.carRIcon} resizeMode="cover" source={Logos.RESIDENTIAL_ICON} />
+                                        <CommonText variant="caption" color={Colors.BLACK} style={styles.carParking}>{amenityName}</CommonText>
+                                    </View>
+                                );
+                            })}
                         </View>
                     </View>
 
-                    {/* Nearby - Placeholder for now as per design */}
-                    {/* ... */}
                 </ScrollView>
 
                 {/* Bottom Buttons */}
@@ -155,7 +165,6 @@ export const ListingPreviewScreen = ({ navigation }: any) => {
                         variant="outline"
                         onPress={handleBack}
                         buttonStyle={styles.backButton}
-                    // titleStyle={{ color: Colors.BLACK }}
                     />
                     <CommonButton
                         title={Strings.PROPERTY_LISTING.PUBLISH_POSTING}
