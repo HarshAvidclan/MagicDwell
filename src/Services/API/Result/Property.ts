@@ -36,6 +36,7 @@ export interface PropertyByPostIdResult {
   Amenities: tbl_PropertyAmenities_Get[];
   FurnishItems: tbl_PropertyFurnishItems_Get[];
   PropertyImages?: tbl_CommonImage[];
+  PropertyDocuments?: tbl_CommonImage[];
 }
 
 
