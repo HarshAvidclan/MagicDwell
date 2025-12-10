@@ -4,6 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Scale, Typography, Logos, Strings } from "../../Constants";
 import { CommonButton, CommonImage, CommonText } from "../../Common";
 import { LOCALHOSTWITHPORT } from "../../../Services/API/URL/BaseURL";
+import { API } from "../../../Services/API/Api";
+import { Property } from "../../../Services/API/URL/URLS";
+import { PropertyAddEditResult } from "../../../Services/API/Result/resultIndex";
+import { Alert } from "react-native";
+import { useState } from "react";
 
 export const ListingPreviewScreen = ({ navigation, route }: any) => {
     const { data, masterData } = route.params || {};
@@ -25,13 +30,57 @@ export const ListingPreviewScreen = ({ navigation, route }: any) => {
     const constructionStatusName = getMasterName(masterData?.ConstructionStatusList, property.ConstructionStatusId, 'ConstructionStatusId', 'ConstructionStatusName');
     const buildAreaName = getMasterName(masterData?.BuildAreaList, property.BuildAreaId, 'BuildAreaId', 'BuildAreaName'); // Note: Assuming ID match or separate unit logic
 
+    const [loading, setLoading] = useState(false);
+
     const handleBack = () => {
         navigation.goBack();
     };
 
-    const handlePublish = () => {
-        // Implement publish logic here
-        console.log("Publishing listing...", data);
+    const handlePublish = async () => {
+        if (!data) return;
+        setLoading(true);
+        try {
+            console.log("Publishing listing...", JSON.stringify(data));
+            const response = await API.POST<PropertyAddEditResult>(
+                Property.ADDEDIT,
+                data
+            );
+
+            const postId = data?.Post?.PostId;
+
+            if (response != null) {
+                console.log("Property Save Response", response);
+
+                if (
+                    response.IsSuccess &&
+                    (Number(postId) <= 0 || postId == undefined)
+                ) {
+                    Alert.alert("Success", "Property listed successfully!", [
+                        {
+                            text: "OK",
+                            onPress: () => {
+                                navigation.popToTop();
+                            }
+                        }
+                    ]);
+                } else if (response.IsSuccess) {
+                    // Handle Update Success if distinct
+                    Alert.alert("Success", "Property details updated!", [
+                        {
+                            text: "OK",
+                            onPress: () => {
+                                navigation.popToTop();
+                            }
+                        }
+                    ]);
+                }
+            }
+        } catch (error) {
+            console.error("Publish error:", error);
+            Alert.alert("Error", "Failed to publish listing. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -170,6 +219,7 @@ export const ListingPreviewScreen = ({ navigation, route }: any) => {
                         title={Strings.PROPERTY_LISTING.PUBLISH_POSTING}
                         onPress={handlePublish}
                         buttonStyle={styles.publishButton}
+                        loading={loading}
                     />
                 </View>
             </View>
