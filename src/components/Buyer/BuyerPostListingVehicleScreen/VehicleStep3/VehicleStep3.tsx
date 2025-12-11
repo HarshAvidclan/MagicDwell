@@ -63,8 +63,8 @@ export const VehicleStep3: React.FC<VehicleStep3Props> = ({
                     <CommonCheckbox
                         checked={Boolean(data.IsNegotiate)}
                         onToggle={() => onChange('IsNegotiate', !data.IsNegotiate)}
-                        size={Scale.SCALE_24}
-                        checkedColor={Colors.PRIMARY_400}
+                        size={Scale.SCALE_18}
+                        checkedColor={Colors.TERTIARY_700}
                         uncheckedBorderColor={Colors.GRAY_400}
                     />
                     <CommonText variant="body" color={Colors.GRAY_700}>
