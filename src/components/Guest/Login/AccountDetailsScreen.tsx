@@ -248,6 +248,8 @@ export const AccountDetailsScreen: React.FC<AccountDetailsScreenProps> = () => {
               checked={agreedToTerms}
               onToggle={() => setAgreedToTerms(!agreedToTerms)}
               disabled={isLoading}
+              size={Scale.SCALE_18}
+              checkedColor={Colors.TERTIARY_700}
             />
             <CommonText variant="body" style={styles.termsText}>
               <CommonText variant="body" color={Colors.GRAY_500}>
