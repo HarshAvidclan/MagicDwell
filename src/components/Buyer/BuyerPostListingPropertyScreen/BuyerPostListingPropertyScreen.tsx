@@ -274,6 +274,8 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     const handleBack = () => {
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1);
+        } else {
+            navigation.goBack();
         }
     };
 

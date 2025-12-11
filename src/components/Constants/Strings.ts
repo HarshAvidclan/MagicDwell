@@ -134,4 +134,77 @@ export const Strings = {
     FILES: 'Files',
     ATTACH_DOCUMENT: 'Attach document',
   },
+  VEHICLE_POST: {
+    STEP_1_TITLE: "Add basic details",
+    STEP_1_SUBTITLE: "Next: Vehicle details",
+    STEP_2_TITLE: "Add vehicle details",
+    STEP_2_SUBTITLE: "Next: Pricing & photos",
+    STEP_3_TITLE: "Add pricing & photos",
+    STEP_3_SUBTITLE: "Next: Happy posting",
+    // ... field labels
+  },
+  VEHICLE_LISTING: {
+    // Screen Title
+    POST_VEHICLE: 'Post a vehicle',
+
+    // Step Titles
+    STEP_1_TITLE: 'Add basic details',
+    STEP_1_SUBTITLE: 'Vehicle details',
+    STEP_2_TITLE: 'Add vehicle details',
+    STEP_2_SUBTITLE: 'Pricing & photos',
+    STEP_3_TITLE: 'Add pricing & photos',
+    STEP_3_SUBTITLE: 'Happy posting',
+
+    // Step 1 - Basic Details
+    VEHICLE_TYPE: 'Vehicle type',
+    LOOKING_TO: 'Looking to',
+    ADD_LOCATION: 'Add location',
+    SEARCH_LOCATION: 'Search location',
+    LOCATE_MY_LOCATION: 'Locate my location',
+    COMING_SOON: 'Coming soon',
+
+    // Step 2 - Vehicle Details
+    BRAND_MAKER: 'Brand/Maker',
+    SELECT_BRAND: 'Select brand',
+    MODEL_NAME: 'Model name',
+    ENTER_MODEL_NAME: 'Enter model name here',
+    LOADING_MODELS: 'Loading models...',
+    CAR_TYPE: 'Car type',
+    FUEL_TYPE: 'Fuel type',
+    OWNERSHIP_HAND: 'Ownership hand',
+    TRANSMISSION: 'Transmission',
+    YEAR_OF_MANUFACTURE: 'Year of manufacture',
+    SELECT_YEAR: 'Select year',
+    KILOMETERS_DRIVEN: 'Kilometers driven',
+    ENTER_KMS_DRIVEN: 'Enter kms driven',
+
+    // Step 3 - Pricing & Photos
+    COST: 'Cost',
+    ADD_PRICE: 'Add a price',
+    IS_PRICE_NEGOTIABLE: 'Is the price negotiable?',
+    YES_OPEN_TO_NEGOTIATION: 'Yes, I am open to negotiation',
+    ADD_PHOTOS: 'Add photos',
+
+    // Navigation Buttons
+    BACK: 'Back',
+    CONTINUE: 'Continue',
+    PUBLISH_LISTING: 'Publish listing',
+
+    // Validation Messages
+    VEHICLE_TYPE_REQUIRED: 'Vehicle type is required',
+    LOOKING_TO_REQUIRED: 'Looking to is required',
+    LOCATION_REQUIRED: 'Location is required',
+    BRAND_REQUIRED: 'Brand is required',
+    MODEL_REQUIRED: 'Model is required',
+    FUEL_TYPE_REQUIRED: 'Fuel type is required',
+    YEAR_REQUIRED: 'Year of manufacture is required',
+    KM_DRIVEN_REQUIRED: 'Kilometers driven is required',
+    OWNERSHIP_REQUIRED: 'Number of owners is required',
+    TRANSMISSION_REQUIRED: 'Transmission is required',
+    PRICE_REQUIRED: 'Price is required',
+    IMAGES_REQUIRED: 'At least one image is required',
+    INVALID_YEAR: 'Valid manufacture year is required',
+    INVALID_KM: 'Driven km cannot be valid',
+  },
+
 };
