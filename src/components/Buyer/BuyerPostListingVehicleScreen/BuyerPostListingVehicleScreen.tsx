@@ -1,11 +1,11 @@
 // src/components/Buyer/BuyerPostListingVehicleScreen/BuyerPostListingVehicleScreen.tsx
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react'; // ✅ Add useCallback
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SelectionOption } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
-import { BuyerStackNavigationProp, Routes } from '../../../Types/Navigation';
+import { BuyerPostListingVehicleNavigationProp, Routes } from '../../../Types/Navigation';
 import { Colors, Scale } from '../../Constants';
 import { VehicleStep1 } from './VehicleStep1/VehicleStep1';
 import { VehicleStep2 } from './VehicleStep2/VehicleStep2';
@@ -16,6 +16,7 @@ import {
     VehicleAddEditInput,
     tbl_Vehicle,
     tbl_Post,
+    tbl_CommonImage,
     VehicleByPostIdInput,
     VehicleMasterDataInput,
 } from '../../../Services/API/Input/inputIndex';
@@ -71,7 +72,7 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
     postId,
     initialData,
 }) => {
-    const navigation = useNavigation<BuyerStackNavigationProp>();
+    const navigation = useNavigation<BuyerPostListingVehicleNavigationProp>();
     const [currentStep, setCurrentStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [masterData, setMasterData] = useState<VehicleMasterDataResult | null>(null);
@@ -143,8 +144,8 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         fetchMasterData();
     }, [payload.Vehicle.VehicleTypeId]);
 
-    // Update vehicle field
-    const setVehicleField = <K extends keyof tbl_Vehicle>(
+    // ✅ FIX: Wrap in useCallback
+    const setVehicleField = useCallback(<K extends keyof tbl_Vehicle>(
         field: K,
         value: tbl_Vehicle[K],
     ) => {
@@ -155,7 +156,12 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
             delete clone[String(field)];
             return clone;
         });
-    };
+    }, []);
+
+    // ✅ FIX: Wrap in useCallback
+    const handleImagesChange = useCallback((images: tbl_CommonImage[]) => {
+        setPayload((p) => ({ ...p, VehicleImages: images }));
+    }, []);
 
     // Convert master data to options
     const vehicleTypeOptions: SelectionOption[] = useMemo(
@@ -263,63 +269,72 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
                 setCurrentStep(currentStep + 1);
                 setErrors({});
             } else {
-                // Navigate to Preview or Submit
+                // Navigate to Preview
+                // onPreviewAndPublish();
                 handleSubmit();
             }
         }
     };
+
+    // const onPreviewAndPublish = () => {
+    //     navigation.navigate(Routes.BUYER_LISTING_PREVIEW, {
+    //         data: payload,
+    //         masterData: masterData,
+    //         type: 'vehicle',
+    //     });
+    // };
 
     // Validation
     const validateStep = (step: number): boolean => {
         const newErrors: Partial<Record<string, string>> = {};
         const v = payload.Vehicle;
 
-        // switch (step) {
-        //     case 1:
-        //         if (!v.VehicleTypeId || v.VehicleTypeId <= 0) {
-        //             newErrors.VehicleTypeId = 'Vehicle type is required';
-        //         }
-        //         if (!v.LookingToId || v.LookingToId <= 0) {
-        //             newErrors.LookingToId = 'Looking to is required';
-        //         }
-        //         if (!v.Location || v.Location.trim() === '') {
-        //             newErrors.Location = 'Location is required';
-        //         }
-        //         break;
+        switch (step) {
+            case 1:
+                if (!v.VehicleTypeId || v.VehicleTypeId <= 0) {
+                    newErrors.VehicleTypeId = 'Vehicle type is required';
+                }
+                if (!v.LookingToId || v.LookingToId <= 0) {
+                    newErrors.LookingToId = 'Looking to is required';
+                }
+                if (!v.Location || v.Location.trim() === '') {
+                    newErrors.Location = 'Location is required';
+                }
+                break;
 
-        //     case 2:
-        //         if (!v.BrandId || v.BrandId <= 0) {
-        //             newErrors.BrandId = 'Brand is required';
-        //         }
-        //         if (!v.BrandModelId || v.BrandModelId <= 0) {
-        //             newErrors.BrandModelId = 'Model is required';
-        //         }
-        //         if (!v.FuelTypeId || v.FuelTypeId <= 0) {
-        //             newErrors.FuelTypeId = 'Fuel type is required';
-        //         }
-        //         if (!v.YearOfMfd || v.YearOfMfd < 1900 || v.YearOfMfd > new Date().getFullYear()) {
-        //             newErrors.YearOfMfd = 'Valid year is required';
-        //         }
-        //         if (!v.DrivenKm || v.DrivenKm <= 0) {
-        //             newErrors.DrivenKm = 'Kilometers driven is required';
-        //         }
-        //         if (!v.NoOfOwnersId || v.NoOfOwnersId <= 0) {
-        //             newErrors.NoOfOwnersId = 'Number of owners is required';
-        //         }
-        //         if (!v.TransmissionId || v.TransmissionId <= 0) {
-        //             newErrors.TransmissionId = 'Transmission is required';
-        //         }
-        //         break;
+            case 2:
+                if (!v.BrandId || v.BrandId <= 0) {
+                    newErrors.BrandId = 'Brand is required';
+                }
+                if (!v.BrandModelId || v.BrandModelId <= 0) {
+                    newErrors.BrandModelId = 'Model is required';
+                }
+                if (!v.FuelTypeId || v.FuelTypeId <= 0) {
+                    newErrors.FuelTypeId = 'Fuel type is required';
+                }
+                if (!v.YearOfMfd || v.YearOfMfd < 1900 || v.YearOfMfd > new Date().getFullYear()) {
+                    newErrors.YearOfMfd = 'Valid year is required';
+                }
+                if (!v.DrivenKm || v.DrivenKm <= 0) {
+                    newErrors.DrivenKm = 'Kilometers driven is required';
+                }
+                if (!v.NoOfOwnersId || v.NoOfOwnersId <= 0) {
+                    newErrors.NoOfOwnersId = 'Number of owners is required';
+                }
+                if (!v.TransmissionId || v.TransmissionId <= 0) {
+                    newErrors.TransmissionId = 'Transmission is required';
+                }
+                break;
 
-        //     case 3:
-        //         if (!v.Price || v.Price <= 0) {
-        //             newErrors.Price = 'Price is required';
-        //         }
-        //         if (!payload.VehicleImages || payload.VehicleImages.length < 1) {
-        //             newErrors.VehicleImages = 'At least one image is required';
-        //         }
-        //         break;
-        // }
+            case 3:
+                if (!v.Price || v.Price <= 0) {
+                    newErrors.Price = 'Price is required';
+                }
+                if (!payload.VehicleImages || payload.VehicleImages.length < 1) {
+                    newErrors.VehicleImages = 'At least one image is required';
+                }
+                break;
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -396,9 +411,7 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
                         data={payload.Vehicle}
                         onChange={setVehicleField}
                         images={payload.VehicleImages}
-                        onImagesChange={(images) =>
-                            setPayload((p) => ({ ...p, VehicleImages: images }))
-                        }
+                        onImagesChange={handleImagesChange} // ✅ Use memoized callback
                         errors={errors}
                     />
                 )}

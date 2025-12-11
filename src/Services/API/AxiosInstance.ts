@@ -4,7 +4,7 @@ import { AuthService } from './AuthService';
 
 const axiosInstance: AxiosInstance = axios.create({
   headers: GlobalHeaders,
-  timeout: 30000, // 30 seconds timeout
+  // timeout: 30000, // 30 seconds timeout
 });
 
 axiosInstance.interceptors.request.use(

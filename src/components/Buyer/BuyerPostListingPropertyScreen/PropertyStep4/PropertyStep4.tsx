@@ -4,6 +4,7 @@ import { DocumentUpload } from '../../DocumentUpload/DocumentUpload';
 import { CommonText, CommonInput } from '../../../Common';
 import { Colors, Scale, Typography, Logos, Strings } from '../../../Constants';
 import { tbl_Property, tbl_CommonImage } from '../../../../Services/API/Input/inputIndex';
+import { FolderNames, TableNames } from '../../../../Services/API/FileUpload';
 
 interface PropertyStep4Props {
     data: tbl_Property;
@@ -72,6 +73,12 @@ export const PropertyStep4: React.FC<PropertyStep4Props> = ({
                 documents={documents}
                 onChange={onDocumentsChange}
                 maxDocuments={5}
+                folder={FolderNames.PropertyDocument}
+                tableName={TableNames.Property}
+                moduleName={FolderNames.PropertyDocument}
+                title="Attach vehicle documents"
+                subtitle="(RC, Insurance, PUC, others)"
+                buttonText="Attach document (JPG, PNG, PDF)"
             />
             {errors?.DocumentPath && (
                 <CommonText variant="caption" color={Colors.ERROR_500}>

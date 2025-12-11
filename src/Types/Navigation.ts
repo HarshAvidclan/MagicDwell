@@ -2,6 +2,9 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp, NavigatorScreenParams } from '@react-navigation/native';
+import { PropertyAddEditInput, VehicleAddEditInput } from '../Services/API/Input/inputindex';
+import { PropertyMasterDataResult } from '../Services/API/Result/Property';
+import { VehicleMasterDataResult } from '../Services/API/Result/Vehicle';
 
 // Define all route names as constants
 export const Routes = {
@@ -64,7 +67,11 @@ export type BuyerStackParamList = {
 
   BuyerPostListingProperty: undefined;
   BuyerPostListingVehicle: undefined;
-  BuyerListingPreview: undefined;
+  BuyerListingPreview: {
+    data: PropertyAddEditInput | VehicleAddEditInput;
+    masterData: PropertyMasterDataResult | VehicleMasterDataResult | null;
+    type: 'property' | 'vehicle';
+  };
 };
 
 // Navigation prop types for Guest screens

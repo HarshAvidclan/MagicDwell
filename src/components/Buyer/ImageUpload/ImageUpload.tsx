@@ -1,30 +1,39 @@
+// src/components/Buyer/ImageUpload/ImageUpload.tsx
+
 import React, { useRef } from 'react';
 import { View, StyleSheet, Pressable, Image } from 'react-native';
 import { tbl_CommonImage } from '../../../Services/API/Input/Image';
 import { CommonUploadRef, CommonText, CommonUpload } from '../../Common';
 import { Colors, Strings, Logos, Scale } from '../../Constants';
-import { FolderNames, TableNames } from '../../../Services/API/FileUpload';
-
-
 
 interface ImageUploadProps {
     images?: tbl_CommonImage[];
     onChange?: (images: tbl_CommonImage[]) => void;
     maxImages?: number;
+    folder: string; // Required: Folder name for upload
+    tableName: string; // Required: Table name for upload
+    moduleName?: string; // Optional: Module name (defaults to folder if not provided)
+    title?: string; // Optional: Custom title
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
     images = [],
     onChange,
     maxImages = 10,
+    folder,
+    tableName,
+    moduleName,
+    title,
 }) => {
     const uploadRef = useRef<CommonUploadRef>(null);
 
     return (
         <View style={styles.container}>
-            <CommonText semibold variant="body" color={Colors.BLACK}>
-                {Strings.PROPERTY_LISTING.ADD_PHOTOS}
-            </CommonText>
+            {title && (
+                <CommonText semibold variant="body" color={Colors.BLACK}>
+                    {title}
+                </CommonText>
+            )}
 
             {/* Upload Area */}
             <Pressable
@@ -58,9 +67,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             {/* CommonUpload handles the preview and modal */}
             <CommonUpload
                 ref={uploadRef}
-                folder={FolderNames.Property}
-                tableName={TableNames.Property}
-                moduleName={FolderNames.Property}
+                folder={folder}
+                tableName={tableName}
+                moduleName={moduleName || folder} // Use moduleName or fallback to folder
                 files={images}
                 isMulti
                 acceptImages

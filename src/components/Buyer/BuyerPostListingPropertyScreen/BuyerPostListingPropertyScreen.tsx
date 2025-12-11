@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -19,6 +19,7 @@ import {
     tbl_Post,
     tbl_PropertyAmenities,
     tbl_PropertyFurnishItems,
+    tbl_CommonImage,
 } from '../../../Services/API/Input/inputIndex';
 import { PropertyMasterDataResult, PropertyByPostIdResult } from '../../../Services/API/Result/resultIndex';
 import { API } from '../../../Services/API/Api';
@@ -34,7 +35,7 @@ interface BuyerPostListingPropertyScreenProps {
 const defaultPropertyDetail = (): tbl_Property => ({
     PropertyId: 0,
     SeqNo: 1,
-    PropertyTypeId: 1, // Default to Residential to populate initial categories
+    PropertyTypeId: 1,
     ChildPropertyTypeId: 0,
     LookingToId: 0,
     BHKId: null,
@@ -79,7 +80,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     const [masterData, setMasterData] = useState<PropertyMasterDataResult | null>(null);
     const [listing, setListing] = useState<PropertyByPostIdResult | null>(null);
 
-    // Form payload state - matches React web pattern
     const [payload, setPayload] = useState<PropertyAddEditInput>(
         initialData || defaultAddEdit(),
     );
@@ -89,7 +89,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     useEffect(() => {
         const fetchProperty = async () => {
             if (!postId || Number(postId) <= 0) return;
-            // If we already have a listing prop from parent, skip fetching. (Assuming initialData acts as prop here maybe? keeping it simple like user snippet)
             try {
                 const input = { PostId: Number(postId) };
                 const res = await API.POST<PropertyByPostIdResult>(
@@ -106,7 +105,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         fetchProperty();
     }, [postId]);
 
-    // Map incoming listing (either fetched or passed from parent) into payload
     useEffect(() => {
         if (listing) {
             console.log("Mapping listing -> payload", listing);
@@ -114,10 +112,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
             const post = listing.Post || {};
             const amenities = listing.Amenities || [];
             const furnish = listing.FurnishItems || [];
-
-            // Note: The original code sets currentPropertyTypeId state here. 
-            // In RN code, we depend on payload.Property.PropertyTypeId to fetch MasterData.
-            // So updating payload property type here effectively triggers MasterData fetch.
 
             setPayload({
                 Post: { ...defaultPostDetail(), ...post },
@@ -138,7 +132,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         }
     }, [listing]);
 
-    // Fetch master data on mount and when PropertyTypeId changes
     useEffect(() => {
         const fetchMasterData = async () => {
             setIsLoading(true);
@@ -156,15 +149,37 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         };
 
         fetchMasterData();
-    }, [payload.Property.PropertyTypeId]); // Re-fetch when PropertyTypeId changes
+    }, [payload.Property.PropertyTypeId]);
 
     // Update property field
-    const setPropertyField = <K extends keyof tbl_Property>(
+    const setPropertyField = useCallback(<K extends keyof tbl_Property>(
         field: K,
         value: tbl_Property[K],
     ) => {
         setPayload((p) => ({ ...p, Property: { ...p.Property, [field]: value } }));
-    };
+    }, []);
+
+    // ✅ FIX: Wrap in useCallback to prevent re-creation on every render
+    const handleImagesChange = useCallback((images: tbl_CommonImage[]) => {
+        setPayload((p) => ({ ...p, PropertyImages: images }));
+    }, []);
+
+    // ✅ FIX: Wrap in useCallback to prevent re-creation on every render
+    const handleDocumentsChange = useCallback((docs: tbl_CommonImage[]) => {
+        setPayload((p) => ({ ...p, PropertyDocuments: docs }));
+    }, []);
+
+    // ✅ FIX: Wrap in useCallback to prevent re-creation on every render
+    const handleAmenitiesChange = useCallback((amenityIds: number[]) => {
+        setPayload((p) => ({
+            ...p,
+            PropertyAmenities: amenityIds.map((id, idx) => ({
+                PropertyId: p.Property.PropertyId,
+                AmenityId: id,
+                SeqNo: idx + 1,
+            })),
+        }));
+    }, []);
 
     // Convert master data to SelectionOptions
     const propertyTypeOptions: SelectionOption[] = useMemo(
@@ -185,7 +200,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         [masterData],
     );
 
-    // Dynamically filtered category options based on PropertyTypeId
     const categoryOptions: SelectionOption[] = useMemo(
         () =>
             (masterData?.ChildPropertyTypes || [])
@@ -233,13 +247,11 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         [masterData],
     );
 
-    // Available amenities from master data
     const availableAmenities = useMemo(
         () => masterData?.AmenitiesList || [],
         [masterData],
     );
 
-    // Step titles
     const getStepTitle = (step: number): string => {
         switch (step) {
             case 1:
@@ -270,7 +282,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         }
     };
 
-    // Navigation handlers
     const handleBack = () => {
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1);
@@ -280,36 +291,28 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     };
 
     const handleContinue = () => {
-        // Validate current step
         if (validateStep(currentStep)) {
             if (currentStep < 4) {
                 setCurrentStep(currentStep + 1);
                 setErrors({});
             } else {
-                // Navigate to Preview Screen instead of direct submit
-                // navigation.navigate(Routes.BUYER_LISTING_PREVIEW); // Needs navigation prop
-                // Assuming navigation might be available via hook or prop
-                // User didn't explicitly inject it in component props but it's a screen in stack.
-                // I will use useNavigation hook.
                 onPreviewAndPublish();
             }
         }
     };
 
     const onPreviewAndPublish = () => {
-        // @ts-ignore - Navigation type safety handled loosely here or needs hook
         navigation.navigate(Routes.BUYER_LISTING_PREVIEW, {
             data: payload,
-            masterData: masterData
+            masterData: masterData,
+            type: 'property'
         });
     };
 
-    // Basic validation
     const validateStep = (step: number): boolean => {
         const newErrors: Partial<Record<string, string>> = {};
         const prop = payload.Property;
 
-        // Validation commented out for now - uncomment when needed
         switch (step) {
             case 1:
                 if (!prop.PropertyTypeId) newErrors.PropertyTypeId = 'Property type is required';
@@ -344,7 +347,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            // TODO: Implement actual submission
             console.log('Submitting payload:', payload);
             // const result = await API.POST<PropertyAddEditResult>(Property.ADDEDIT, payload);
         } catch (error) {
@@ -355,7 +357,6 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
     };
 
     const handleReset = () => {
-        // Reset to initial state logic
         setCurrentStep(1);
         setPayload(initialData || defaultAddEdit());
         setErrors({});
@@ -376,13 +377,11 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
                 </View>
             </View>
 
-            {/* Scrollable Content */}
             <ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                {/* ... Steps content ... */}
                 {currentStep === 1 && (
                     <PropertyStep1
                         data={payload.Property}
@@ -411,20 +410,9 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
                     <PropertyStep3
                         selectedAmenities={payload.PropertyAmenities.map((a) => a.AmenityId)}
                         availableAmenities={availableAmenities}
-                        onAmenitiesChange={(amenityIds) =>
-                            setPayload((p) => ({
-                                ...p,
-                                PropertyAmenities: amenityIds.map((id, idx) => ({
-                                    PropertyId: p.Property.PropertyId,
-                                    AmenityId: id,
-                                    SeqNo: idx + 1,
-                                })),
-                            }))
-                        }
+                        onAmenitiesChange={handleAmenitiesChange}
                         images={payload.PropertyImages}
-                        onImagesChange={(images) =>
-                            setPayload((p) => ({ ...p, PropertyImages: images }))
-                        }
+                        onImagesChange={handleImagesChange}
                         errors={errors}
                     />
                 )}
@@ -434,15 +422,12 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
                         data={payload.Property}
                         onChange={setPropertyField}
                         documents={payload.PropertyDocuments}
-                        onDocumentsChange={(docs) =>
-                            setPayload((p) => ({ ...p, PropertyDocuments: docs }))
-                        }
+                        onDocumentsChange={handleDocumentsChange}
                         errors={errors}
                     />
                 )}
             </ScrollView>
 
-            {/* Footer with navigation buttons */}
             <View style={styles.footerContainer}>
                 <PropertyFooter
                     currentStep={currentStep}
@@ -462,8 +447,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.WHITE,
     },
     headerContainer: {
-        backgroundColor: Colors.WHITE, // Changed from GRAY_50
-        paddingHorizontal: Scale.SCALE_16, // Adjusted padding
+        backgroundColor: Colors.WHITE,
+        paddingHorizontal: Scale.SCALE_16,
         paddingBottom: Scale.SCALE_0,
         paddingTop: Scale.SCALE_8,
     },
@@ -474,7 +459,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        padding: Scale.SCALE_16, // Consistent padding
+        padding: Scale.SCALE_16,
         paddingTop: Scale.SCALE_24,
     },
     footerContainer: {

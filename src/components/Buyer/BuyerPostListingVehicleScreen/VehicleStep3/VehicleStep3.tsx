@@ -6,6 +6,7 @@ import { CommonText, CommonInput, CommonCheckbox } from '../../../Common';
 import { ImageUpload } from '../../ImageUpload/ImageUpload';
 import { Colors, Scale, Strings } from '../../../Constants';
 import { tbl_Vehicle, tbl_CommonImage } from '../../../../Services/API/Input/inputIndex';
+import { FolderNames, TableNames } from '../../../../Services/API/FileUpload';
 
 interface VehicleStep3Props {
     data: tbl_Vehicle;
@@ -75,7 +76,9 @@ export const VehicleStep3: React.FC<VehicleStep3Props> = ({
 
             {/* Add Photos */}
             <View style={styles.fieldContainer}>
-                <ImageUpload images={images || []} onChange={onImagesChange} />
+                <ImageUpload images={images || []} onChange={onImagesChange} folder={FolderNames.Vehicle}
+                    tableName={TableNames.Vehicle}
+                    moduleName={FolderNames.Vehicle} />
                 {errors?.VehicleImages && (
                     <CommonText variant="caption" color={Colors.ERROR_500}>
                         {errors.VehicleImages}

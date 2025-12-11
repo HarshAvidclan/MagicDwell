@@ -45,6 +45,7 @@ export const CommonUpload = forwardRef<CommonUploadRef, CommonUploadProps>(
         const [files, setFiles] = useState<tbl_CommonImage[]>([]);
         const [isModalVisible, setIsModalVisible] = useState(false);
         const [loading, setLoading] = useState(false);
+        const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({}); // Track image load errors
 
         useEffect(() => {
             if (propFiles && propFiles.length > 0) {
@@ -66,13 +67,13 @@ export const CommonUpload = forwardRef<CommonUploadRef, CommonUploadProps>(
             return normalized;
         };
 
-        const toTblCommonImage = (data: any): tbl_CommonImage => {
+        const toTblCommonImage = (data: tbl_CommonImage): tbl_CommonImage => {
             return {
                 ImageId: data?.ImageId || 0,
                 IsActive: data?.IsActive ?? true,
                 TableId: data?.TableId ?? '',
                 ImagePath: data?.ImagePath ?? '',
-                ImageName: data?.ImageName ?? data?.ImageUrl ?? data?.ImagePath ?? '',
+                ImageName: data?.ImageName ?? '',
                 SeqNo: data?.SeqNo ?? 0,
                 TableName: data?.TableName ?? tableName,
                 ModuleName: data?.ModuleName ?? moduleName,
@@ -264,9 +265,15 @@ export const CommonUpload = forwardRef<CommonUploadRef, CommonUploadProps>(
             const ext = getFileExtension(path);
             return imageExtensions.includes(ext);
         };
+        const isValidImagePath = (path: string | undefined): boolean => {
+            return !!(path && path.trim() !== '');
+        };
 
         const renderFileItem = (file: tbl_CommonImage, index: number) => {
             const isImage = isImageFile(file.ImagePath || '');
+            const hasValidPath = isValidImagePath(file.ImagePath);
+            const hasImageError = imageErrors[index];
+            const textColor = (!hasValidPath || hasImageError) ? Colors.ALERT_DANGER_700 : Colors.GRAY_600;
 
             return (
                 <View key={file.ImageId || `${file.ImageName}-${index}`} style={styles.fileItem}>
@@ -281,7 +288,7 @@ export const CommonUpload = forwardRef<CommonUploadRef, CommonUploadProps>(
                             <Image source={Logos.DOCUMENT_ICON} style={styles.documentIcon} />
                             <CommonText
                                 variant="caption"
-                                color={Colors.GRAY_600}
+                                color={textColor}
                                 numberOfLines={2}
                                 style={styles.fileName}
                             >

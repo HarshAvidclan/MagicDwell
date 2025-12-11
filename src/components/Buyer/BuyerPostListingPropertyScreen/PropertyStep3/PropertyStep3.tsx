@@ -5,6 +5,7 @@ import { Colors, Scale, Typography, Logos, Strings } from '../../../Constants';
 import { ImageUpload } from '../../ImageUpload/ImageUpload';
 import { AmenitiesModal } from '../AmenitiesModal/AmenitiesModal';
 import { tbl_CommonImage, tbl_mstAmenities } from '../../../../Services/API/Input/inputIndex';
+import { FolderNames, TableNames } from '../../../../Services/API/FileUpload';
 
 interface PropertyStep3Props {
     selectedAmenities: number[];
@@ -120,7 +121,9 @@ export const PropertyStep3: React.FC<PropertyStep3Props> = ({
             </View>
 
             {/* Add Photos */}
-            <ImageUpload images={images || []} onChange={onImagesChange} />
+            <ImageUpload images={images || []} onChange={onImagesChange} folder={FolderNames.Property}
+                tableName={TableNames.Property}
+                moduleName={FolderNames.Property} />
             {errors?.images && (
                 <CommonText variant="caption" color={Colors.ERROR_500}>
                     {errors.images}
