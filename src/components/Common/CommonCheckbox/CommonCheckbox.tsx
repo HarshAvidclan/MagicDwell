@@ -1,15 +1,23 @@
 // src/Common/CommonCheckbox/CommonCheckbox.tsx
 import React from 'react';
-import { Pressable, StyleSheet, View, PressableProps } from 'react-native';
-import { Colors, Scale } from '../../Constants';
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  Text,
+  PressableProps,
+  Platform,
+} from 'react-native';
+import { Colors, Scale, Typography } from '../../Constants';
 
 export interface CommonCheckboxProps extends Omit<PressableProps, 'style'> {
   checked: boolean;
   onToggle: () => void;
   style?: object;
-  size?: number; // Width and height
-  checkedColor?: string; // Color when checked
+  size?: number; // Width and height of the square
+  checkedColor?: string; // Color when checked (fill)
   uncheckedBorderColor?: string; // Border color when unchecked
+  borderRadius?: number; // optional override for corner radius
 }
 
 export const CommonCheckbox: React.FC<CommonCheckboxProps> = ({
@@ -21,77 +29,74 @@ export const CommonCheckbox: React.FC<CommonCheckboxProps> = ({
   uncheckedBorderColor = Colors.GRAY_500,
   ...rest
 }) => {
-  // Calculate tick mark dimensions based on checkbox size
-  const checkmarkSize = size * 0.80; // Checkmark is 80% of checkbox size
-  const line1Height = checkmarkSize * 0.2; // Short line
-  const line2Height = checkmarkSize * 0.7; // Long line
-  const lineWidth = size * 0.08; // Thin line thickness for elegant look
+  const BOX_SIZE = size;
+  // const RADIUS = Math.round(BOX_SIZE * 0.18);
+  const RADIUS = Scale.BORDER_RADIUS_1;
+  const checkFontSize = Math.round(BOX_SIZE * 0.62);
 
   return (
     <Pressable
-      style={[
-        styles.container,
+      onPress={onToggle}
+      android_ripple={{ color: 'rgba(0,0,0,0.06)', radius: Math.round(BOX_SIZE * 1.2) }}
+      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked }}
+      style={({ pressed }) => [
+        styles.wrapper,
         {
-          width: size,
-          height: size,
+          width: BOX_SIZE,
+          height: BOX_SIZE,
+          borderRadius: RADIUS,
+          backgroundColor: checked ? checkedColor : 'transparent',
           borderColor: checked ? checkedColor : uncheckedBorderColor,
-          backgroundColor: checked ? checkedColor : Colors.WHITE,
+          borderWidth: Scale.SCALE_1,
+          opacity: pressed ? 0.96 : 1,
         },
         style,
       ]}
-      onPress={onToggle}
       {...rest}
     >
-      {checked && (
-        <View style={[styles.checkmark, { width: checkmarkSize, height: checkmarkSize }]}>
-          <View
-            style={[
-              styles.checkmarkLine1,
-              {
-                width: lineWidth,
-                height: line1Height,
-                left: checkmarkSize * 0.1,
-                top: checkmarkSize * 0.5,
-              },
-            ]}
-          />
-          <View
-            style={[
-              styles.checkmarkLine2,
-              {
-                width: lineWidth,
-                height: line2Height,
-                left: checkmarkSize * 0.35,
-                top: checkmarkSize * 0.15,
-              },
-            ]}
-          />
-        </View>
+      {/* Centered check glyph when checked; invisible when unchecked */}
+      {checked ? (
+        <Text
+          style={[
+            styles.checkGlyph,
+            {
+              color: Colors.WHITE,
+              fontSize: checkFontSize,
+              lineHeight: checkFontSize,
+            },
+          ]}
+          allowFontScaling={false}
+        >
+          ✓
+        </Text>
+      ) : (
+        // Keep an invisible element to preserve layout consistency if needed
+        <View style={{ width: checkFontSize, height: checkFontSize }} />
       )}
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    borderWidth: Scale.SCALE_1,
+  wrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: Scale.BORDER_RADIUS_1,
+    // subtle platform shadow if you want (optional)
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.03,
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 1,
+      },
+      android: {},
+    }),
   },
-  checkmark: {
-    position: 'relative',
-  },
-  // Short line (left side of checkmark)
-  checkmarkLine1: {
-    position: 'absolute',
-    backgroundColor: Colors.WHITE,
-    transform: [{ rotate: '-45deg' }],
-  },
-  // Long line (right side of checkmark)
-  checkmarkLine2: {
-    position: 'absolute',
-    backgroundColor: Colors.WHITE,
-    transform: [{ rotate: '45deg' }],
+  checkGlyph: {
+    textAlign: 'center',
+    includeFontPadding: false,
+    fontWeight: '700',
   },
 });
