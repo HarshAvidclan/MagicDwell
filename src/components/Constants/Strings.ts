@@ -146,7 +146,9 @@ export const Strings = {
   VEHICLE_LISTING: {
     // Screen Title
     POST_VEHICLE: 'Post a vehicle',
-
+    CAR_TYPE: 'Car type',
+    BIKE_TYPE: 'Bike type',
+    VEHICLE_CATEGORY: 'Vehicle category',
     // Step Titles
     STEP_1_TITLE: 'Add basic details',
     STEP_1_SUBTITLE: 'Vehicle details',
@@ -169,7 +171,6 @@ export const Strings = {
     MODEL_NAME: 'Model name',
     ENTER_MODEL_NAME: 'Enter model name here',
     LOADING_MODELS: 'Loading models...',
-    CAR_TYPE: 'Car type',
     FUEL_TYPE: 'Fuel type',
     OWNERSHIP_HAND: 'Ownership hand',
     TRANSMISSION: 'Transmission',

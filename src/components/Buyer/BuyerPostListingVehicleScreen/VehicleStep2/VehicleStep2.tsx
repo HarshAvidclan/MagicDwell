@@ -13,7 +13,7 @@ import { GetBrandModelByIdResult } from '../../../../Services/API/Result/ResultI
 interface VehicleStep2Props {
     data: tbl_Vehicle;
     brandOptions: DropdownOption[];
-    carTypeOptions: SelectionOption[];
+    childVehicleTypeOptions: SelectionOption[];
     fuelTypeOptions: SelectionOption[];
     ownershipOptions: SelectionOption[];
     transmissionOptions: SelectionOption[];
@@ -24,7 +24,7 @@ interface VehicleStep2Props {
 export const VehicleStep2: React.FC<VehicleStep2Props> = ({
     data,
     brandOptions,
-    carTypeOptions,
+    childVehicleTypeOptions,
     fuelTypeOptions,
     ownershipOptions,
     transmissionOptions,
@@ -99,26 +99,30 @@ export const VehicleStep2: React.FC<VehicleStep2Props> = ({
                 disabled={!data.BrandId || loadingModels}
             />
 
-            {/* Car Type (Only show if VehicleTypeId === 1 - Car) */}
-            {/* {data.VehicleTypeId === 1 && carTypeOptions.length > 0 && (
+            {/* ✅ Child Vehicle Type (Car Type, Bike Type, etc.) - Show if options exist */}
+            {childVehicleTypeOptions.length > 0 && (
                 <View style={styles.fieldContainer}>
                     <CommonText semibold variant="body" color={Colors.BLACK}>
-                        {Strings.VEHICLE_LISTING.CAR_TYPE}
+                        {data.VehicleTypeId === 1
+                            ? Strings.VEHICLE_LISTING.CAR_TYPE
+                            : data.VehicleTypeId === 2
+                                ? Strings.VEHICLE_LISTING.BIKE_TYPE
+                                : Strings.VEHICLE_LISTING.VEHICLE_CATEGORY}
                     </CommonText>
                     <CommonSelection
-                        options={carTypeOptions}
-                        selectedValue={data.CarTypeId || 0}
-                        onSelect={(value: string | number) => onChange('CarTypeId', Number(value))}
+                        options={childVehicleTypeOptions}
+                        selectedValue={data.ChildVehicleTypeId || 0}
+                        onSelect={(value: string | number) => onChange('ChildVehicleTypeId', Number(value))}
                         containerStyle={styles.selectionWrap}
                         showCheckbox={true}
                     />
-                    {errors?.CarTypeId && (
+                    {errors?.ChildVehicleTypeId && (
                         <CommonText variant="caption" color={Colors.ERROR_500}>
-                            {errors.CarTypeId}
+                            {errors.ChildVehicleTypeId}
                         </CommonText>
                     )}
                 </View>
-            )} */}
+            )}
 
             {/* Fuel Type */}
             <View style={styles.fieldContainer}>

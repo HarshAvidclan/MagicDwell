@@ -227,6 +227,15 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         [masterData],
     );
 
+    // ✅ Filter child vehicle types based on current VehicleTypeId
+    const childVehicleTypeOptions: SelectionOption[] = useMemo(
+        () =>
+            (masterData?.lstChildVehicleType || []).map((ct) => ({
+                value: ct.VehicleTypeId,
+                label: ct.VehicleTypeName,
+            })),
+        [masterData, payload.Vehicle.VehicleTypeId], // ✅ Re-filter when VehicleTypeId changes
+    );
     // Step titles
     const getStepTitle = (step: number): string => {
         switch (step) {
@@ -308,6 +317,9 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
                 }
                 if (!v.BrandModelId || v.BrandModelId <= 0) {
                     newErrors.BrandModelId = 'Model is required';
+                }
+                if (!v.ChildVehicleTypeId || v.ChildVehicleTypeId <= 0) {
+                    newErrors.ChildVehicleTypeId = 'Child vehicle type is required';
                 }
                 if (!v.FuelTypeId || v.FuelTypeId <= 0) {
                     newErrors.FuelTypeId = 'Fuel type is required';
@@ -397,7 +409,7 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
                     <VehicleStep2
                         data={payload.Vehicle}
                         brandOptions={brandOptions}
-                        carTypeOptions={carTypeOptions}
+                        childVehicleTypeOptions={childVehicleTypeOptions}
                         fuelTypeOptions={fuelTypeOptions}
                         ownershipOptions={ownershipOptions}
                         transmissionOptions={transmissionOptions}

@@ -20,6 +20,7 @@ export interface tbl_Vehicle {
     PlaceId?: string | null;
     Lat?: number;
     Long?: number;
+    ChildVehicleTypeId?: number;
 }
 
 export interface tbl_Vehicle_Get extends tbl_Vehicle {
