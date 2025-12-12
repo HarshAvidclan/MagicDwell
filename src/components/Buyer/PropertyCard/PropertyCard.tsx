@@ -1,8 +1,9 @@
 // src/Components/Buyer/PropertyCard/PropertyCard.tsx
+
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { CommonImage, CommonText } from '../../Common';
-import { Scale, Colors, Logos, Typography } from '../../Constants';
+import { CommonImage, CommonText, CommonFavouriteButton } from '../../Common';
+import { Scale, Colors, Typography } from '../../Constants';
 
 interface PropertyCardProps {
   image?: any;
@@ -12,10 +13,10 @@ interface PropertyCardProps {
   area: string;
   price: string;
   onPress?: () => void;
-  onFavouritePress?: () => void;
+  onFavouritePress?: (isFavourite: boolean) => void;
   IsFormAPI?: boolean;
   ImageName?: string;
-  isFavourite?: boolean; // 👈 NEW: Track favourite state
+  isFavourite?: boolean;
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -29,7 +30,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   onFavouritePress,
   IsFormAPI = false,
   ImageName,
-  isFavourite = false, // 👈 NEW: Default to false
+  isFavourite = false,
 }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -61,18 +62,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         </View>
       </View>
 
-      <TouchableOpacity
-        style={styles.favouriteButton}
-        onPress={onFavouritePress}
-        activeOpacity={0.7}
-      >
-        <CommonImage
-          source={Logos.FAVOURITE_ICON}
-          width={Scale.SCALE_36}
-          height={Scale.SCALE_36}
-          resizeMode="cover"
-        />
-      </TouchableOpacity>
+      {/* ✅ Use CommonFavouriteButton */}
+      <CommonFavouriteButton
+        isFavourite={isFavourite}
+        onToggle={onFavouritePress}
+        size={Scale.SCALE_36}
+        containerStyle={styles.favouriteButton}
+      />
     </TouchableOpacity>
   );
 };
@@ -138,24 +134,15 @@ const styles = StyleSheet.create({
     color: Colors.GRAY_800,
     flex: 1,
   },
-
   favouriteButton: {
     position: 'absolute',
     top: Scale.SCALE_12,
     right: Scale.SCALE_12,
-    width: Scale.SCALE_36,
-    height: Scale.SCALE_36,
-    shadowColor: Colors.BLACK,
-    shadowOffset: { width: Scale.SCALE_1, height: Scale.SCALE_2 },
-    shadowOpacity: 0.04,
-    shadowRadius: Scale.SCALE_16,
-    elevation: 3,
   },
   divider: {
     height: Scale.SCALE_10,
     maxWidth: Scale.SCALE_1,
     backgroundColor: Colors.GRAY_300,
     width: '100%',
-    // marginVertical: Scale.SCALE_12,
   },
 });

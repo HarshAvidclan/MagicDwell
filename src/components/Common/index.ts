@@ -31,3 +31,4 @@ export type { CommonUploadRef } from './CommonImageUpload/CommonUpload';
 
 export * from './CommonDropdown/CommonDropdown';
 export * from './CommonLoader/CommonLoader';
+export * from './CommonFavouriteButton/CommonFavouriteButton';

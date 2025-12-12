@@ -17,6 +17,7 @@ export const Logos = {
   ADD_ICON: require('../../Assets/Logos/AddIcon.png'),
   // LOCATION_ICON: require('../../Assets/Logos/LocationIcon.png'),
   FAVOURITE_ICON: require('../../Assets/Logos/FavouriteIcon.png'),
+  FAVOURITE_FILLED_ICON: require('../../Assets/Logos/favourite_filled_icon.png'),
   // DOT_DIVIDER: require('../../Assets/Logos/DotDivider.png'),
   // HOME_ICON_ACTIVE: require('../../Assets/Logos/HomeIconActive.png'),
   // HOME_ICON_INACTIVE: require('../../Assets/Logos/HomeIconInactive.png'),

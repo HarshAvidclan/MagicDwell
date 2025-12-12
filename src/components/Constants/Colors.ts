@@ -137,4 +137,6 @@ export const Colors = {
 
 
   BACKGROUND_SELECTED: '#E8F3FF',
+  FAVOURITE_BG: '#00000080', // 50% opacity black for favourite button
+  FAVOURITE_SHADOW: 'rgba(0, 0, 0, 0.04)',
 };
