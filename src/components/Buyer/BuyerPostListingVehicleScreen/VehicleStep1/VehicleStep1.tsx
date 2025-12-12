@@ -48,6 +48,7 @@ export const VehicleStep1: React.FC<VehicleStep1Props> = ({
                     options={vehicleTypes}
                     selectedValue={data.VehicleTypeId}
                     onSelect={(value: string | number) => onChange('VehicleTypeId', Number(value))}
+                    optionStyle={styles.buttonselection}
                 />
                 {errors?.VehicleTypeId && (
                     <CommonText variant="caption" color={Colors.ERROR_500}>
@@ -67,6 +68,7 @@ export const VehicleStep1: React.FC<VehicleStep1Props> = ({
                     onSelect={(value: string | number) => onChange('LookingToId', Number(value))}
                     disabledValues={[1]} // Disable Rent option (value = 1)
                     comingSoonValues={[1]}
+                    optionStyle={styles.buttonselection}
                 />
                 {errors?.LookingToId && (
                     <CommonText variant="caption" color={Colors.ERROR_500}>
@@ -156,4 +158,7 @@ const styles = StyleSheet.create({
         width: Scale.SCALE_16,
         height: Scale.SCALE_16,
     },
+    buttonselection: {
+        paddingHorizontal: Scale.SCALE_24,
+    }
 });
