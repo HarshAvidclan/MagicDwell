@@ -11,7 +11,7 @@ import {
   TextStyle,
 } from 'react-native';
 import { Colors, Scale, Typography } from '../../Constants';
-import { CommonText } from '..';
+import { CommonText, CommonLoader } from '..';
 
 export interface CommonButtonProps extends PressableProps {
   title: string;
@@ -85,7 +85,7 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
       case 'ghost':
         return styles.ghostButton;
       case 'custom':
-        return {}; // Allow full customization via buttonStyle
+        return {};
       default:
         return styles.primaryButton;
     }
@@ -108,6 +108,28 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
       default:
         return Colors.WHITE;
     }
+  };
+
+  const getLoaderColor = (): string => {
+    if (textColor) return textColor;
+
+    switch (variant) {
+      case 'primary':
+        return Colors.WHITE;
+      case 'secondary':
+      case 'custom':
+        return Colors.PRIMARY_500;
+      case 'outline':
+        return Colors.PRIMARY_500;
+      case 'ghost':
+        return Colors.PRIMARY_500;
+      default:
+        return Colors.WHITE;
+    }
+  };
+
+  const getLoaderSize = (): 'small' | 'medium' | 'large' => {
+    return size;
   };
 
   const getIconSize = () => {
@@ -135,29 +157,51 @@ export const CommonButton: React.FC<CommonButtonProps> = ({
         buttonStyle,
       ]}
     >
-      {leftIcon && (
-        <Image
-          style={[styles.icon, { width: getIconSize(), height: getIconSize() }, iconStyle]}
-          source={leftIcon}
-          resizeMode="cover"
-        />
-      )}
+      {loading ? (
+        <>
+          <CommonLoader
+            size={getLoaderSize()}
+            color={getLoaderColor()}
+            style={styles.loader}
+          />
+          {/* {loadingText && (
+            <CommonText
+              variant="button"
+              medium
+              color={getTextColor()}
+              style={[styles.buttonText, textStyle]}
+            >
+              {""}
+            </CommonText>
+          )} */}
+        </>
+      ) : (
+        <>
+          {leftIcon && (
+            <Image
+              style={[styles.icon, { width: getIconSize(), height: getIconSize() }, iconStyle]}
+              source={leftIcon}
+              resizeMode="cover"
+            />
+          )}
 
-      <CommonText
-        variant="button"
-        medium
-        color={getTextColor()}
-        style={[styles.buttonText, textStyle]}
-      >
-        {loading ? 'Loading...' : title}
-      </CommonText>
+          <CommonText
+            variant="button"
+            medium
+            color={getTextColor()}
+            style={[styles.buttonText, textStyle]}
+          >
+            {title}
+          </CommonText>
 
-      {rightIcon && (
-        <Image
-          style={[styles.icon, { width: getIconSize(), height: getIconSize() }, iconStyle]}
-          source={rightIcon}
-          resizeMode="cover"
-        />
+          {rightIcon && (
+            <Image
+              style={[styles.icon, { width: getIconSize(), height: getIconSize() }, iconStyle]}
+              source={rightIcon}
+              resizeMode="cover"
+            />
+          )}
+        </>
       )}
     </Pressable>
   );
@@ -214,5 +258,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     // Size will be set dynamically based on button size
+  },
+  loader: {
+    // Loader styling handled in CommonLoader component
   },
 });
