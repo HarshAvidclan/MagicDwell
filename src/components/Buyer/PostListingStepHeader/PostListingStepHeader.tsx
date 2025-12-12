@@ -1,26 +1,28 @@
-// src/Screens/Buyer/BuyerPostListingVehicleScreen/VehicleStepHeader/VehicleStepHeader.tsx
+// src/Components/Buyer/PostListingStepHeader/PostListingStepHeader.tsx
 
 import React from 'react';
 import { View, StyleSheet, Pressable, Image } from 'react-native';
-import { CommonText } from '../../../Common';
-import { Colors, Scale, Logos, Typography } from '../../../Constants';
+import { CommonText } from '../../Common';
+import { Colors, Scale, Logos, Typography } from '../../Constants';
 
-interface VehicleStepHeaderProps {
+interface PostListingStepHeaderProps {
     currentStep: number;
     totalSteps: number;
     stepTitle: string;
     nextStepTitle: string | null;
     onBack: () => void;
     onReset?: () => void;
+    screenTitle: string; // ✅ Dynamic title: "Post property" or "Post a vehicle"
 }
 
-export const VehicleStepHeader: React.FC<VehicleStepHeaderProps> = ({
+export const PostListingStepHeader: React.FC<PostListingStepHeaderProps> = ({
     currentStep,
     totalSteps,
     stepTitle,
     nextStepTitle,
     onBack,
     onReset,
+    screenTitle,
 }) => {
     return (
         <View style={styles.container}>
@@ -34,7 +36,9 @@ export const VehicleStepHeader: React.FC<VehicleStepHeaderProps> = ({
                     />
                 </Pressable>
 
-                <CommonText style={styles.screenTitle}>Post a vehicle</CommonText>
+                <CommonText style={styles.screenTitle}>
+                    {screenTitle}
+                </CommonText>
 
                 <Pressable
                     style={styles.resetContainer}
@@ -48,7 +52,9 @@ export const VehicleStepHeader: React.FC<VehicleStepHeaderProps> = ({
             {/* Bottom Bar: Step Info & Progress */}
             <View style={styles.stepInfoRow}>
                 <View style={styles.stepTexts}>
-                    <CommonText style={styles.stepTitle}>{stepTitle}</CommonText>
+                    <CommonText style={styles.stepTitle}>
+                        {stepTitle}
+                    </CommonText>
                     {nextStepTitle && (
                         <CommonText style={styles.nextStepTitle}>
                             Next: {nextStepTitle}
@@ -72,7 +78,7 @@ export const VehicleStepHeader: React.FC<VehicleStepHeaderProps> = ({
     );
 };
 
-// Circular Progress Component (Same as Property)
+// Circular Progress Component
 const CircularProgress: React.FC<{
     current: number;
     total: number;

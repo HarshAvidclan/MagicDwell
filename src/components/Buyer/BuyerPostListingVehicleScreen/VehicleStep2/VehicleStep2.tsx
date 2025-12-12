@@ -108,6 +108,7 @@ export const VehicleStep2: React.FC<VehicleStep2Props> = ({
                             : data.VehicleTypeId === 2
                                 ? Strings.VEHICLE_LISTING.BIKE_TYPE
                                 : Strings.VEHICLE_LISTING.VEHICLE_CATEGORY}
+
                     </CommonText>
                     <CommonSelection
                         options={childVehicleTypeOptions}

@@ -1,16 +1,16 @@
 // src/components/Buyer/BuyerPostListingVehicleScreen/BuyerPostListingVehicleScreen.tsx
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react'; // ✅ Add useCallback
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SelectionOption } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
 import { BuyerPostListingVehicleNavigationProp, Routes } from '../../../Types/Navigation';
-import { Colors, Scale } from '../../Constants';
+import { Colors, Scale, Strings } from '../../Constants';
 import { VehicleStep1 } from './VehicleStep1/VehicleStep1';
 import { VehicleStep2 } from './VehicleStep2/VehicleStep2';
 import { VehicleStep3 } from './VehicleStep3/VehicleStep3';
-import { VehicleStepHeader } from './VehicleStepHeader/VehicleStepHeader';
+import { PostListingStepHeader } from '../PostListingStepHeader/PostListingStepHeader'; // ✅ Shared component
 import { VehicleFooter } from './VehicleFooter/VehicleFooter';
 import {
     VehicleAddEditInput,
@@ -23,6 +23,7 @@ import {
 import {
     VehicleMasterDataResult,
     VehicleByPostIdResult,
+    VehicleAddEditResult, // ✅ Add this
 } from '../../../Services/API/Result/resultIndex';
 import { API } from '../../../Services/API/Api';
 import { VehicleMaster, Vehicle } from '../../../Services/API/URL/URLS';
@@ -36,7 +37,8 @@ interface BuyerPostListingVehicleScreenProps {
 // Default values
 const defaultVehicle = (): tbl_Vehicle => ({
     VehicleId: 0,
-    VehicleTypeId: 1, // Default to Car
+    VehicleTypeId: 1,
+    ChildVehicleTypeId: 0,
     LookingToId: 0,
     BrandId: 0,
     BrandModelId: 0,
@@ -46,6 +48,7 @@ const defaultVehicle = (): tbl_Vehicle => ({
     NoOfOwnersId: 0,
     TransmissionId: 0,
     Location: '',
+    PlaceId: '',
     Title: '',
     Price: 0,
     IsNegotiate: false,
@@ -69,7 +72,7 @@ const defaultAddEdit = (): VehicleAddEditInput => ({
 });
 
 export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScreenProps> = ({
-    postId,
+    postId = 1068,
     initialData,
 }) => {
     const navigation = useNavigation<BuyerPostListingVehicleNavigationProp>();
@@ -144,13 +147,11 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         fetchMasterData();
     }, [payload.Vehicle.VehicleTypeId]);
 
-    // ✅ FIX: Wrap in useCallback
     const setVehicleField = useCallback(<K extends keyof tbl_Vehicle>(
         field: K,
         value: tbl_Vehicle[K],
     ) => {
         setPayload((p) => ({ ...p, Vehicle: { ...p.Vehicle, [field]: value } }));
-        // Clear error for this field
         setErrors((prev) => {
             const clone = { ...prev };
             delete clone[String(field)];
@@ -158,7 +159,6 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         });
     }, []);
 
-    // ✅ FIX: Wrap in useCallback
     const handleImagesChange = useCallback((images: tbl_CommonImage[]) => {
         setPayload((p) => ({ ...p, VehicleImages: images }));
     }, []);
@@ -191,14 +191,6 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         [masterData],
     );
 
-    const carTypeOptions: SelectionOption[] = useMemo(
-        () =>
-            (masterData?.lstChildVehicleType || []).map((ct) => ({
-                value: ct.VehicleTypeId,
-                label: ct.VehicleTypeName,
-            })),
-        [masterData],
-    );
 
     const fuelTypeOptions: SelectionOption[] = useMemo(
         () =>
@@ -240,11 +232,11 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
     const getStepTitle = (step: number): string => {
         switch (step) {
             case 1:
-                return 'Add basic details';
+                return Strings.VEHICLE_LISTING.STEP_1_TITLE;
             case 2:
-                return 'Add vehicle details';
+                return Strings.VEHICLE_LISTING.STEP_2_TITLE;
             case 3:
-                return 'Add pricing & photos';
+                return Strings.VEHICLE_LISTING.STEP_3_TITLE;
             default:
                 return '';
         }
@@ -253,11 +245,11 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
     const getNextStepTitle = (step: number): string | null => {
         switch (step) {
             case 1:
-                return 'Vehicle details';
+                return Strings.VEHICLE_LISTING.STEP_1_SUBTITLE;
             case 2:
-                return 'Pricing & photos';
+                return Strings.VEHICLE_LISTING.STEP_2_SUBTITLE;
             case 3:
-                return 'Happy posting';
+                return Strings.VEHICLE_LISTING.STEP_3_SUBTITLE;
             default:
                 return null;
         }
@@ -278,20 +270,10 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
                 setCurrentStep(currentStep + 1);
                 setErrors({});
             } else {
-                // Navigate to Preview
-                // onPreviewAndPublish();
-                handleSubmit();
+                handlePublish();
             }
         }
     };
-
-    // const onPreviewAndPublish = () => {
-    //     navigation.navigate(Routes.BUYER_LISTING_PREVIEW, {
-    //         data: payload,
-    //         masterData: masterData,
-    //         type: 'vehicle',
-    //     });
-    // };
 
     // Validation
     const validateStep = (step: number): boolean => {
@@ -301,49 +283,49 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         switch (step) {
             case 1:
                 if (!v.VehicleTypeId || v.VehicleTypeId <= 0) {
-                    newErrors.VehicleTypeId = 'Vehicle type is required';
+                    newErrors.VehicleTypeId = Strings.VEHICLE_LISTING.VEHICLE_TYPE_REQUIRED;
                 }
                 if (!v.LookingToId || v.LookingToId <= 0) {
-                    newErrors.LookingToId = 'Looking to is required';
+                    newErrors.LookingToId = Strings.VEHICLE_LISTING.LOOKING_TO_REQUIRED;
                 }
                 if (!v.Location || v.Location.trim() === '') {
-                    newErrors.Location = 'Location is required';
+                    newErrors.Location = Strings.VEHICLE_LISTING.LOCATION_REQUIRED;
                 }
                 break;
 
             case 2:
                 if (!v.BrandId || v.BrandId <= 0) {
-                    newErrors.BrandId = 'Brand is required';
+                    newErrors.BrandId = Strings.VEHICLE_LISTING.BRAND_REQUIRED;
                 }
                 if (!v.BrandModelId || v.BrandModelId <= 0) {
-                    newErrors.BrandModelId = 'Model is required';
+                    newErrors.BrandModelId = Strings.VEHICLE_LISTING.MODEL_REQUIRED;
                 }
-                if (!v.ChildVehicleTypeId || v.ChildVehicleTypeId <= 0) {
-                    newErrors.ChildVehicleTypeId = 'Child vehicle type is required';
+                if (childVehicleTypeOptions.length > 0 && (!v.ChildVehicleTypeId || v.ChildVehicleTypeId <= 0)) {
+                    newErrors.ChildVehicleTypeId = 'Vehicle category is required';
                 }
                 if (!v.FuelTypeId || v.FuelTypeId <= 0) {
-                    newErrors.FuelTypeId = 'Fuel type is required';
+                    newErrors.FuelTypeId = Strings.VEHICLE_LISTING.FUEL_TYPE_REQUIRED;
                 }
                 if (!v.YearOfMfd || v.YearOfMfd < 1900 || v.YearOfMfd > new Date().getFullYear()) {
-                    newErrors.YearOfMfd = 'Valid year is required';
+                    newErrors.YearOfMfd = Strings.VEHICLE_LISTING.YEAR_REQUIRED;
                 }
                 if (!v.DrivenKm || v.DrivenKm <= 0) {
-                    newErrors.DrivenKm = 'Kilometers driven is required';
+                    newErrors.DrivenKm = Strings.VEHICLE_LISTING.KM_DRIVEN_REQUIRED;
                 }
                 if (!v.NoOfOwnersId || v.NoOfOwnersId <= 0) {
-                    newErrors.NoOfOwnersId = 'Number of owners is required';
+                    newErrors.NoOfOwnersId = Strings.VEHICLE_LISTING.OWNERSHIP_REQUIRED;
                 }
                 if (!v.TransmissionId || v.TransmissionId <= 0) {
-                    newErrors.TransmissionId = 'Transmission is required';
+                    newErrors.TransmissionId = Strings.VEHICLE_LISTING.TRANSMISSION_REQUIRED;
                 }
                 break;
 
             case 3:
                 if (!v.Price || v.Price <= 0) {
-                    newErrors.Price = 'Price is required';
+                    newErrors.Price = Strings.VEHICLE_LISTING.PRICE_REQUIRED;
                 }
                 if (!payload.VehicleImages || payload.VehicleImages.length < 1) {
-                    newErrors.VehicleImages = 'At least one image is required';
+                    newErrors.VehicleImages = Strings.VEHICLE_LISTING.IMAGES_REQUIRED;
                 }
                 break;
         }
@@ -352,17 +334,49 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async () => {
+    // ✅ Publish Handler (Similar to Property)
+    const handlePublish = async () => {
+        if (!payload) return;
+
         setIsLoading(true);
         try {
-            console.log('Submitting payload:', payload);
-            // TODO: Implement actual submission
-            // const result = await API.POST<VehicleAddEditResult>(Vehicle.ADDEDIT, payload);
+            console.log('Publishing vehicle listing...', JSON.stringify(payload));
 
-            // For now, navigate back or show success
-            navigation.goBack();
+            const res = await API.POST<VehicleAddEditResult>(
+                Vehicle.ADDEDIT,
+                payload,
+            );
+
+            const postId = payload?.Post?.PostId;
+
+            if (res != null) {
+                console.log('Vehicle Save Response', res);
+
+                if (res.IsSuccess && (Number(postId) <= 0 || postId === undefined)) {
+                    Alert.alert('Success', 'Vehicle listed successfully!', [
+                        {
+                            text: 'OK',
+                            onPress: () => {
+                                navigation.navigate(Routes.BUYER_TABS);
+                            },
+                        },
+                    ]);
+                } else if (res.IsSuccess) {
+                    Alert.alert('Success', 'Vehicle details updated!', [
+                        {
+                            text: 'OK',
+                            onPress: () => {
+                                navigation.navigate(Routes.BUYER_TABS);
+                            },
+                        },
+                    ]);
+                } else {
+                    Alert.alert('Error', 'Failed to publish vehicle listing.');
+                }
+            }
         } catch (error) {
-            console.error('Failed to submit vehicle:', error);
+            console.error('Publish error:', error);
+            Alert.alert('Error', 'Failed to publish listing. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -378,13 +392,15 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
             <View style={styles.headerContainer}>
                 <View style={styles.headerContent}>
-                    <VehicleStepHeader
+                    {/* ✅ Use Shared Header Component */}
+                    <PostListingStepHeader
                         currentStep={currentStep}
                         totalSteps={3}
                         stepTitle={getStepTitle(currentStep)}
                         nextStepTitle={getNextStepTitle(currentStep)}
                         onBack={handleBack}
                         onReset={handleReset}
+                        screenTitle={Strings.VEHICLE_LISTING.POST_VEHICLE}
                     />
                 </View>
             </View>
@@ -423,7 +439,7 @@ export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScre
                         data={payload.Vehicle}
                         onChange={setVehicleField}
                         images={payload.VehicleImages}
-                        onImagesChange={handleImagesChange} // ✅ Use memoized callback
+                        onImagesChange={handleImagesChange}
                         errors={errors}
                     />
                 )}

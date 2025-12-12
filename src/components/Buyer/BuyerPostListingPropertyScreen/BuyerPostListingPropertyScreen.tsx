@@ -6,12 +6,11 @@ import {
 } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
 import { BuyerPostListingPropertyNavigationProp, Routes } from '../../../Types/Navigation';
-import { Colors, Scale } from '../../Constants';
+import { Colors, Scale, Strings } from '../../Constants';
 import { PropertyStep1 } from './PropertyStep1/PropertyStep1';
 import { PropertyStep2 } from './PropertyStep2/PropertyStep2';
 import { PropertyStep3 } from './PropertyStep3/PropertyStep3';
 import { PropertyStep4 } from './PropertyStep4/PropertyStep4';
-import { PropertyStepHeader } from './PropertyStepHeader/PropertyStepHeader';
 import { PropertyFooter } from './PropertyFooter/PropertyFooter';
 import {
     PropertyAddEditInput,
@@ -24,6 +23,7 @@ import {
 import { PropertyMasterDataResult, PropertyByPostIdResult } from '../../../Services/API/Result/resultIndex';
 import { API } from '../../../Services/API/Api';
 import { PropertyMaster, Property } from '../../../Services/API/URL/URLS';
+import { PostListingStepHeader } from '../PostListingStepHeader/PostListingStepHeader';
 
 // Props supporting both Add and Edit modes
 interface BuyerPostListingPropertyScreenProps {
@@ -366,13 +366,14 @@ export const BuyerPostListingPropertyScreen: React.FC<BuyerPostListingPropertySc
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
             <View style={styles.headerContainer}>
                 <View style={styles.headerContent}>
-                    <PropertyStepHeader
+                    <PostListingStepHeader
                         currentStep={currentStep}
                         totalSteps={4}
                         stepTitle={getStepTitle(currentStep)}
                         nextStepTitle={getNextStepTitle(currentStep)}
                         onBack={handleBack}
                         onReset={handleReset}
+                        screenTitle={Strings.PROPERTY_LISTING.SCREEN_TITLE}
                     />
                 </View>
             </View>
