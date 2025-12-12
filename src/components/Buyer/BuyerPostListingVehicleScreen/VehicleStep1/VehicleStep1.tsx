@@ -66,17 +66,8 @@ export const VehicleStep1: React.FC<VehicleStep1Props> = ({
                     selectedValue={data.LookingToId}
                     onSelect={(value: string | number) => onChange('LookingToId', Number(value))}
                     disabledValues={[1]} // Disable Rent option (value = 1)
+                    comingSoonValues={[1]}
                 />
-                {/* Coming Soon Badge - Always visible */}
-                <View style={styles.comingSoonBadge}>
-                    <CommonText
-                        variant="caption"
-                        color={Colors.WHITE}
-                        style={styles.comingSoonText}
-                    >
-                        {Strings.VEHICLE_LISTING.COMING_SOON}
-                    </CommonText>
-                </View>
                 {errors?.LookingToId && (
                     <CommonText variant="caption" color={Colors.ERROR_500}>
                         {errors.LookingToId}
@@ -164,26 +155,5 @@ const styles = StyleSheet.create({
     gpsIcon: {
         width: Scale.SCALE_16,
         height: Scale.SCALE_16,
-    },
-    comingSoonBadge: {
-        position: 'absolute',
-        top: Scale.SCALE_28, // Adjusted to align with Figma (20 + 8 for gap)
-        left: Scale.SCALE_79,
-        backgroundColor: Colors.BLACK,
-        paddingHorizontal: Scale.SCALE_8,
-        paddingVertical: Scale.SCALE_0,
-        borderTopLeftRadius: Scale.BORDER_RADIUS_8,
-        borderTopRightRadius: Scale.BORDER_RADIUS_8,
-        zIndex: 2,
-        width: Scale.SCALE_76,
-        height: Scale.SCALE_16,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    comingSoonText: {
-        fontSize: Scale.SCALE_10,
-        lineHeight: Typography.LINE_HEIGHT_16,
-        fontFamily: Typography.FONT_FAMILY_REGULAR,
-        textAlign: 'center',
     },
 });
