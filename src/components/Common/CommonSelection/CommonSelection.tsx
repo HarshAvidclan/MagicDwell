@@ -12,7 +12,7 @@ import {
     LayoutChangeEvent,
 } from 'react-native';
 import { CommonText, CommonCheckbox } from '..';
-import { Colors, Scale, Typography } from '../../Constants';
+import { Colors, Scale, Strings, Typography } from '../../Constants';
 
 export interface SelectionOption {
     value: string | number;
@@ -107,7 +107,7 @@ export const CommonSelection: React.FC<CommonSelectionProps> = ({
                                 pointerEvents="none"
                             >
                                 <CommonText variant="caption" style={styles.comingSoonText}>
-                                    Coming soon
+                                    {Strings.VEHICLE_LISTING.COMING_SOON}
                                 </CommonText>
                             </View>
                         )}
@@ -216,8 +216,9 @@ const styles = StyleSheet.create({
     /* ⭐ Coming Soon Badge */
     comingSoonBadge: {
         position: 'absolute',
-        top: -Scale.SCALE_8,
-        width: Scale.SCALE_76,
+        top: -Scale.SCALE_6,
+        paddingHorizontal: Scale.SCALE_9,
+        // width: Scale.SCALE_76,
         height: Scale.SCALE_16,
         backgroundColor: Colors.BLACK,
         borderTopLeftRadius: Scale.BORDER_RADIUS_8,
