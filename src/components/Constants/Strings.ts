@@ -77,10 +77,10 @@ export const Strings = {
     CO_LIVING: 'Co-living',
   },
   TOOLS: {
-    PRICING_INSIGHTS: 'Pricing &\\nInsights',
-    EMI_CALCULATOR: 'EMI\\nCalculator',
-    RESEARCH_SNAPSHOT: 'Research\\nSnapshot',
-    LOCALITY_INSIGHTS: 'Locality\\nInsights',
+    PRICING_INSIGHTS: 'Pricing Insights',
+    EMI_CALCULATOR: 'EMI Calculator',
+    RESEARCH_SNAPSHOT: 'Research Snapshot',
+    LOCALITY_INSIGHTS: 'Locality Insights',
   },
   TABS: {
     HOME: 'Home',
