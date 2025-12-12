@@ -72,7 +72,7 @@ const defaultAddEdit = (): VehicleAddEditInput => ({
 });
 
 export const BuyerPostListingVehicleScreen: React.FC<BuyerPostListingVehicleScreenProps> = ({
-    postId = 1068,
+    postId,
     initialData,
 }) => {
     const navigation = useNavigation<BuyerPostListingVehicleNavigationProp>();

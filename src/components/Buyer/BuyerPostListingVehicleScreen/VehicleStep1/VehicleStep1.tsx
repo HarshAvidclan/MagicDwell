@@ -65,19 +65,18 @@ export const VehicleStep1: React.FC<VehicleStep1Props> = ({
                     options={lookingToOptions}
                     selectedValue={data.LookingToId}
                     onSelect={(value: string | number) => onChange('LookingToId', Number(value))}
+                    disabledValues={[1]} // Disable Rent option (value = 1)
                 />
-                {/* Coming Soon Badge for Rent */}
-                {data.LookingToId === 1 && (
-                    <View style={styles.comingSoonBadge}>
-                        <CommonText
-                            variant="caption"
-                            color={Colors.WHITE}
-                            style={styles.comingSoonText}
-                        >
-                            {Strings.VEHICLE_LISTING.COMING_SOON}
-                        </CommonText>
-                    </View>
-                )}
+                {/* Coming Soon Badge - Always visible */}
+                <View style={styles.comingSoonBadge}>
+                    <CommonText
+                        variant="caption"
+                        color={Colors.WHITE}
+                        style={styles.comingSoonText}
+                    >
+                        {Strings.VEHICLE_LISTING.COMING_SOON}
+                    </CommonText>
+                </View>
                 {errors?.LookingToId && (
                     <CommonText variant="caption" color={Colors.ERROR_500}>
                         {errors.LookingToId}
@@ -168,7 +167,7 @@ const styles = StyleSheet.create({
     },
     comingSoonBadge: {
         position: 'absolute',
-        top: Scale.SCALE_20,
+        top: Scale.SCALE_28, // Adjusted to align with Figma (20 + 8 for gap)
         left: Scale.SCALE_79,
         backgroundColor: Colors.BLACK,
         paddingHorizontal: Scale.SCALE_8,
@@ -177,6 +176,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: Scale.BORDER_RADIUS_8,
         zIndex: 2,
         width: Scale.SCALE_76,
+        height: Scale.SCALE_16,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -184,5 +184,6 @@ const styles = StyleSheet.create({
         fontSize: Scale.SCALE_10,
         lineHeight: Typography.LINE_HEIGHT_16,
         fontFamily: Typography.FONT_FAMILY_REGULAR,
+        textAlign: 'center',
     },
 });
