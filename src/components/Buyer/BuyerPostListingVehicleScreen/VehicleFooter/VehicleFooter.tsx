@@ -28,7 +28,7 @@ export const VehicleFooter: React.FC<VehicleFooterProps> = ({
                 buttonStyle={styles.backButton}
                 textStyle={styles.backButtonText}
                 onPress={onBack}
-                disabled={isLoading}
+                disabled={currentStep === 1 || isLoading}
             />
 
             {/* Continue Button */}
